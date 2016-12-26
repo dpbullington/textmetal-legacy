@@ -1315,6 +1315,20 @@
           }
         }
       },
+      "System.Runtime.Loader/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.IO": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Runtime": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.5/System.Runtime.Loader.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.5/System.Runtime.Loader.dll": {}
+        }
+      },
       "System.Runtime.Numerics/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1992,6 +2006,7 @@
           "Microsoft.Extensions.DependencyModel": "1.1.0",
           "NETStandard.Library": "1.6.1",
           "Newtonsoft.Json": "9.0.2-beta1",
+          "System.Runtime.Loader": "4.3.0",
           "TextMetal.Imports": "9.0.0",
           "TextMetal.Middleware.Solder.Context": "9.0.0",
           "TextMetal.Middleware.Solder.Primitives": "9.0.0",
@@ -5116,6 +5131,36 @@
         "runtimes/win/lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll"
       ]
     },
+    "System.Runtime.Loader/4.3.0": {
+      "sha512": "DHMaRn8D8YCK2GG2pw+UzNxn/OHVfaWx7OTLBD/hPegHZZgcZh3H6seWegrC4BYwsfuGrywIuT+MQs+rPqRLTQ==",
+      "type": "package",
+      "path": "System.Runtime.Loader/4.3.0",
+      "files": [
+        "System.Runtime.Loader.4.3.0.nupkg.sha512",
+        "System.Runtime.Loader.nuspec",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net462/_._",
+        "lib/netstandard1.5/System.Runtime.Loader.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/netstandard1.5/System.Runtime.Loader.dll",
+        "ref/netstandard1.5/System.Runtime.Loader.xml",
+        "ref/netstandard1.5/de/System.Runtime.Loader.xml",
+        "ref/netstandard1.5/es/System.Runtime.Loader.xml",
+        "ref/netstandard1.5/fr/System.Runtime.Loader.xml",
+        "ref/netstandard1.5/it/System.Runtime.Loader.xml",
+        "ref/netstandard1.5/ja/System.Runtime.Loader.xml",
+        "ref/netstandard1.5/ko/System.Runtime.Loader.xml",
+        "ref/netstandard1.5/ru/System.Runtime.Loader.xml",
+        "ref/netstandard1.5/zh-hans/System.Runtime.Loader.xml",
+        "ref/netstandard1.5/zh-hant/System.Runtime.Loader.xml"
+      ]
+    },
     "System.Runtime.Numerics/4.3.0": {
       "sha512": "yMH+MfdzHjy17l2KESnPiF2dwq7T+xLnSJar7slyimAkUh/gTrS9/UQOtv7xarskJ2/XDSNvfLGOBQPjL7PaHQ==",
       "type": "package",
@@ -6373,9 +6418,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "NETStandard.Library >= 1.6.1"
-    ],
-    ".NETStandard,Version=v1.6": [
+      "NETStandard.Library >= 1.6.1",
       "TextMetal.Middleware.Solder.Context >= 9.0.0-*",
       "TextMetal.Middleware.Solder.Executive >= 9.0.0-*",
       "TextMetal.Middleware.Solder.Extensions >= 9.0.0-*",
@@ -6384,7 +6427,8 @@
       "TextMetal.Middleware.Solder.Primitives >= 9.0.0-*",
       "TextMetal.Middleware.Solder.Serialization >= 9.0.0-*",
       "TextMetal.Middleware.Solder.Utilities >= 9.0.0-*"
-    ]
+    ],
+    ".NETStandard,Version=v1.6": []
   },
   "tools": {},
   "projectFileToolGroups": {}

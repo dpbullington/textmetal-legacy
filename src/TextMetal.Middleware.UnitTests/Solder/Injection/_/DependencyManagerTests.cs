@@ -35,10 +35,10 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		#region Methods/Operators
 
 		[AssemblyLoaderEventSinkMethod]
-		public static void IsValidAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AssemblyLoaderContainerContext assemblyLoaderContainerContext)
+		public static void IsValidAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AgnosticAppDomain agnosticAppDomain)
 		{
-			if ((object)assemblyLoaderContainerContext == null)
-				throw new ArgumentNullException(nameof(assemblyLoaderContainerContext));
+			if ((object)agnosticAppDomain == null)
+				throw new ArgumentNullException(nameof(agnosticAppDomain));
 
 			switch (assemblyLoaderEventType)
 			{
@@ -60,9 +60,9 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 					selectorKey = UNCOMMON_SELECTOR_KEY;
 					includeAssignableTypes = false;
 
-					assemblyLoaderContainerContext.DependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
+					agnosticAppDomain.DependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
 
-					Expect.On(mockDependencyResolution).Any.Method(m => m.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(assemblyLoaderContainerContext.DependencyManager, targetType, selectorKey).WillReturn(1234.5678);
+					Expect.On(mockDependencyResolution).Any.Method(m => m.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(agnosticAppDomain.DependencyManager, targetType, selectorKey).WillReturn(1234.5678);
 
 					Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
 
@@ -74,13 +74,13 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			}
 		}
 
-		public static void NotMarkedAsAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AssemblyLoaderContainerContext assemblyLoaderContainerContext)
+		public static void NotMarkedAsAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AgnosticAppDomain agnosticAppDomain)
 		{
 			throw new Exception();
 		}
 
 		[AssemblyLoaderEventSinkMethod]
-		private static void ShouldNotMatchPrivateAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AssemblyLoaderContainerContext assemblyLoaderContainerContext)
+		private static void ShouldNotMatchPrivateAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AgnosticAppDomain agnosticAppDomain)
 		{
 			throw new Exception();
 		}
@@ -1269,9 +1269,9 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			selectorKey = UNCOMMON_SELECTOR_KEY;
 			includeAssignableTypes = false;
 
-			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.ScanAssembly<DependencyManagerTests>();
+			AgnosticAppDomain.TheOnlyAllowedInstance.ScanAssembly<DependencyManagerTests>();
 
-			formattable = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IFormattable>(selectorKey, includeAssignableTypes);
+			formattable = AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IFormattable>(selectorKey, includeAssignableTypes);
 
 			Assert.IsNotNull(formattable);
 			Assert.IsInstanceOf<double>(formattable);

@@ -47,11 +47,11 @@ namespace TextMetal.Ox.ConsoleTool
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
-			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientDefaultConstructorDependencyResolution<ToolHost>()));
-			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<IAdoNetStreamingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetStreamingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetStreamingFascade>()));
+			AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
+			AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientDefaultConstructorDependencyResolution<ToolHost>()));
+			AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.AddResolution<IAdoNetStreamingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetStreamingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetStreamingFascade>()));
 
-			using (ConsoleApplicationFascade program = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
+			using (ConsoleApplicationFascade program = AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
 				return program.EntryPoint(args);
 		}
 
@@ -140,7 +140,7 @@ namespace TextMetal.Ox.ConsoleTool
 							});
 			}*/
 
-			using (IToolHost toolHost = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IToolHost>(string.Empty, true))
+			using (IToolHost toolHost = AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IToolHost>(string.Empty, true))
 				toolHost.Host(sourceFilePath);
 
 			return 0;

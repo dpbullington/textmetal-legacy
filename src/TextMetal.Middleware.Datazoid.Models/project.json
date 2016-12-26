@@ -26,6 +26,7 @@
 
 	"buildOptions":
 	{
+		"debugType": "portable",
 		"keyFile": "../TextMetal.snk",
 		"warningsAsErrors": false,
 		"compile":

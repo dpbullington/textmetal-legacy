@@ -91,17 +91,14 @@ namespace TextMetal.Framework.InputOutput
 			Assembly assembly;
 			AssemblyName _assemblyName;
 
-			//Console.WriteLine(this.GetType().GetTypeInfo().Assembly.GetName().Name);
-
 			if ((object)assemblyName == null)
 				throw new ArgumentNullException(nameof(assemblyName));
 
 			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(assemblyName))
 				throw new ArgumentOutOfRangeException(nameof(assemblyName));
 
-			//assemblyName = Path.GetFullPath(assemblyName);
 			_assemblyName = new AssemblyName(assemblyName);
-			assembly = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.LoadAssembly(_assemblyName);
+			assembly = AgnosticAppDomain.TheOnlyAllowedInstance.LoadAssembly(_assemblyName);
 
 			return assembly;
 		}

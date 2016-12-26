@@ -26,6 +26,7 @@
 
 	"buildOptions":
 	{
+		"debugType": "portable",
 		"keyFile": "../TextMetal.snk",
 		"warningsAsErrors": false,
 		"emitEntryPoint": true,
@@ -58,5 +59,6 @@
 
 	"dependencies":
 	{
+		"TextMetal.Middleware.Solder": "9.0.0-*"
 	}
 }

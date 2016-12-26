@@ -20,7 +20,7 @@ namespace TextMetal.Middleware.Solder.Extensions
 		{
 			get
 			{
-				return AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IDataTypeFascade>(String.Empty, true);
+				return AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IDataTypeFascade>(String.Empty, true);
 			}
 		}
 
@@ -29,7 +29,7 @@ namespace TextMetal.Middleware.Solder.Extensions
 		{
 			get
 			{
-				return AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IReflectionFascade>(String.Empty, true);
+				return AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IReflectionFascade>(String.Empty, true);
 			}
 		}
 

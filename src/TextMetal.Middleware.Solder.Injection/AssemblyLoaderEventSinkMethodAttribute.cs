@@ -10,7 +10,7 @@ using System;
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
-	/// Marks a static void (AssemblyLoaderEventType, AssemblyLoaderContainerContext) method as an assembly loader method.
+	/// Marks a static void (AssemblyLoaderEventType, AgnosticAppDomain) method as an assembly loader method.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
 	public sealed class AssemblyLoaderEventSinkMethodAttribute : Attribute

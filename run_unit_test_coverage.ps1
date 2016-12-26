@@ -22,7 +22,7 @@ $dotcover_exe = "$dotcover_dir_path\$dotcover_file_name"
 
 echo "The operation is starting..."
 
-$testsfor_assembly_name = "TextMetal.Middleware.Solder"
+$testsfor_assembly_name = "TextMetal.Middleware.Solder.Primitives"
 
 $testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
 $testsuite_assembly_dir = "$src_dir_path\$testsuite_assembly_name\bin\$build_flavor\$build_tfm"

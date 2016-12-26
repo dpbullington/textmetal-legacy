@@ -7,40 +7,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyModel;
 
+using TextMetal.Middleware.Solder.Primitives;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Solder.Injection
 {
-	public sealed class AssemblyLoaderContainerContext
+	/// <summary>
+	/// Serves as a mechansim to detect loading of the singular "app domain" (in .NET Framework parlaence)
+	/// in an app model agnostic manner. This constructor should remain private unless the notion
+	/// of wrapping an assembly load contet and dependency context extends beyond the runtime defaults.
+	/// </summary>
+	public sealed class AgnosticAppDomain
 	{
 		#region Constructors/Destructors
 
-		/// <summary>
-		/// Serves as a constructor to detect loading of the "app domain" in an app model agnostic manner.
-		/// </summary>
-		private AssemblyLoaderContainerContext()
+		private AgnosticAppDomain(AssemblyLoadContext assemblyLoadContext, DependencyContext dependencyContext)
 		{
+			if ((object)assemblyLoadContext == null)
+				throw new ArgumentNullException(nameof(assemblyLoadContext));
+
+			if ((object)dependencyContext == null)
+				throw new ArgumentNullException(nameof(dependencyContext));
+
+			this.assemblyLoadContext = assemblyLoadContext;
+			this.dependencyContext = dependencyContext;
+
+			// trusted dependencies
 			this.dataTypeFascade = new DataTypeFascade();
 			this.reflectionFascade = new ReflectionFascade(this.DataTypeFascade);
 			this.configurationRoot = LoadAppConfigFile(APP_CONFIG_FILE_NAME);
 			this.appConfigFascade = new AppConfigFascade(this.ConfigurationRoot, this.DataTypeFascade);
 			this.assemblyInformationFascade = new AssemblyInformationFascade(this.ReflectionFascade, Assembly.GetEntryAssembly());
 
-			this.SetUp();
 			this.SetUpApplicationDomain();
-		}
-
-		/// <summary>
-		/// Serves as a finalizer to detect unloading of the "app domain" in an app model agnostic manner.
-		/// </summary>
-		~AssemblyLoaderContainerContext()
-		{
-			this.TearDownApplicationDomain();
 		}
 
 		#endregion
@@ -48,14 +53,15 @@ namespace TextMetal.Middleware.Solder.Injection
 		#region Fields/Constants
 
 		private const string APP_CONFIG_FILE_NAME = "appconfig.json";
-		private const string ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS = "SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS";
 		private readonly IAppConfigFascade appConfigFascade;
-
 		private readonly IAssemblyInformationFascade assemblyInformationFascade;
+
+		private readonly AssemblyLoadContext assemblyLoadContext;
 		private readonly IConfigurationRoot configurationRoot;
 		private readonly IDataTypeFascade dataTypeFascade;
+		private readonly DependencyContext dependencyContext;
 		private readonly IDependencyManager dependencyManager = new DependencyManager();
-		private readonly IList<Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>> eventSinkMethods = new List<Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>>();
+		private readonly IList<Action<AssemblyLoaderEventType, AgnosticAppDomain>> eventSinkMethods = new List<Action<AssemblyLoaderEventType, AgnosticAppDomain>>();
 		private readonly IReflectionFascade reflectionFascade;
 
 		#endregion
@@ -63,18 +69,18 @@ namespace TextMetal.Middleware.Solder.Injection
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// Gets the singleton instance associated with the current assembly loader container context.
-		/// Most applications will use this instance instead of creating their own instance.
+		/// Gets the singleton, current instance associated with the current app model agnostic "app domain".
+		/// This is lazy loaded on demad using inner class static field initialization mneumonics.
 		/// </summary>
-		public static AssemblyLoaderContainerContext TheOnlyAllowedInstance
+		public static AgnosticAppDomain TheOnlyAllowedInstance
 		{
 			get
 			{
-				return LazySingleton.lazyInstance;
+				return AgnosticAppDomainLazySingleton.instance;
 			}
 		}
 
-		internal IAppConfigFascade AppConfigFascade
+		private IAppConfigFascade AppConfigFascade
 		{
 			get
 			{
@@ -90,6 +96,14 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
+		private AssemblyLoadContext AssemblyLoadContext
+		{
+			get
+			{
+				return this.assemblyLoadContext;
+			}
+		}
+
 		private IConfigurationRoot ConfigurationRoot
 		{
 			get
@@ -98,11 +112,19 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		internal IDataTypeFascade DataTypeFascade
+		private IDataTypeFascade DataTypeFascade
 		{
 			get
 			{
 				return this.dataTypeFascade;
+			}
+		}
+
+		private DependencyContext DependencyContext
+		{
+			get
+			{
+				return this.dependencyContext;
 			}
 		}
 
@@ -117,29 +139,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		/// <summary>
-		/// Gets the current app setting for disabling of assembly loader subscription method execution.
-		/// </summary>
-		private bool EnableAssemblyLoaderEventSinking
-		{
-			get
-			{
-				string svalue;
-				bool ovalue;
-
-				svalue = Environment.GetEnvironmentVariable(ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS);
-
-				if ((object)svalue == null)
-					return false;
-
-				if (!this.DataTypeFascade.TryParse<bool>(svalue, out ovalue))
-					return false;
-
-				return ovalue;
-			}
-		}
-
-		private IList<Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>> EventSinkMethods
+		private IList<Action<AssemblyLoaderEventType, AgnosticAppDomain>> EventSinkMethods
 		{
 			get
 			{
@@ -147,7 +147,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		internal IReflectionFascade ReflectionFascade
+		private IReflectionFascade ReflectionFascade
 		{
 			get
 			{
@@ -159,7 +159,17 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Methods/Operators
 
-		internal static IConfigurationRoot LoadAppConfigFile(string appConfigFilePath)
+		private static IEnumerable<Assembly> DiscoverAssemblies(DependencyContext dependencyContext)
+		{
+			if ((object)dependencyContext == null)
+				return new Assembly[] { };
+
+			return dependencyContext.RuntimeLibraries
+				.SelectMany(library => library.GetDefaultAssemblyNames(dependencyContext))
+				.Select(Assembly.Load);
+		}
+
+		private static IConfigurationRoot LoadAppConfigFile(string appConfigFilePath)
 		{
 			IConfigurationBuilder configurationBuilder;
 			JsonConfigurationSource configurationSource;
@@ -178,34 +188,46 @@ namespace TextMetal.Middleware.Solder.Injection
 			return configurationRoot;
 		}
 
+		private void AssemblyLoadContext_OnUnloading(AssemblyLoadContext assemblyLoadContext)
+		{
+			if ((object)assemblyLoadContext == null)
+				throw new ArgumentNullException(nameof(assemblyLoadContext));
+
+			if (this.AssemblyLoadContext != assemblyLoadContext)
+				Environment.FailFast(string.Format("Assembly load context mismatch during unload notificaiton."));
+
+			this.TearDownApplicationDomain();
+		}
+
 		public Assembly LoadAssembly(AssemblyName assemblyName)
 		{
-			return null;
+			return this.AssemblyLoadContext.LoadFromAssemblyName(assemblyName);
 		}
 
 		/// <summary>
 		/// Private method that will scan all asemblies specified to perform assembly loader subscription method execution.
 		/// </summary>
-		/// <param name="assemblies"> An array of assemblies to scan for assembly loader subscription methods. </param>
-		private void ScanAssemblies(Assembly[] assemblies)
+		/// <param name="assemblies"> An enumerable of assemblies to scan for assembly loader subscription methods. </param>
+		private void ScanAssemblies(IEnumerable<Assembly> assemblies)
 		{
 			Type[] assemblyTypes;
 			MethodInfo[] methodInfos;
 			AssemblyLoaderEventSinkMethodAttribute assemblyLoaderEventSinkMethodAttribute;
-			Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext> assemblyLoaderEventSinkMethod;
+			Action<AssemblyLoaderEventType, AgnosticAppDomain> assemblyLoaderEventSinkMethod;
 
 			if ((object)assemblies != null)
 			{
 				foreach (Assembly assembly in assemblies)
 				{
-					// http://stackoverflow.com/questions/7889228/how-to-prevent-reflectiontypeloadexception-when-calling-assembly-gettypes
+					OnlyWhen._PROFILE_ThenPrint(string.Format("{0}.", assembly.FullName));
+
 					try
 					{
-						assemblyTypes = assembly.GetTypes();
-						//assemblyTypes = assembly.DefinedTypes.Select(t => t.AsType());
+						assemblyTypes = assembly.ExportedTypes.ToArray();
 					}
 					catch (ReflectionTypeLoadException rtlex)
 					{
+						// is this even needed?
 						assemblyTypes = rtlex.Types.Where(t => (object)t != null).ToArray();
 					}
 
@@ -213,8 +235,6 @@ namespace TextMetal.Middleware.Solder.Injection
 					{
 						foreach (Type assemblyType in assemblyTypes)
 						{
-							var _assemblyTypeInfo = assemblyType.GetTypeInfo();
-
 							methodInfos = assemblyType.GetMethods(BindingFlags.Public | BindingFlags.Static);
 
 							if ((object)methodInfos != null)
@@ -237,10 +257,10 @@ namespace TextMetal.Middleware.Solder.Injection
 
 									if (methodInfo.GetParameters().Count() != 2 ||
 										methodInfo.GetParameters()[0].ParameterType != typeof(AssemblyLoaderEventType) ||
-										methodInfo.GetParameters()[1].ParameterType != typeof(AssemblyLoaderContainerContext))
+										methodInfo.GetParameters()[1].ParameterType != typeof(AgnosticAppDomain))
 										continue;
 
-									assemblyLoaderEventSinkMethod = (Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>)(methodInfo.CreateDelegate(typeof(Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>), null /* static */));
+									assemblyLoaderEventSinkMethod = (Action<AssemblyLoaderEventType, AgnosticAppDomain>)(methodInfo.CreateDelegate(typeof(Action<AssemblyLoaderEventType, AgnosticAppDomain>), null /* static */));
 
 									if ((object)assemblyLoaderEventSinkMethod == null)
 										continue;
@@ -249,7 +269,8 @@ namespace TextMetal.Middleware.Solder.Injection
 										throw new NotSupportedException(string.Format("Method '{0}' of type '{1}' has been sunk before. This is likely a defect in the framework - report this to the project team.", methodInfo.Name, methodInfo.DeclaringType.FullName));
 
 									// notify
-									//Console.WriteLine("{1}::{0}.", methodInfo.Name, methodInfo.DeclaringType.Name);
+									OnlyWhen._PROFILE_ThenPrint(string.Format("{1}::{0}", methodInfo.Name, methodInfo.DeclaringType.FullName));
+
 									this.EventSinkMethods.Add(assemblyLoaderEventSinkMethod);
 									assemblyLoaderEventSinkMethod(AssemblyLoaderEventType.Startup, this);
 								}
@@ -293,67 +314,53 @@ namespace TextMetal.Middleware.Solder.Injection
 			this.ScanAssemblies(assemblies);
 		}
 
-		private void SetUp()
-		{
-			this.DependencyManager.AddResolution<IConfigurationRoot>(string.Empty, false, new SingletonWrapperDependencyResolution<IConfigurationRoot>(new InstanceDependencyResolution<IConfigurationRoot>(this.ConfigurationRoot)));
-
-			this.DependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new InstanceDependencyResolution<IDataTypeFascade>(this.DataTypeFascade)));
-			this.DependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new InstanceDependencyResolution<IReflectionFascade>(this.ReflectionFascade)));
-			this.DependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new InstanceDependencyResolution<IAppConfigFascade>(this.AppConfigFascade)));
-			this.DependencyManager.AddResolution<IAssemblyInformationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAssemblyInformationFascade>(new InstanceDependencyResolution<IAssemblyInformationFascade>(this.AssemblyInformationFascade)));
-		}
-
 		/// <summary>
 		/// Private thread-safe method which bootstraps an "app domain".
 		/// </summary>
 		private void SetUpApplicationDomain()
 		{
-			IReadOnlyList<RuntimeLibrary> runtimeLibraries;
+			lock (this)
+			{
+				OnlyWhen._PROFILE_ThenPrint(string.Format("SetUpApplicationDomain {0}", Environment.CurrentManagedThreadId));
 
-			Console.WriteLine("SetUpApplicationDomain");
+				// add trusted dependencies
+				this.DependencyManager.AddResolution<IConfigurationRoot>(string.Empty, false, new SingletonWrapperDependencyResolution<IConfigurationRoot>(new InstanceDependencyResolution<IConfigurationRoot>(this.ConfigurationRoot)));
+				this.DependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new InstanceDependencyResolution<IDataTypeFascade>(this.DataTypeFascade)));
+				this.DependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new InstanceDependencyResolution<IReflectionFascade>(this.ReflectionFascade)));
+				this.DependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new InstanceDependencyResolution<IAppConfigFascade>(this.AppConfigFascade)));
+				this.DependencyManager.AddResolution<IAssemblyInformationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAssemblyInformationFascade>(new InstanceDependencyResolution<IAssemblyInformationFascade>(this.AssemblyInformationFascade)));
 
-			if ((object)DependencyContext.Default == null)
-				return;
+				// hook the unload event
+				this.AssemblyLoadContext.Unloading += this.AssemblyLoadContext_OnUnloading;
 
-			runtimeLibraries = DependencyContext.Default.RuntimeLibraries;
-
-			if ((object)runtimeLibraries == null)
-				return;
-
-			if (!this.EnableAssemblyLoaderEventSinking)
-				return;
-
-			var assemblies = runtimeLibraries.SelectMany(l => l.Assemblies.Select(ra =>
-																				{
-																					try
-																					{
-																						return Assembly.Load(ra.Name);
-																					}
-																					catch (ReflectionTypeLoadException)
-																					{
-																						return null;
-																					}
-																				})).Where(a => (object)a != null);
-
-			this.ScanAssemblies(assemblies.ToArray());
+				// probe known assemblies - does not probe dynamically loaded assmblies yet
+				this.ScanAssemblies(DiscoverAssemblies(this.DependencyContext));
+			}
 		}
 
 		/// <summary>
 		/// Private thread-safe method which dismantles an "app domain".
+		/// Note that the AssemblyLoadContext.Unloading event can/will
+		/// executeon a thread different that that of the main thread.
 		/// </summary>
 		private void TearDownApplicationDomain()
 		{
-			// notify
-			foreach (Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext> eventSinkMethod in this.EventSinkMethods)
-				eventSinkMethod(AssemblyLoaderEventType.Shutdown, this);
+			lock (this)
+			{
+				// notify
+				foreach (Action<AssemblyLoaderEventType, AgnosticAppDomain> eventSinkMethod in this.EventSinkMethods)
+					eventSinkMethod(AssemblyLoaderEventType.Shutdown, this);
 
-			// cleanup
-			this.EventSinkMethods.Clear();
+				// cleanup
+				this.EventSinkMethods.Clear();
 
-			if ((object)this.DependencyManager != null)
-				this.DependencyManager.Dispose();
+				if ((object)this.DependencyManager != null)
+					this.DependencyManager.Dispose();
 
-			Console.WriteLine("TearDownApplicationDomain");
+				this.AssemblyLoadContext.Unloading -= this.AssemblyLoadContext_OnUnloading;
+
+				OnlyWhen._PROFILE_ThenPrint(string.Format("TearDownApplicationDomain {0}", Environment.CurrentManagedThreadId));
+			}
 		}
 
 		#endregion
@@ -363,14 +370,14 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// <summary>
 		/// http://www.yoda.arachsys.com/csharp/singleton.html
 		/// </summary>
-		private class LazySingleton
+		private class AgnosticAppDomainLazySingleton
 		{
 			#region Constructors/Destructors
 
 			/// <summary>
 			/// Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
 			/// </summary>
-			static LazySingleton()
+			static AgnosticAppDomainLazySingleton()
 			{
 			}
 
@@ -378,7 +385,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			#region Fields/Constants
 
-			internal static readonly AssemblyLoaderContainerContext lazyInstance = new AssemblyLoaderContainerContext();
+			internal static readonly AgnosticAppDomain instance = new AgnosticAppDomain(AssemblyLoadContext.Default, DependencyContext.Default);
 
 			#endregion
 		}

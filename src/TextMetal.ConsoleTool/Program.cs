@@ -45,16 +45,6 @@ namespace TextMetal.ConsoleTool
 
 		#region Methods/Operators
 
-		private static int DnxMain(string[] args)
-		{
-			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
-			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientActivatorAutoWiringDependencyResolution<ToolHost>()));
-			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<IAdoNetBufferingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetBufferingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetBufferingFascade>()));
-
-			using (ConsoleApplicationFascade program = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
-				return program.EntryPoint(args);
-		}
-
 		/// <summary>
 		/// The entry point method for this application.
 		/// </summary>
@@ -63,26 +53,12 @@ namespace TextMetal.ConsoleTool
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			bool enableDnxDebugQuirksMode;
+			AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
+			AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientActivatorAutoWiringDependencyResolution<ToolHost>()));
+			AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.AddResolution<IAdoNetBufferingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetBufferingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetBufferingFascade>()));
 
-			enableDnxDebugQuirksMode = EnableDnxDebugQuirksMode;
-			Console.WriteLine("EnableDnxDebugQuirksMode: '{0}'", enableDnxDebugQuirksMode);
-
-			if (!enableDnxDebugQuirksMode)
-				return DnxMain(args);
-			else
-			{
-				try
-				{
-					return DnxMain(args);
-				}
-				catch (Exception)
-				{
-					// required to do poor mans' "just in time debugging" with F5 in VS 2015 (DNX) for now
-					Debugger.Break();
-					throw;
-				}
-			}
+			using (ConsoleApplicationFascade program = AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
+				return program.EntryPoint(args);
 		}
 
 		protected override IDictionary<string, ArgumentSpec> GetArgumentMap()
@@ -172,7 +148,7 @@ namespace TextMetal.ConsoleTool
 				}
 			}
 
-			using (IToolHost toolHost = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IToolHost>(string.Empty, true))
+			using (IToolHost toolHost = AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IToolHost>(string.Empty, true))
 				toolHost.Host((object)args != null ? args.Length : -1, args, argz, templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAqtn, strictMatching, properties);
 
 			return 0;

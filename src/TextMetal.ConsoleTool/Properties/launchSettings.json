@@ -6,8 +6,6 @@
 			"commandName": "Project",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -17,9 +15,6 @@
 			"commandLineArgs": "-sourcefile:\"Server=(local);User ID=textmetal_sample_mssql_lcl_login;PWD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_sample\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\empty_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.DatabaseSchema.Sql.SqlSchemaSourceStrategy, TextMetal.Framework\" -strict:true -debug:false -property:\"ConnectionType=System.Data.SqlClient.SqlConnection, System.Data.SqlClient\" -property:DataSourceTag=net.sqlserver",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"DNX_TRACE": "0",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -29,9 +24,6 @@
 			"commandLineArgs": "-sourcefile:\"Driver={SQL Server Native Client 11.0};Server=(local);UID=textmetal_sample_mssql_lcl_login;PWD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_sample\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\empty_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.DatabaseSchema.Odbc.OdbcSchemaSourceStrategy, TextMetal.Framework\" -strict:true -debug:false -property:\"ConnectionType=System.Data.Odbc.OdbcConnection, System.Data\" -property:DataSourceTag=odbc.sqlserver",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"DNX_TRACE": "0",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -41,9 +33,6 @@
 			"commandLineArgs": "-sourcefile:\"Server=(local);User ID=sa;PWD=????\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\empty_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.DatabaseSchema.Sql.SqlSchemaSourceStrategy, TextMetal.Framework\" -strict:true -debug:false -property:\"ConnectionType=System.Data.SqlClient.SqlConnection, System.Data.SqlClient\" -property:DataSourceTag=net.sqlserver -property:EnableDatabaseFilter=true -property:DatabaseFilter=textmetal_sample",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"DNX_TRACE": "0",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -53,8 +42,6 @@
 			"commandLineArgs": "-sourcefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\associative_model_source.xml\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\empty_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.WellKnownXmlPersistEngineSourceStrategy, TextMetal.Framework\" -strict:true -debug:false",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -64,8 +51,6 @@
 			"commandLineArgs": "-sourcefile:NUL -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\bob_master_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.NullSourceStrategy, TextMetal.Framework\" -strict:true -debug:false",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -75,8 +60,6 @@
 			"commandLineArgs": "-sourcefile:\"D:\\development\\textmetal\\main\\src\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\empty_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.FileSystemSourceStrategy, TextMetal.Framework\" -strict:true -debug:false -property:Recursive=True -property:Wildcard=*",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -86,8 +69,6 @@
 			"commandLineArgs": "-sourcefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\get_bat_copy_frags_source.txt\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\get_bat_copy_frags_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.TextSourceStrategy, TextMetal.Framework\" -strict:true -debug:false -property:FirstRecordIsHeader=false -property:FieldDelimiter=~ -property:HasQuotedValues=false -property:HeaderName=Field0001",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -97,8 +78,6 @@
 			"commandLineArgs": "-sourcefile:\"*\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\get_generic_permutations_execute.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.NullSourceStrategy, TextMetal.Framework\" -strict:true -debug:false",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -108,8 +87,6 @@
 			"commandLineArgs": "-sourcefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\gso_sql_data_source.xml\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\empty_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.SqlDataSourceStrategy, TextMetal.Framework\" -strict:true -debug:false -property:\"ConnectionType=System.Data.SqlClient.SqlConnection, System.Data.SqlClient\" -property:DataSourceTag=net.sqlserver -property:\"ConnectionString=Server=(local);User ID=textmetal_sample_mssql_lcl_login;PWD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_sample\" -property:GetSchemaOnly=true",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -119,8 +96,6 @@
 			"commandLineArgs": "-sourcefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\property_path_source.xml\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\property_path_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.WellKnownXmlPersistEngineSourceStrategy, TextMetal.Framework\" -strict:true -debug:false",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -130,8 +105,6 @@
 			"commandLineArgs": "-sourcefile:\"D:\\development\\textmetal\\main\\src\\TextMetal.Framework\\bin\\debug\\netstandard1.6\\TextMetal.Framework.dll\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\empty_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.ReflectionSourceStrategy, TextMetal.Framework\" -strict:true -debug:false",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -141,8 +114,6 @@
 			"commandLineArgs": "-sourcefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\sql_data_source.xml\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\empty_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.SqlDataSourceStrategy, TextMetal.Framework\" -strict:true -debug:false -property:\"ConnectionType=System.Data.SqlClient.SqlConnection, System.Data.SqlClient\" -property:DataSourceTag=net.sqlserver -property:\"ConnectionString=Server=(local);User ID=textmetal_sample_mssql_lcl_login;PWD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_sample\" -property:GetSchemaOnly=false",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -152,8 +123,6 @@
 			"commandLineArgs": "-sourcefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\text_delimiter_source.txt\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\text_delimiter_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.TextSourceStrategy, TextMetal.Framework\" -strict:true -debug:false -property:FirstRecordIsHeader=true -property:RecordDelimiter=\\\\r\\\\n -property:FieldDelimiter=\\\\t",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -163,8 +132,6 @@
 			"commandLineArgs": "-sourcefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\text_linear_source.txt\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\empty_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.TextSourceStrategy, TextMetal.Framework\" -strict:true -debug:false -property:FirstRecordIsHeader=false -property:RecordDelimiter=\\\\r\\\\n -property:FieldDelimiter=~ -property:HasQuotedValues=false -property:HeaderName=Field0001",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -174,8 +141,6 @@
 			"commandLineArgs": "-sourcefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\xmlschema_source.xsd\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\empty_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.XmlSchemaSourceStrategy, TextMetal.Framework\" -strict:true -debug:false",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		}

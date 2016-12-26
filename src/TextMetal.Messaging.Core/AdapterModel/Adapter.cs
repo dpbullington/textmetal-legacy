@@ -42,7 +42,7 @@ namespace TextMetal.Messaging.Core.AdapterModel
 		{
 			get
 			{
-				return AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IIntegrationMessageStore>(string.Empty, false);
+				return AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IIntegrationMessageStore>(string.Empty, false);
 			}
 		}
 

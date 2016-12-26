@@ -12,33 +12,15 @@ namespace TextMetal.Middleware.Solder.Primitives
 	{
 		#region Methods/Operators
 
-		[Conditional("PROFILE")]
+		[Conditional("DEBUG")]
 		public static void _PROFILE_ThenPrint(string message)
 		{
+#if DEBUG
 			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
-			Debug.WriteLine(message);
+			Console.WriteLine(message);
+#endif
 		}
 
 		#endregion
-
-		//[Conditional("PROFILE")]
-		//[AssemblyLoaderEventSinkMethod]
-		//public static void ThisAssemblyDependencyRegistration(AssemblyLoaderEventType assemblyLoaderEventType, AssemblyLoaderContainerContext assemblyLoaderContainerContext)
-		//{
-		//	/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
-
-		//	if ((object)assemblyLoaderContainerContext == null)
-		//		throw new ArgumentNullException(nameof(assemblyLoaderContainerContext));
-
-		//	switch (assemblyLoaderEventType)
-		//	{
-		//		case AssemblyLoaderEventType.Startup:
-		//		case AssemblyLoaderEventType.Shutdown:
-		//			Debug.WriteLine(assemblyLoaderEventType);
-		//			break;
-		//		default:
-		//			throw new ArgumentOutOfRangeException(nameof(assemblyLoaderEventType), assemblyLoaderEventType, null);
-		//	}
-		//}
 	}
 }

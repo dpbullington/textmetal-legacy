@@ -6,8 +6,8 @@
 			"commandName": "Project",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
+				"SOLDER_ATTACH_DEBUGGER_ON_ENTRY_POINT": "true",
+				"SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		}

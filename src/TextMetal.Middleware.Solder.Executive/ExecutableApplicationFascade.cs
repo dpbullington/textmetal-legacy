@@ -50,10 +50,8 @@ namespace TextMetal.Middleware.Solder.Executive
 		private const string APPCONFIG_ARGS_REGEX = @"-(" + APPCONFIG_ID_REGEX_UNBOUNDED + @"{0,63}):(.{0,})";
 		private const string APPCONFIG_ID_REGEX_UNBOUNDED = @"[a-zA-Z_\.][a-zA-Z_\.0-9]";
 		private const string APPCONFIG_PROPS_REGEX = @"(" + APPCONFIG_ID_REGEX_UNBOUNDED + @"{0,63})=(.{0,})";
-
-		private const string ENV_VAR_SOLDER_DNX_DEBUG_QUIRKS_MODE = "SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE";
-
-		private const string ENV_VAR_SOLDER_HOOK_UNHANDLED_EXCEPTIONS = "SOLDER_HOOK_UNHANDLED_EXCEPTIONS";
+		private const string SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT = "SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT";
+		private const string SOLDER_HOOK_UNHANDLED_EXCEPTIONS = "SOLDER_HOOK_UNHANDLED_EXCEPTIONS";
 		private static readonly IContextualStorageFactory contextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.LocalThreadSafe);
 
 		private static readonly string EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY = typeof(ExecutableApplicationFascade).GetTypeInfo().GUID.ToString("N");
@@ -78,15 +76,7 @@ namespace TextMetal.Middleware.Solder.Executive
 			}
 		}
 
-		protected static IContextualStorageFactory ContextualStorageFactory
-		{
-			get
-			{
-				return contextualStorageFactory;
-			}
-		}
-
-		public static bool EnableDnxDebugQuirksMode
+		public static bool LaunchDebuggerOnEntryPoint
 		{
 			get
 			{
@@ -94,8 +84,8 @@ namespace TextMetal.Middleware.Solder.Executive
 				string svalue;
 				bool ovalue;
 
-				dataTypeFascade = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IDataTypeFascade>(string.Empty, true);
-				svalue = Environment.GetEnvironmentVariable(ENV_VAR_SOLDER_DNX_DEBUG_QUIRKS_MODE);
+				dataTypeFascade = AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IDataTypeFascade>(string.Empty, true);
+				svalue = Environment.GetEnvironmentVariable(SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT);
 
 				if ((object)svalue == null)
 					return false;
@@ -103,7 +93,15 @@ namespace TextMetal.Middleware.Solder.Executive
 				if (!dataTypeFascade.TryParse<bool>(svalue, out ovalue))
 					return false;
 
-				return ovalue;
+				return !Debugger.IsAttached && ovalue;
+			}
+		}
+
+		protected static IContextualStorageFactory ContextualStorageFactory
+		{
+			get
+			{
+				return contextualStorageFactory;
 			}
 		}
 
@@ -115,8 +113,8 @@ namespace TextMetal.Middleware.Solder.Executive
 				string svalue;
 				bool ovalue;
 
-				dataTypeFascade = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IDataTypeFascade>(string.Empty, true);
-				svalue = Environment.GetEnvironmentVariable(ENV_VAR_SOLDER_HOOK_UNHANDLED_EXCEPTIONS);
+				dataTypeFascade = AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IDataTypeFascade>(string.Empty, true);
+				svalue = Environment.GetEnvironmentVariable(SOLDER_HOOK_UNHANDLED_EXCEPTIONS);
 
 				if ((object)svalue == null)
 					return false;
@@ -147,6 +145,9 @@ namespace TextMetal.Middleware.Solder.Executive
 			}
 			set
 			{
+				if (ContextualStorageFactory.GetContextualStorage().HasValue(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY))
+					ContextualStorageFactory.GetContextualStorage().RemoveValue(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
+
 				ContextualStorageFactory.GetContextualStorage().SetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
 			}
 		}
@@ -239,6 +240,9 @@ namespace TextMetal.Middleware.Solder.Executive
 		/// <returns> The resulting exit code. </returns>
 		public int EntryPoint(string[] args)
 		{
+			if (LaunchDebuggerOnEntryPoint)
+				Debugger.Launch();
+
 			if (HookUnhandledExceptions)
 				return this.TryStartup(args);
 			else

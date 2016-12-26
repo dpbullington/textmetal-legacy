@@ -6,8 +6,6 @@
 			"commandName": "Project",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -17,8 +15,6 @@
 			"commandLineArgs": "-sourcefile:Null_to_Null_Example.json",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -28,8 +24,6 @@
 			"commandLineArgs": "-sourcefile:DB_to_DB-sqlbcp_Example.json",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -39,8 +33,6 @@
 			"commandLineArgs": "-sourcefile:DB_to_DB-reccmd_Example.json",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -50,8 +42,6 @@
 			"commandLineArgs": "-sourcefile:DTF_to_DTF_Example.json",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -61,8 +51,6 @@
 			"commandLineArgs": "-sourcefile:DB_to_DTF_Example.json",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -72,8 +60,6 @@
 			"commandLineArgs": "-sourcefile:DTF_to_DB-sqlbcp_Example.json",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
@@ -83,8 +69,6 @@
 			"commandLineArgs": "-sourcefile:DTF_to_DB-reccmd_Example.json",
 			"environmentVariables":
 			{
-				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		}
