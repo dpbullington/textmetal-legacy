@@ -33,13 +33,6 @@ namespace TextMetal.Middleware.Solder.Primitives
 			this.severity = severity;
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the Message class.
-		/// </summary>
-		public Message()
-		{
-		}
-
 		#endregion
 
 		#region Fields/Constants

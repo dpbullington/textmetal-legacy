@@ -69,10 +69,10 @@ namespace TextMetal.Middleware.Solder.Injection
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// Gets the singleton, current instance associated with the current app model agnostic "app domain".
+		/// Gets the singleton, default instance associated with the current app model agnostic "app domain".
 		/// This is lazy loaded on demad using inner class static field initialization mneumonics.
 		/// </summary>
-		public static AgnosticAppDomain TheOnlyAllowedInstance
+		public static AgnosticAppDomain Default
 		{
 			get
 			{
@@ -147,7 +147,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		private IReflectionFascade ReflectionFascade
+		internal IReflectionFascade ReflectionFascade
 		{
 			get
 			{

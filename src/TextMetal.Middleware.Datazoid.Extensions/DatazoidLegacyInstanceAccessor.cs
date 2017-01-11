@@ -20,7 +20,7 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 		{
 			get
 			{
-				return AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IAdoNetBufferingFascade>(String.Empty, true);
+				return AgnosticAppDomain.Default.DependencyManager.ResolveDependency<IAdoNetBufferingFascade>(String.Empty, true);
 			}
 		}
 
@@ -29,7 +29,7 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 		{
 			get
 			{
-				return AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IAdoNetStreamingFascade>(String.Empty, true);
+				return AgnosticAppDomain.Default.DependencyManager.ResolveDependency<IAdoNetStreamingFascade>(String.Empty, true);
 			}
 		}
 

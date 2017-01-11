@@ -25,14 +25,17 @@ echo "The operation is starting..."
 $testsfor_assembly_name = "TextMetal.Middleware.Solder.Primitives"
 
 $testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
+$testsuite_filter_sub_ns_frag = "Solder.Primitives._"
+$testsuite_filter_namespace = "$testsuite_assembly_name.$testsuite_filter_sub_ns_frag"
 $testsuite_assembly_dir = "$src_dir_path\$testsuite_assembly_name\bin\$build_flavor\$build_tfm"
 $testsuite_assembly_path = "$testsuite_assembly_dir\$testsuite_assembly_name.dll"
 
-$coverage_output_dir_path = "$output_dir_path\$testsuite_assembly_name"
+$coverage_filter = "+:$testsfor_assembly_name*"
+$coverage_output_dir_path = "$output_dir_path\$testsuite_assembly_name\$testsuite_assembly_name\$testsuite_filter_sub_ns_frag"
 $coverage_output_file_path_woext ="$coverage_output_dir_path\unit-test-coverage-report"
 
 $target_exe = "$dotnet_exe"
-$target_args = @("$testsuite_assembly_path")
+$target_args = @("$testsuite_assembly_path", "--where class=~$testsuite_filter_namespace.*")
 $target_wdir = "."
 
 if ((Test-Path -Path $coverage_output_dir_path))
@@ -42,9 +45,7 @@ if ((Test-Path -Path $coverage_output_dir_path))
 
 New-Item -ItemType directory -Path $coverage_output_dir_path
 
-$filter = "+:$testsfor_assembly_name*"
-
-&$dotcover_exe analyse /Filters="$filter" `
+&$dotcover_exe analyse /Filters="$coverage_filter" `
 	/TargetExecutable="$target_exe" `
 	/TargetArguments="$target_args" `
 	/TargetWorkingDir="$target_wdir" `

@@ -1269,9 +1269,9 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			selectorKey = UNCOMMON_SELECTOR_KEY;
 			includeAssignableTypes = false;
 
-			AgnosticAppDomain.TheOnlyAllowedInstance.ScanAssembly<DependencyManagerTests>();
+			AgnosticAppDomain.Default.ScanAssembly<DependencyManagerTests>();
 
-			formattable = AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IFormattable>(selectorKey, includeAssignableTypes);
+			formattable = AgnosticAppDomain.Default.DependencyManager.ResolveDependency<IFormattable>(selectorKey, includeAssignableTypes);
 
 			Assert.IsNotNull(formattable);
 			Assert.IsInstanceOf<double>(formattable);

@@ -98,7 +98,7 @@ namespace TextMetal.Framework.InputOutput
 				throw new ArgumentOutOfRangeException(nameof(assemblyName));
 
 			_assemblyName = new AssemblyName(assemblyName);
-			assembly = AgnosticAppDomain.TheOnlyAllowedInstance.LoadAssembly(_assemblyName);
+			assembly = AgnosticAppDomain.Default.LoadAssembly(_assemblyName);
 
 			return assembly;
 		}

@@ -37,9 +37,9 @@ namespace TextMetal.NopCLI
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
+			AgnosticAppDomain.Default.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
 
-			using (ConsoleApplicationFascade program = AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
+			using (ConsoleApplicationFascade program = AgnosticAppDomain.Default.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
 				return program.EntryPoint(args);
 		}
 		

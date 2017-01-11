@@ -90,7 +90,7 @@ namespace TextMetal.Middleware.Solder.Injection
 					constructorInfo = constructorInfos[constructorIndex];
 
 					// on constructor
-					dependencyInjectionAttribute = AgnosticAppDomain.TheOnlyAllowedInstance.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(constructorInfo);
+					dependencyInjectionAttribute = AgnosticAppDomain.Default.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(constructorInfo);
 
 					if ((object)dependencyInjectionAttribute == null)
 					{
@@ -99,7 +99,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 						for (int parameterIndex = 0; parameterIndex < parameterInfos.Length; parameterIndex++)
 						{
-							if ((object)AgnosticAppDomain.TheOnlyAllowedInstance.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(parameterInfos[parameterIndex]) != null)
+							if ((object)AgnosticAppDomain.Default.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(parameterInfos[parameterIndex]) != null)
 								throw new DependencyException(string.Format("A constructor for activator type '{0}' NOT specifying the '{1}' had at least one parameter specifying the '{1}'.", activatorType.FullName, nameof(DependencyInjectionAttribute)));
 						}
 
@@ -126,7 +126,7 @@ namespace TextMetal.Middleware.Solder.Injection
 						parameterType = parameterInfo.ParameterType;
 
 						// on parameter
-						parameterDependencyInjectionAttribute = AgnosticAppDomain.TheOnlyAllowedInstance.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
+						parameterDependencyInjectionAttribute = AgnosticAppDomain.Default.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
 
 						if ((object)parameterDependencyInjectionAttribute == null)
 							throw new DependencyException(string.Format("A constructor for activator type '{0}' specifying the '{1}' with selector key '{2}' had at least one parameter missing the '{1}': index='{3}';name='{4}';type='{5}'.", activatorType.FullName, nameof(DependencyInjectionAttribute), selectorKey, parameterIndex, parameterInfo.Name, parameterInfo.ParameterType.FullName));

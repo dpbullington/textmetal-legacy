@@ -17,21 +17,8 @@ using NUnit.Framework;
 using TextMetal.Middleware.Solder.Utilities;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
-//using ExpectedException = TextMetal.Middleware.UnitTests.Solder.Utilities._.__ExpectedException;
-
 namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 {
-	public class __ExpectedException : Attribute
-	{
-		#region Constructors/Destructors
-
-		public __ExpectedException(Type type)
-		{
-		}
-
-		#endregion
-	}
-
 	[TestFixture]
 	public class AppConfigFascadeTests
 	{

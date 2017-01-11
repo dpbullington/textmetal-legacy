@@ -41,9 +41,9 @@ namespace TextMetal.Messaging.Store
 			IAppConfigFascade appConfigFascade;
 			IDataSourceTagStrategy dataSourceTagStrategy;
 
-			dataTypeFascade = AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IDataTypeFascade>(string.Empty, true);
-			appConfigFascade = AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IAppConfigFascade>(string.Empty, true);
-			dataSourceTagStrategy = AgnosticAppDomain.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IDataSourceTagStrategy>(string.Empty, true);
+			dataTypeFascade = AgnosticAppDomain.Default.DependencyManager.ResolveDependency<IDataTypeFascade>(string.Empty, true);
+			appConfigFascade = AgnosticAppDomain.Default.DependencyManager.ResolveDependency<IAppConfigFascade>(string.Empty, true);
+			dataSourceTagStrategy = AgnosticAppDomain.Default.DependencyManager.ResolveDependency<IDataSourceTagStrategy>(string.Empty, true);
 
 			base.CoreInitialize();
 
