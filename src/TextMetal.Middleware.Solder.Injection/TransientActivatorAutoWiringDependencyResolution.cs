@@ -7,8 +7,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-30 / 88% code coverage */
-
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>

@@ -56,6 +56,8 @@
 		"System.IO.FileSystem.Watcher": "4.3.0",
 		"System.Security.Principal": "4.3.0",
 		"Microsoft.AspNetCore.StaticFiles": "1.0.0",
+		"Microsoft.Extensions.FileProviders.Abstractions": "1.1.0",
+		"Microsoft.Extensions.FileProviders.Physical": "1.1.0",
 		"TextMetal.Middleware.Solder.Injection": "9.0.0-*"
 	}
 }

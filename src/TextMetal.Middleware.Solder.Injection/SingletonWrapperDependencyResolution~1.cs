@@ -6,8 +6,6 @@
 using System;
 using System.Threading;
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-04-01 / 96% code coverage */
-
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>

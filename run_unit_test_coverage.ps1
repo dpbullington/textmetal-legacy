@@ -22,20 +22,40 @@ $dotcover_exe = "$dotcover_dir_path\$dotcover_file_name"
 
 echo "The operation is starting..."
 
-$testsfor_assembly_name = "TextMetal.Middleware.Solder.Primitives"
 
+### -- for assembly under test (testsuite_for_assembly_name),
+### -- run the entry point in the test suite assembly (testsuite_assembly_name),
+### -- filter and execute tests cases in sub namespace (testsuite_filter_sub_ns_frag)
+
+#$testsuite_for_assembly_name = "TextMetal.Middleware.Solder.Primitives"
+#$testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
+#$testsuite_filter_sub_ns_frag = "Solder.Primitives._"
+
+#$testsuite_for_assembly_name = "TextMetal.Middleware.Solder.Context"
+#$testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
+#$testsuite_filter_sub_ns_frag = "Solder.Context._"
+
+#$testsuite_for_assembly_name = "TextMetal.Middleware.Solder.Utilities"
+#$testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
+#$testsuite_filter_sub_ns_frag = "Solder.Utilities._"
+
+$testsuite_for_assembly_name = "TextMetal.Middleware.Solder.Utilities"
 $testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
-$testsuite_filter_sub_ns_frag = "Solder.Primitives._"
+$testsuite_filter_sub_ns_frag = "Solder.Utilities.Vfs._"
+
+
 $testsuite_filter_namespace = "$testsuite_assembly_name.$testsuite_filter_sub_ns_frag"
 $testsuite_assembly_dir = "$src_dir_path\$testsuite_assembly_name\bin\$build_flavor\$build_tfm"
 $testsuite_assembly_path = "$testsuite_assembly_dir\$testsuite_assembly_name.dll"
 
-$coverage_filter = "+:$testsfor_assembly_name*"
-$coverage_output_dir_path = "$output_dir_path\$testsuite_assembly_name\$testsuite_assembly_name\$testsuite_filter_sub_ns_frag"
+$testsuite_filter = "--where class=~$testsuite_filter_namespace.*" # requires the wildcard suffix for class name (use of underscore in unit tests keeps out sub namespaces)
+$coverage_filter = "+:$testsuite_for_assembly_name" # removed the wildcard suffix
+
+$coverage_output_dir_path = "$output_dir_path\$testsuite_assembly_name\$testsuite_filter_sub_ns_frag"
 $coverage_output_file_path_woext ="$coverage_output_dir_path\unit-test-coverage-report"
 
 $target_exe = "$dotnet_exe"
-$target_args = @("$testsuite_assembly_path", "--where class=~$testsuite_filter_namespace.*")
+$target_args = @("$testsuite_assembly_path", "$testsuite_filter")
 $target_wdir = "."
 
 if ((Test-Path -Path $coverage_output_dir_path))

@@ -50,10 +50,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Primitives._
 			const Severity SEVERITY = Severity.Information;
 
 			message = new Message(CATEGORY, DESCRIPTION, SEVERITY);
-
-			Assert.AreEqual(CATEGORY, message.Category);
-			Assert.AreEqual(DESCRIPTION, message.Description);
-			Assert.AreEqual(SEVERITY, message.Severity);
 		}
 
 		[Test]
@@ -66,10 +62,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Primitives._
 			const Severity SEVERITY = Severity.Information;
 
 			message = new Message(CATEGORY, DESCRIPTION, SEVERITY);
-
-			Assert.AreEqual(CATEGORY, message.Category);
-			Assert.AreEqual(DESCRIPTION, message.Description);
-			Assert.AreEqual(SEVERITY, message.Severity);
 		}
 
 		#endregion

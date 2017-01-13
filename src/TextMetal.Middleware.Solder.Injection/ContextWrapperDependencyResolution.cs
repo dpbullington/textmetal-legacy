@@ -8,8 +8,6 @@ using System.Collections.Generic;
 
 using TextMetal.Middleware.Solder.Context;
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-04-08 / 94% code coverage */
-
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>

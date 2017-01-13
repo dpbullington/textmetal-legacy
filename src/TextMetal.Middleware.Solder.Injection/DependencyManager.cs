@@ -9,8 +9,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-10 / 99% code coverage */
-
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>

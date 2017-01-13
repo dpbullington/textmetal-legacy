@@ -3,14 +3,22 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
+using System;
+
 namespace TextMetal.Middleware.Solder.Utilities.Vfs
 {
-	public sealed class VirtualFileSystemItem
+	public sealed class VirtualFileSystemItem : IVirtualFileSystemItem
 	{
 		#region Constructors/Destructors
 
 		public VirtualFileSystemItem(VirtualFileSystemItemType itemType, string itemName, string itemPath)
 		{
+			if ((object)itemName == null)
+				throw new ArgumentNullException(nameof(itemName));
+
+			if ((object)itemPath == null)
+				throw new ArgumentNullException(nameof(itemPath));
+
 			this.itemType = itemType;
 			this.itemName = itemName;
 			this.itemPath = itemPath;

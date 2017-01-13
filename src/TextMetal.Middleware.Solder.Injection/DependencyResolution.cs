@@ -5,8 +5,6 @@
 
 using System;
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-28 / 100% code coverage */
-
 namespace TextMetal.Middleware.Solder.Injection
 {
 	public abstract class DependencyResolution : IDependencyResolution

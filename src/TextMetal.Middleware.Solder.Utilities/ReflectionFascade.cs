@@ -9,8 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-04-16 / 100% code coverage */
-
 namespace TextMetal.Middleware.Solder.Utilities
 {
 	/// <summary>

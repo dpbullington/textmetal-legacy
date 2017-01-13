@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.FileProviders.Internal;
+
 using TextMetal.Messaging.Core.MessageModel;
 using TextMetal.Middleware.Solder.Utilities.Vfs;
 
@@ -213,7 +216,7 @@ namespace TextMetal.Messaging.Core.AdapterModel
 		private void ForceProcessingAsync(FileSystemWatcher fileSystemWatcher, FileSystemEventArgs fileSystemEventArgs)
 		{
 			VirtualFileSystemEnumerator virtualFileSystemEnumerator;
-			IEnumerable<VirtualFileSystemItem> virtualFileSystemItems;
+			IEnumerable<IVirtualFileSystemItem> virtualFileSystemItems;
 
 			if ((object)fileSystemWatcher == null)
 				throw new ArgumentNullException("fileSystemWatcher");
@@ -226,13 +229,26 @@ namespace TextMetal.Messaging.Core.AdapterModel
 			virtualFileSystemEnumerator = new VirtualFileSystemEnumerator();
 
 			// this not block - lazy loading but sync
-			virtualFileSystemItems = virtualFileSystemEnumerator.EnumerateVirtualItems(fileSystemEventArgs.FullPath, false);
+			IDirectoryContents directoryContents;
+			directoryContents = new PhysicalDirectoryContents(fileSystemEventArgs.FullPath);
+
+			if (directoryContents.Exists)
+			{
+				foreach (IFileInfo fileInfo in directoryContents)
+				{
+					// force to not spawn yet another TPT
+					this.FileSystemWatcherOnCreatedAsync(fileSystemWatcher, new FileSystemEventArgs(WatcherChangeTypes.Created, fileInfo.PhysicalPath, fileInfo.Name));
+				}
+			}
+
+			// removed virtual file stuff in lieu of nugets
+			/*virtualFileSystemItems = virtualFileSystemEnumerator.EnumerateVirtualItems(fileSystemEventArgs.FullPath, false);
 
 			foreach (VirtualFileSystemItem virtualFileSystemItem in virtualFileSystemItems)
 			{
 				// force to not spawn yet another TPT
 				this.FileSystemWatcherOnCreatedAsync(fileSystemWatcher, new FileSystemEventArgs(WatcherChangeTypes.Created, virtualFileSystemItem.ItemPath, virtualFileSystemItem.ItemName));
-			}
+			}*/
 		}
 
 		protected override void CoreStartedInboundMessaging()

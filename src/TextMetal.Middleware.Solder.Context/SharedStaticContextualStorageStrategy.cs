@@ -6,8 +6,6 @@
 using System;
 using System.Collections.Generic;
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-13 / 100% code coverage */
-
 namespace TextMetal.Middleware.Solder.Context
 {
 	public sealed class SharedStaticContextualStorageStrategy : IContextualStorageStrategy

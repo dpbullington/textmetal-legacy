@@ -9,7 +9,7 @@ using System.IO;
 
 namespace TextMetal.Middleware.Solder.Utilities.Vfs
 {
-	public sealed class VirtualFileSystemEnumerator
+	public sealed class VirtualFileSystemEnumerator : IVirtualFileSystemEnumerator
 	{
 		#region Constructors/Destructors
 
@@ -21,13 +21,13 @@ namespace TextMetal.Middleware.Solder.Utilities.Vfs
 
 		#region Methods/Operators
 
-		public IEnumerable<VirtualFileSystemItem> EnumerateVirtualItems(string directoryPath, bool enableRecursion)
+		public IEnumerable<IVirtualFileSystemItem> EnumerateVirtualItems(string directoryPath, bool enableRecursion)
 		{
 			IEnumerable<string> directoryNames;
 			IEnumerable<string> fileNames;
 
 			if ((object)directoryPath == null)
-				throw new ArgumentNullException("directoryPath");
+				throw new ArgumentNullException(nameof(directoryPath));
 
 			directoryPath = Path.GetFullPath(directoryPath);
 
