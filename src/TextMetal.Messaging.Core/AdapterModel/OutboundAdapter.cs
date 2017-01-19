@@ -68,7 +68,7 @@ namespace TextMetal.Messaging.Core.AdapterModel
 		public void EnableOutboundMessageNotifications(Action<IOutboundAdapter> outboundMessageCallback)
 		{
 			if ((object)outboundMessageCallback == null)
-				throw new ArgumentNullException("outboundMessageCallback");
+				throw new ArgumentNullException(nameof(outboundMessageCallback));
 
 			this.AssertReady();
 			this.WriteLogSynchronized("OUTBOUND: Enabling outbound message notifications on thread '{0}'.", Thread.CurrentThread.ManagedThreadId);
@@ -105,7 +105,7 @@ namespace TextMetal.Messaging.Core.AdapterModel
 		public virtual void SetNextOutboundMessage(IIntegrationMessage integrationMessage)
 		{
 			if ((object)integrationMessage == null)
-				throw new ArgumentNullException("integrationMessage");
+				throw new ArgumentNullException(nameof(integrationMessage));
 
 			this.AssertReady();
 			this.WriteLogSynchronized("OUTBOUND: Set next outbound message on thread '{0}'.", Thread.CurrentThread.ManagedThreadId);

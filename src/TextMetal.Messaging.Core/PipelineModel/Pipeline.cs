@@ -99,7 +99,7 @@ namespace TextMetal.Messaging.Core.PipelineModel
 		protected void TrackStageInstance(IStage stage)
 		{
 			if ((object)stage == null)
-				throw new ArgumentNullException("stage");
+				throw new ArgumentNullException(nameof(stage));
 
 			this.Stages.Add(stage);
 		}

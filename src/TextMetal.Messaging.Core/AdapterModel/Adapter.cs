@@ -68,7 +68,7 @@ namespace TextMetal.Messaging.Core.AdapterModel
 		public void SetEndpoints(IEnumerable<IntegrationEndpoint> endpoints)
 		{
 			if ((object)endpoints == null)
-				throw new ArgumentNullException("endpoints");
+				throw new ArgumentNullException(nameof(endpoints));
 
 			this.AssertMutable();
 			this.WriteLogSynchronized("ADAPTER: Setting adapter endpoints on thread '{0}'.", Thread.CurrentThread.ManagedThreadId);

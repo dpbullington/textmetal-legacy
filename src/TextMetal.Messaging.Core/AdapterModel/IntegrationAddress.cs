@@ -15,10 +15,10 @@ namespace TextMetal.Messaging.Core.AdapterModel
 		public IntegrationAddress(Uri uri, IIdentity identity)
 		{
 			if ((object)uri == null)
-				throw new ArgumentNullException("uri");
+				throw new ArgumentNullException(nameof(uri));
 
 			if ((object)identity == null)
-				throw new ArgumentNullException("identity");
+				throw new ArgumentNullException(nameof(identity));
 			this.uri = uri;
 			this.identity = identity;
 		}

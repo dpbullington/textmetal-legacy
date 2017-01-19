@@ -107,6 +107,81 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		}
 
 		[Test]
+		[ExpectedException(typeof(DependencyException))]
+		public void ShouldFailOnMockAmbiguousConstructorMatchTest()
+		{
+			TransientActivatorAutoWiringDependencyResolution transientActivatorAutoWiringDependencyResolution;
+			IDependencyManager mockDependencyManager;
+			Type activatorType;
+			object result;
+			MockFactory mockFactory;
+			string _unusedString = null;
+			bool _unusedBoolean = false;
+			Type _unusedType = null;
+
+			mockFactory = new MockFactory();
+			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+
+			activatorType = typeof(MockAmbiguousCtorMatchDependantObject);
+
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution(activatorType);
+
+			Assert.AreEqual(DependencyLifetime.Transient, transientActivatorAutoWiringDependencyResolution.DependencyLifetime);
+
+			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, typeof(object), "named_dep_obj");
+		}
+
+		[Test]
+		[ExpectedException(typeof(DependencyException))]
+		public void ShouldFailOnMockUnmarkedParametersMatchTest()
+		{
+			TransientActivatorAutoWiringDependencyResolution transientActivatorAutoWiringDependencyResolution;
+			IDependencyManager mockDependencyManager;
+			Type activatorType;
+			object result;
+			MockFactory mockFactory;
+			string _unusedString = null;
+			bool _unusedBoolean = false;
+			Type _unusedType = null;
+
+			mockFactory = new MockFactory();
+			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+
+			activatorType = typeof(MockAmbiguousCtorMatchDependantObject);
+
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution(activatorType);
+
+			Assert.AreEqual(DependencyLifetime.Transient, transientActivatorAutoWiringDependencyResolution.DependencyLifetime);
+
+			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, typeof(object), "i_haz_no_marked_params");
+		}
+
+		[Test]
+		[ExpectedException(typeof(DependencyException))]
+		public void ShouldFailOnNoMatchingConstructorTest()
+		{
+			TransientActivatorAutoWiringDependencyResolution transientActivatorAutoWiringDependencyResolution;
+			IDependencyManager mockDependencyManager;
+			Type activatorType;
+			object result;
+			MockFactory mockFactory;
+			string _unusedString = null;
+			bool _unusedBoolean = false;
+			Type _unusedType = null;
+
+			mockFactory = new MockFactory();
+			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+
+			activatorType = typeof(MockAmbiguousCtorMatchDependantObject);
+
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution(activatorType);
+
+			Assert.AreEqual(DependencyLifetime.Transient, transientActivatorAutoWiringDependencyResolution.DependencyLifetime);
+
+			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, typeof(object), "boaty_mcboatface_NO_MATCH_right?");
+		}
+
+		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullActualTypeCreateTest()
 		{

@@ -45,7 +45,7 @@ namespace TextMetal.Messaging.Core.MessageModel
 		public virtual void BeginDispatchingMessages(Action<object, IIntegrationMessage> postMessageCallback)
 		{
 			if ((object)postMessageCallback == null)
-				throw new ArgumentNullException("postMessageCallback");
+				throw new ArgumentNullException(nameof(postMessageCallback));
 
 			this.DispatchMessageTimer = new Timer(state => this.DispatchMessagesInternal((Action<object, IIntegrationMessage>)state), postMessageCallback, 0, 1000);
 		}
@@ -64,7 +64,7 @@ namespace TextMetal.Messaging.Core.MessageModel
 		public virtual void DropMessage(IIntegrationMessage integrationMessage)
 		{
 			if ((object)integrationMessage == null)
-				throw new ArgumentNullException("integrationMessage");
+				throw new ArgumentNullException(nameof(integrationMessage));
 
 			this.DropMessageInternal(integrationMessage);
 		}
@@ -83,7 +83,7 @@ namespace TextMetal.Messaging.Core.MessageModel
 		public virtual void MarkMessage(IIntegrationMessage integrationMessage, Guid messageStateId)
 		{
 			if ((object)integrationMessage == null)
-				throw new ArgumentNullException("integrationMessage");
+				throw new ArgumentNullException(nameof(integrationMessage));
 
 			this.MarkMessageInternal(integrationMessage, messageStateId);
 		}

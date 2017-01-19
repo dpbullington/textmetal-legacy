@@ -27,7 +27,7 @@ namespace TextMetal.Messaging.Core.PipelineModel
 			this.WriteLogSynchronized("PIPELINE: Excuting send pipeline on thread '{0}'.", Thread.CurrentThread.ManagedThreadId);
 
 			if ((object)pipeliningContext == null)
-				throw new ArgumentNullException("pipeliningContext");
+				throw new ArgumentNullException(nameof(pipeliningContext));
 
 			return null;
 		}

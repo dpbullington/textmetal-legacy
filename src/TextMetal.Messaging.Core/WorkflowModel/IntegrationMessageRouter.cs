@@ -34,7 +34,7 @@ namespace TextMetal.Messaging.Core.WorkflowModel
 		public void Route(IIntegrationMessage integrationMessage)
 		{
 			if ((object)integrationMessage == null)
-				throw new ArgumentNullException("integrationMessage");
+				throw new ArgumentNullException(nameof(integrationMessage));
 
 			this.CoreRoute(integrationMessage);
 		}

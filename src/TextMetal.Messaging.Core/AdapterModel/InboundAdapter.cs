@@ -109,7 +109,7 @@ namespace TextMetal.Messaging.Core.AdapterModel
 		private void DispatchInboundMessage(Tuple<IntegrationEndpoint, IIntegrationMessage> queuedMessageTuple)
 		{
 			if ((object)queuedMessageTuple == null)
-				throw new ArgumentNullException("queuedMessageTuple");
+				throw new ArgumentNullException(nameof(queuedMessageTuple));
 
 			this.WriteLogSynchronized("INBOUND: Dispatch inbound message on thread '{0}'.", Thread.CurrentThread.ManagedThreadId);
 
@@ -145,10 +145,10 @@ namespace TextMetal.Messaging.Core.AdapterModel
 		protected void PostInboundMessage(IntegrationEndpoint integrationEndpoint, IIntegrationMessage integrationMessage)
 		{
 			if ((object)integrationEndpoint == null)
-				throw new ArgumentNullException("integrationEndpoint");
+				throw new ArgumentNullException(nameof(integrationEndpoint));
 
 			if ((object)integrationMessage == null)
-				throw new ArgumentNullException("integrationMessage");
+				throw new ArgumentNullException(nameof(integrationMessage));
 
 			this.AssertReady();
 			this.WriteLogSynchronized("INBOUND: Post inbound message on thread '{0}'.", Thread.CurrentThread.ManagedThreadId);

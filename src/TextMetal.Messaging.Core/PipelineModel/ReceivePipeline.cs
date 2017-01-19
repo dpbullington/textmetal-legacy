@@ -35,10 +35,10 @@ namespace TextMetal.Messaging.Core.PipelineModel
 			this.WriteLogSynchronized("PIPELINE: Excuting receive pipeline on thread '{0}'.", Thread.CurrentThread.ManagedThreadId);
 
 			if ((object)pipeliningContext == null)
-				throw new ArgumentNullException("pipeliningContext");
+				throw new ArgumentNullException(nameof(pipeliningContext));
 
 			if ((object)integrationMessage == null)
-				throw new ArgumentNullException("integrationMessage");
+				throw new ArgumentNullException(nameof(integrationMessage));
 
 			accumulatedIntegrationMessages = new List<IIntegrationMessage>();
 			stagedIntegrationMessages = new IIntegrationMessage[] { integrationMessage };

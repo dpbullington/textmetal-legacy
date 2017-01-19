@@ -91,18 +91,7 @@ namespace TextMetal.Middleware.Solder.Injection
 					dependencyInjectionAttribute = AgnosticAppDomain.Default.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(constructorInfo);
 
 					if ((object)dependencyInjectionAttribute == null)
-					{
-						// sanity check for sh!ts and g!ggles...
-						parameterInfos = constructorInfo.GetParameters();
-
-						for (int parameterIndex = 0; parameterIndex < parameterInfos.Length; parameterIndex++)
-						{
-							if ((object)AgnosticAppDomain.Default.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(parameterInfos[parameterIndex]) != null)
-								throw new DependencyException(string.Format("A constructor for activator type '{0}' NOT specifying the '{1}' had at least one parameter specifying the '{1}'.", activatorType.FullName, nameof(DependencyInjectionAttribute)));
-						}
-
 						continue;
-					}
 
 					if (dependencyInjectionAttribute.SelectorKey != selectorKey)
 						continue;

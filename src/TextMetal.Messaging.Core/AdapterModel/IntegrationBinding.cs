@@ -14,13 +14,13 @@ namespace TextMetal.Messaging.Core.AdapterModel
 		public IntegrationBinding(object transport, object format, object protocol)
 		{
 			if ((object)transport == null)
-				throw new ArgumentNullException("transport");
+				throw new ArgumentNullException(nameof(transport));
 
 			if ((object)format == null)
-				throw new ArgumentNullException("format");
+				throw new ArgumentNullException(nameof(format));
 
 			if ((object)protocol == null)
-				throw new ArgumentNullException("protocol");
+				throw new ArgumentNullException(nameof(protocol));
 
 			this.transport = transport;
 			this.format = format;

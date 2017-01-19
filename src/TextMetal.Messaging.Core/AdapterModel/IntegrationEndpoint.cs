@@ -14,16 +14,16 @@ namespace TextMetal.Messaging.Core.AdapterModel
 		public IntegrationEndpoint(IntegrationAddress address, IntegrationBinding binding, IntegrationContract contract, Type pipeline)
 		{
 			if ((object)address == null)
-				throw new ArgumentNullException("address");
+				throw new ArgumentNullException(nameof(address));
 
 			if ((object)binding == null)
-				throw new ArgumentNullException("binding");
+				throw new ArgumentNullException(nameof(binding));
 
 			if ((object)contract == null)
-				throw new ArgumentNullException("contract");
+				throw new ArgumentNullException(nameof(contract));
 
 			if ((object)pipeline == null)
-				throw new ArgumentNullException("pipeline");
+				throw new ArgumentNullException(nameof(pipeline));
 
 			this.address = address;
 			this.binding = binding;

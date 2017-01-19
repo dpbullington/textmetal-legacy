@@ -103,7 +103,7 @@ namespace TextMetal.Messaging.Core.AdapterModel
 		protected override void EnqueueOutboundMessageInternal(IIntegrationMessage integrationMessage)
 		{
 			if ((object)integrationMessage == null)
-				throw new ArgumentNullException("integrationMessage");
+				throw new ArgumentNullException(nameof(integrationMessage));
 
 			this.WriteLogSynchronized("OUTBOUND: Integration message ID '{0}' enqueued on thread '{1}'.", integrationMessage.RunTimeId, Thread.CurrentThread.ManagedThreadId);
 

@@ -12,7 +12,6 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.FileProviders.Internal;
 
 using TextMetal.Messaging.Core.MessageModel;
-using TextMetal.Middleware.Solder.Utilities.Vfs;
 
 namespace TextMetal.Messaging.Core.AdapterModel
 {
@@ -215,21 +214,17 @@ namespace TextMetal.Messaging.Core.AdapterModel
 
 		private void ForceProcessingAsync(FileSystemWatcher fileSystemWatcher, FileSystemEventArgs fileSystemEventArgs)
 		{
-			VirtualFileSystemEnumerator virtualFileSystemEnumerator;
-			IEnumerable<IVirtualFileSystemItem> virtualFileSystemItems;
+			IDirectoryContents directoryContents;
 
 			if ((object)fileSystemWatcher == null)
-				throw new ArgumentNullException("fileSystemWatcher");
+				throw new ArgumentNullException(nameof(fileSystemWatcher));
 
 			if ((object)fileSystemEventArgs == null)
-				throw new ArgumentNullException("fileSystemEventArgs");
+				throw new ArgumentNullException(nameof(fileSystemEventArgs));
 
 			this.WriteLogSynchronized("INBOUND: Force processing for endpoint '{0}' started on thread pool thread '{1}'.", fileSystemEventArgs.FullPath, Thread.CurrentThread.ManagedThreadId);
 			
-			virtualFileSystemEnumerator = new VirtualFileSystemEnumerator();
-
 			// this not block - lazy loading but sync
-			IDirectoryContents directoryContents;
 			directoryContents = new PhysicalDirectoryContents(fileSystemEventArgs.FullPath);
 
 			if (directoryContents.Exists)
@@ -240,15 +235,6 @@ namespace TextMetal.Messaging.Core.AdapterModel
 					this.FileSystemWatcherOnCreatedAsync(fileSystemWatcher, new FileSystemEventArgs(WatcherChangeTypes.Created, fileInfo.PhysicalPath, fileInfo.Name));
 				}
 			}
-
-			// removed virtual file stuff in lieu of nugets
-			/*virtualFileSystemItems = virtualFileSystemEnumerator.EnumerateVirtualItems(fileSystemEventArgs.FullPath, false);
-
-			foreach (VirtualFileSystemItem virtualFileSystemItem in virtualFileSystemItems)
-			{
-				// force to not spawn yet another TPT
-				this.FileSystemWatcherOnCreatedAsync(fileSystemWatcher, new FileSystemEventArgs(WatcherChangeTypes.Created, virtualFileSystemItem.ItemPath, virtualFileSystemItem.ItemName));
-			}*/
 		}
 
 		protected override void CoreStartedInboundMessaging()
@@ -279,7 +265,7 @@ namespace TextMetal.Messaging.Core.AdapterModel
 				: base(path)
 			{
 				if ((object)endpoint == null)
-					throw new ArgumentNullException("endpoint");
+					throw new ArgumentNullException(nameof(endpoint));
 
 				this.endpoint = endpoint;
 			}

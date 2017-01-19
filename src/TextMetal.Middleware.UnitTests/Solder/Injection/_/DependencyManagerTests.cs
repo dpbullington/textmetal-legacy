@@ -1269,7 +1269,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			selectorKey = UNCOMMON_SELECTOR_KEY;
 			includeAssignableTypes = false;
 
-			AgnosticAppDomain.Default.ScanAssembly<DependencyManagerTests>();
+			//AgnosticAppDomain.Default.ScanAssembly<DependencyManagerTests>();
 
 			formattable = AgnosticAppDomain.Default.DependencyManager.ResolveDependency<IFormattable>(selectorKey, includeAssignableTypes);
 

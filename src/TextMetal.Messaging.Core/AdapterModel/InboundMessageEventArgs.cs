@@ -16,10 +16,10 @@ namespace TextMetal.Messaging.Core.AdapterModel
 		public InboundMessageEventArgs(IntegrationEndpoint integrationEndpoint, IIntegrationMessage integrationMessage)
 		{
 			if ((object)integrationEndpoint == null)
-				throw new ArgumentNullException("integrationEndpoint");
+				throw new ArgumentNullException(nameof(integrationEndpoint));
 
 			if ((object)integrationMessage == null)
-				throw new ArgumentNullException("integrationMessage");
+				throw new ArgumentNullException(nameof(integrationMessage));
 
 			this.integrationEndpoint = integrationEndpoint;
 			this.integrationMessage = integrationMessage;

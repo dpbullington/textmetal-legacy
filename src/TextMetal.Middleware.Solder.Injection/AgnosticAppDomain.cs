@@ -58,6 +58,8 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		private readonly AssemblyLoadContext assemblyLoadContext;
 		private readonly IConfigurationRoot configurationRoot;
+
+		private readonly IDictionary<string, object> context = new Dictionary<string, object>();
 		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly DependencyContext dependencyContext;
 		private readonly IDependencyManager dependencyManager = new DependencyManager();
@@ -112,6 +114,14 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
+		public IDictionary<string, object> Context
+		{
+			get
+			{
+				return this.context;
+			}
+		}
+
 		private IDataTypeFascade DataTypeFascade
 		{
 			get
@@ -129,7 +139,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		}
 
 		/// <summary>
-		/// Gets the dependency manager instance associated with the current assembly loader container context.
+		/// Gets the dependency manager instance associated with the current agnostic app domain.
 		/// </summary>
 		public IDependencyManager DependencyManager
 		{
@@ -169,6 +179,11 @@ namespace TextMetal.Middleware.Solder.Injection
 				.Select(Assembly.Load);
 		}
 
+		private static AgnosticAppDomain FromDefaultRuntimeContexts()
+		{
+			return new AgnosticAppDomain(AssemblyLoadContext.Default, DependencyContext.Default);
+		}
+
 		private static IConfigurationRoot LoadAppConfigFile(string appConfigFilePath)
 		{
 			IConfigurationBuilder configurationBuilder;
@@ -194,9 +209,26 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ArgumentNullException(nameof(assemblyLoadContext));
 
 			if (this.AssemblyLoadContext != assemblyLoadContext)
-				Environment.FailFast(string.Format("Assembly load context mismatch during unload notificaiton."));
+				this.HaltAndCatchFire(new DependencyException(string.Format("Assembly load context mismatch during unload notificaiton.")));
 
 			this.TearDownApplicationDomain();
+		}
+
+		public void HaltAndCatchFire(Exception fatalException)
+		{
+			if ((object)fatalException == null)
+				throw new ArgumentNullException(nameof(fatalException));
+
+			lock (this)
+			{
+				// notify
+				foreach (Action<AssemblyLoaderEventType, AgnosticAppDomain> eventSinkMethod in this.EventSinkMethods)
+					eventSinkMethod(AssemblyLoaderEventType.Brick, this);
+
+				OnlyWhen._PROFILE_ThenPrint(string.Format("Brick {0}", Environment.CurrentManagedThreadId));
+
+				Environment.FailFast(string.Empty, fatalException);
+			}
 		}
 
 		public Assembly LoadAssembly(AssemblyName assemblyName)
@@ -385,7 +417,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			#region Fields/Constants
 
-			internal static readonly AgnosticAppDomain instance = new AgnosticAppDomain(AssemblyLoadContext.Default, DependencyContext.Default);
+			internal static readonly AgnosticAppDomain instance = FromDefaultRuntimeContexts();
 
 			#endregion
 		}
