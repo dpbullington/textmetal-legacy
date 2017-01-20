@@ -84,7 +84,7 @@ namespace TextMetal.Middleware.Solder.Executive
 				string svalue;
 				bool ovalue;
 
-				dataTypeFascade = AgnosticAppDomain.Default.DependencyManager.ResolveDependency<IDataTypeFascade>(string.Empty, true);
+				dataTypeFascade = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IDataTypeFascade>(string.Empty, true);
 				svalue = Environment.GetEnvironmentVariable(SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT);
 
 				if ((object)svalue == null)
@@ -113,7 +113,7 @@ namespace TextMetal.Middleware.Solder.Executive
 				string svalue;
 				bool ovalue;
 
-				dataTypeFascade = AgnosticAppDomain.Default.DependencyManager.ResolveDependency<IDataTypeFascade>(string.Empty, true);
+				dataTypeFascade = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IDataTypeFascade>(string.Empty, true);
 				svalue = Environment.GetEnvironmentVariable(SOLDER_HOOK_UNHANDLED_EXCEPTIONS);
 
 				if ((object)svalue == null)

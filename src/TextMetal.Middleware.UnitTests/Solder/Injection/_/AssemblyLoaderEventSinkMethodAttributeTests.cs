@@ -27,9 +27,9 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		[Test]
 		public void ShouldCreateTest()
 		{
-			AssemblyLoaderEventSinkMethodAttribute attribute;
+			DependencyMagicMethodAttribute attribute;
 
-			attribute = new AssemblyLoaderEventSinkMethodAttribute();
+			attribute = new DependencyMagicMethodAttribute();
 			Assert.IsNotNull(attribute);
 		}
 

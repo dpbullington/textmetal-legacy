@@ -8,17 +8,18 @@ using System;
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
-	/// Marks a static void (AssemblyLoaderEventType, AgnosticAppDomain) method as an assembly loader method.
+	/// Marks a static void (AssemblyDependencyDomain) method as a dependency magic method.
+	/// These methods are used to register dependencies when an assembly is loaded.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
-	public sealed class AssemblyLoaderEventSinkMethodAttribute : Attribute
+	public sealed class DependencyMagicMethodAttribute : Attribute
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the AssemblyLoaderEventSinkMethodAttribute class.
+		/// Initializes a new instance of the DependencyMagicMethodAttribute class.
 		/// </summary>
-		public AssemblyLoaderEventSinkMethodAttribute()
+		public DependencyMagicMethodAttribute()
 		{
 		}
 

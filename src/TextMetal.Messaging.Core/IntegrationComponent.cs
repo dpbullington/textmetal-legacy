@@ -59,7 +59,7 @@ namespace TextMetal.Messaging.Core
 		{
 			get
 			{
-				return AgnosticAppDomain.Default.DependencyManager.ResolveDependency<IIntegrationFactory>(string.Empty, false);
+				return AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IIntegrationFactory>(string.Empty, false);
 			}
 		}
 

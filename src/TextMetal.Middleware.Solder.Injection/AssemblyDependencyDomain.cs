@@ -16,18 +16,20 @@ using Microsoft.Extensions.DependencyModel;
 using TextMetal.Middleware.Solder.Primitives;
 using TextMetal.Middleware.Solder.Utilities;
 
+using DependencyMagicMethod = System.Action<TextMetal.Middleware.Solder.Injection.AssemblyDependencyDomain>;
+
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
-	/// Serves as a mechansim to detect loading of the singular "app domain" (in .NET Framework parlaence)
-	/// in an app model agnostic manner. This constructor should remain private unless the notion
-	/// of wrapping an assembly load contet and dependency context extends beyond the runtime defaults.
+	/// Serves as a mechansim to detect loading of the singular "app domain" (in .NET Framework parlaence).
+	/// This constructor should remain private unless the notion of wrapping
+	/// an assembly load context and dependency context extends beyond the runtime defaults.
 	/// </summary>
-	public sealed class AgnosticAppDomain
+	public sealed class AssemblyDependencyDomain
 	{
 		#region Constructors/Destructors
 
-		private AgnosticAppDomain(AssemblyLoadContext assemblyLoadContext, DependencyContext dependencyContext)
+		private AssemblyDependencyDomain(AssemblyLoadContext assemblyLoadContext, DependencyContext dependencyContext)
 		{
 			if ((object)assemblyLoadContext == null)
 				throw new ArgumentNullException(nameof(assemblyLoadContext));
@@ -45,7 +47,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			this.appConfigFascade = new AppConfigFascade(this.ConfigurationRoot, this.DataTypeFascade);
 			this.assemblyInformationFascade = new AssemblyInformationFascade(this.ReflectionFascade, Assembly.GetEntryAssembly());
 
-			this.SetUpApplicationDomain();
+			this.SetUp();
 		}
 
 		#endregion
@@ -55,15 +57,11 @@ namespace TextMetal.Middleware.Solder.Injection
 		private const string APP_CONFIG_FILE_NAME = "appconfig.json";
 		private readonly IAppConfigFascade appConfigFascade;
 		private readonly IAssemblyInformationFascade assemblyInformationFascade;
-
 		private readonly AssemblyLoadContext assemblyLoadContext;
 		private readonly IConfigurationRoot configurationRoot;
-
-		private readonly IDictionary<string, object> context = new Dictionary<string, object>();
 		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly DependencyContext dependencyContext;
 		private readonly IDependencyManager dependencyManager = new DependencyManager();
-		private readonly IList<Action<AssemblyLoaderEventType, AgnosticAppDomain>> eventSinkMethods = new List<Action<AssemblyLoaderEventType, AgnosticAppDomain>>();
 		private readonly IReflectionFascade reflectionFascade;
 
 		#endregion
@@ -71,14 +69,14 @@ namespace TextMetal.Middleware.Solder.Injection
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// Gets the singleton, default instance associated with the current app model agnostic "app domain".
+		/// Gets the singleton, default instance associated with the current assembly/dependency domain.
 		/// This is lazy loaded on demad using inner class static field initialization mneumonics.
 		/// </summary>
-		public static AgnosticAppDomain Default
+		public static AssemblyDependencyDomain Default
 		{
 			get
 			{
-				return AgnosticAppDomainLazySingleton.instance;
+				return AssemblyDependencyDomainLazySingleton.instance;
 			}
 		}
 
@@ -114,14 +112,6 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		public IDictionary<string, object> Context
-		{
-			get
-			{
-				return this.context;
-			}
-		}
-
 		private IDataTypeFascade DataTypeFascade
 		{
 			get
@@ -139,21 +129,13 @@ namespace TextMetal.Middleware.Solder.Injection
 		}
 
 		/// <summary>
-		/// Gets the dependency manager instance associated with the current agnostic app domain.
+		/// Gets the dependency manager instance associated with the current assembly/dependency domain.
 		/// </summary>
 		public IDependencyManager DependencyManager
 		{
 			get
 			{
 				return this.dependencyManager;
-			}
-		}
-
-		private IList<Action<AssemblyLoaderEventType, AgnosticAppDomain>> EventSinkMethods
-		{
-			get
-			{
-				return this.eventSinkMethods;
 			}
 		}
 
@@ -179,9 +161,9 @@ namespace TextMetal.Middleware.Solder.Injection
 				.Select(Assembly.Load);
 		}
 
-		private static AgnosticAppDomain FromDefaultRuntimeContexts()
+		private static AssemblyDependencyDomain FromDefaultRuntimeContexts()
 		{
-			return new AgnosticAppDomain(AssemblyLoadContext.Default, DependencyContext.Default);
+			return new AssemblyDependencyDomain(AssemblyLoadContext.Default, DependencyContext.Default);
 		}
 
 		private static IConfigurationRoot LoadAppConfigFile(string appConfigFilePath)
@@ -211,7 +193,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			if (this.AssemblyLoadContext != assemblyLoadContext)
 				this.HaltAndCatchFire(new DependencyException(string.Format("Assembly load context mismatch during unload notificaiton.")));
 
-			this.TearDownApplicationDomain();
+			this.TearDown();
 		}
 
 		public void HaltAndCatchFire(Exception fatalException)
@@ -219,33 +201,33 @@ namespace TextMetal.Middleware.Solder.Injection
 			if ((object)fatalException == null)
 				throw new ArgumentNullException(nameof(fatalException));
 
-			lock (this)
-			{
-				// notify
-				foreach (Action<AssemblyLoaderEventType, AgnosticAppDomain> eventSinkMethod in this.EventSinkMethods)
-					eventSinkMethod(AssemblyLoaderEventType.Brick, this);
+			OnlyWhen._PROFILE_ThenPrint(string.Format("Brick {0}", Environment.CurrentManagedThreadId));
 
-				OnlyWhen._PROFILE_ThenPrint(string.Format("Brick {0}", Environment.CurrentManagedThreadId));
-
-				Environment.FailFast(string.Empty, fatalException);
-			}
+			Environment.FailFast(string.Empty, fatalException);
 		}
 
 		public Assembly LoadAssembly(AssemblyName assemblyName)
 		{
-			return this.AssemblyLoadContext.LoadFromAssemblyName(assemblyName);
+			Assembly assembly;
+
+			assembly = this.AssemblyLoadContext.LoadFromAssemblyName(assemblyName);
+
+			if ((object)assembly != null)
+				this.ScanAssembly(assembly);
+
+			return assembly;
 		}
 
 		/// <summary>
-		/// Private method that will scan all asemblies specified to perform assembly loader subscription method execution.
+		/// Private method that will scan all asemblies specified to perform dependency magic.
 		/// </summary>
-		/// <param name="assemblies"> An enumerable of assemblies to scan for assembly loader subscription methods. </param>
+		/// <param name="assemblies"> An enumerable of assemblies to scan for dependency magic methods. </param>
 		private void ScanAssemblies(IEnumerable<Assembly> assemblies)
 		{
 			Type[] assemblyTypes;
 			MethodInfo[] methodInfos;
-			AssemblyLoaderEventSinkMethodAttribute assemblyLoaderEventSinkMethodAttribute;
-			Action<AssemblyLoaderEventType, AgnosticAppDomain> assemblyLoaderEventSinkMethod;
+			DependencyMagicMethodAttribute dependencyMagicMethodAttribute;
+			DependencyMagicMethod dependencyMagicMethod;
 
 			if ((object)assemblies != null)
 			{
@@ -273,9 +255,9 @@ namespace TextMetal.Middleware.Solder.Injection
 							{
 								foreach (MethodInfo methodInfo in methodInfos)
 								{
-									assemblyLoaderEventSinkMethodAttribute = this.ReflectionFascade.GetOneAttribute<AssemblyLoaderEventSinkMethodAttribute>(methodInfo);
+									dependencyMagicMethodAttribute = this.ReflectionFascade.GetOneAttribute<DependencyMagicMethodAttribute>(methodInfo);
 
-									if ((object)assemblyLoaderEventSinkMethodAttribute == null)
+									if ((object)dependencyMagicMethodAttribute == null)
 										continue;
 
 									if (!methodInfo.IsStatic)
@@ -287,51 +269,25 @@ namespace TextMetal.Middleware.Solder.Injection
 									if (methodInfo.ReturnType != typeof(void))
 										continue;
 
-									if (methodInfo.GetParameters().Count() != 2 ||
-										methodInfo.GetParameters()[0].ParameterType != typeof(AssemblyLoaderEventType) ||
-										methodInfo.GetParameters()[1].ParameterType != typeof(AgnosticAppDomain))
+									if (methodInfo.GetParameters().Count() != 1 ||
+										methodInfo.GetParameters()[0].ParameterType != typeof(AssemblyDependencyDomain))
 										continue;
 
-									assemblyLoaderEventSinkMethod = (Action<AssemblyLoaderEventType, AgnosticAppDomain>)(methodInfo.CreateDelegate(typeof(Action<AssemblyLoaderEventType, AgnosticAppDomain>), null /* static */));
+									dependencyMagicMethod = (DependencyMagicMethod)(methodInfo.CreateDelegate(typeof(DependencyMagicMethod), null /* static */));
 
-									if ((object)assemblyLoaderEventSinkMethod == null)
+									if ((object)dependencyMagicMethod == null)
 										continue;
-
-									if (this.EventSinkMethods.Contains(assemblyLoaderEventSinkMethod))
-										throw new NotSupportedException(string.Format("Method '{0}' of type '{1}' has been sunk before. This is likely a defect in the framework - report this to the project team.", methodInfo.Name, methodInfo.DeclaringType.FullName));
 
 									// notify
 									OnlyWhen._PROFILE_ThenPrint(string.Format("{1}::{0}", methodInfo.Name, methodInfo.DeclaringType.FullName));
 
-									this.EventSinkMethods.Add(assemblyLoaderEventSinkMethod);
-									assemblyLoaderEventSinkMethod(AssemblyLoaderEventType.Startup, this);
+									dependencyMagicMethod(this);
 								}
 							}
 						}
 					}
 				}
 			}
-		}
-
-		public void ScanAssembly<TAssemblyOfTargetType>()
-		{
-			Type assemblyOfTargetType;
-
-			assemblyOfTargetType = typeof(TAssemblyOfTargetType);
-
-			this.ScanAssembly(assemblyOfTargetType);
-		}
-
-		public void ScanAssembly(Type assemblyOfTargetType)
-		{
-			Assembly assembly;
-
-			if ((object)assemblyOfTargetType == null)
-				throw new ArgumentNullException(nameof(assemblyOfTargetType));
-
-			assembly = assemblyOfTargetType.GetTypeInfo().Assembly;
-
-			this.ScanAssembly(assembly);
 		}
 
 		public void ScanAssembly(Assembly assembly)
@@ -347,13 +303,13 @@ namespace TextMetal.Middleware.Solder.Injection
 		}
 
 		/// <summary>
-		/// Private thread-safe method which bootstraps an "app domain".
+		/// Private thread-safe method which bootstraps an assembly/dependency domain.
 		/// </summary>
-		private void SetUpApplicationDomain()
+		private void SetUp()
 		{
 			lock (this)
 			{
-				OnlyWhen._PROFILE_ThenPrint(string.Format("SetUpApplicationDomain {0}", Environment.CurrentManagedThreadId));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("SetUp {0}", Environment.CurrentManagedThreadId));
 
 				// add trusted dependencies
 				this.DependencyManager.AddResolution<IConfigurationRoot>(string.Empty, false, new SingletonWrapperDependencyResolution<IConfigurationRoot>(new InstanceDependencyResolution<IConfigurationRoot>(this.ConfigurationRoot)));
@@ -365,33 +321,26 @@ namespace TextMetal.Middleware.Solder.Injection
 				// hook the unload event
 				this.AssemblyLoadContext.Unloading += this.AssemblyLoadContext_OnUnloading;
 
-				// probe known assemblies - does not probe dynamically loaded assmblies yet
+				// probe known assemblies at build time - does not probe dynamically loaded assmblies yet
 				this.ScanAssemblies(DiscoverAssemblies(this.DependencyContext));
 			}
 		}
 
 		/// <summary>
-		/// Private thread-safe method which dismantles an "app domain".
+		/// Private thread-safe method which dismantles an assembly/dependency domain.
 		/// Note that the AssemblyLoadContext.Unloading event can/will
 		/// executeon a thread different that that of the main thread.
 		/// </summary>
-		private void TearDownApplicationDomain()
+		private void TearDown()
 		{
 			lock (this)
 			{
-				// notify
-				foreach (Action<AssemblyLoaderEventType, AgnosticAppDomain> eventSinkMethod in this.EventSinkMethods)
-					eventSinkMethod(AssemblyLoaderEventType.Shutdown, this);
-
-				// cleanup
-				this.EventSinkMethods.Clear();
-
 				if ((object)this.DependencyManager != null)
 					this.DependencyManager.Dispose();
 
 				this.AssemblyLoadContext.Unloading -= this.AssemblyLoadContext_OnUnloading;
 
-				OnlyWhen._PROFILE_ThenPrint(string.Format("TearDownApplicationDomain {0}", Environment.CurrentManagedThreadId));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("TearDown {0}", Environment.CurrentManagedThreadId));
 			}
 		}
 
@@ -402,14 +351,14 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// <summary>
 		/// http://www.yoda.arachsys.com/csharp/singleton.html
 		/// </summary>
-		private class AgnosticAppDomainLazySingleton
+		private class AssemblyDependencyDomainLazySingleton
 		{
 			#region Constructors/Destructors
 
 			/// <summary>
 			/// Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
 			/// </summary>
-			static AgnosticAppDomainLazySingleton()
+			static AssemblyDependencyDomainLazySingleton()
 			{
 			}
 
@@ -417,7 +366,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			#region Fields/Constants
 
-			internal static readonly AgnosticAppDomain instance = FromDefaultRuntimeContexts();
+			internal static readonly AssemblyDependencyDomain instance = FromDefaultRuntimeContexts();
 
 			#endregion
 		}

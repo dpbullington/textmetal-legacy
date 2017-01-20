@@ -39,11 +39,11 @@ namespace TextMetal.Mz.ConsoleTool
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			AgnosticAppDomain.Default.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
-			//AgnosticAppDomain.Default.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientActivatorAutoWiringDependencyResolution<ToolHost>()));
-			AgnosticAppDomain.Default.DependencyManager.AddResolution<IAdoNetBufferingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetBufferingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetBufferingFascade>()));
+			AssemblyDependencyDomain.Default.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
+			//AssemblyDependencyDomain.Default.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientActivatorAutoWiringDependencyResolution<ToolHost>()));
+			AssemblyDependencyDomain.Default.DependencyManager.AddResolution<IAdoNetBufferingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetBufferingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetBufferingFascade>()));
 
-			using (ConsoleApplicationFascade program = AgnosticAppDomain.Default.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
+			using (ConsoleApplicationFascade program = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
 				return program.EntryPoint(args);
 		}
 
@@ -60,7 +60,7 @@ namespace TextMetal.Mz.ConsoleTool
 		{
 			new ConsoleIntegrationEngine().RunHost();
 
-			//using (IToolHost toolHost = AgnosticAppDomain.Default.DependencyManager.ResolveDependency<IToolHost>(string.Empty, true))
+			//using (IToolHost toolHost = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IToolHost>(string.Empty, true))
 			//toolHost.Host((object)args != null ? args.Length : -1, args, argz, templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAqtn, strictMatching, properties);
 
 			return 0;

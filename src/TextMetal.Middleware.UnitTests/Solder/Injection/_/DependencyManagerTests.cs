@@ -34,59 +34,49 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 		#region Methods/Operators
 
-		[AssemblyLoaderEventSinkMethod]
-		public static void IsValidAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AgnosticAppDomain agnosticAppDomain)
+		[DependencyMagicMethod]
+		public static void IsValidDependencyMagicMethod(AssemblyDependencyDomain assemblyDependencyDomain)
 		{
-			if ((object)agnosticAppDomain == null)
-				throw new ArgumentNullException(nameof(agnosticAppDomain));
+			if ((object)assemblyDependencyDomain == null)
+				throw new ArgumentNullException(nameof(assemblyDependencyDomain));
 
-			switch (assemblyLoaderEventType)
-			{
-				case AssemblyLoaderEventType.Startup:
-					MockFactory mockFactory;
-					IDependencyResolution mockDependencyResolution;
+			MockFactory mockFactory;
+			IDependencyResolution mockDependencyResolution;
 
-					IDependencyManager _unusedDependencyManager = null;
-					Type _unusedType = null;
-					string _unusedString = null;
-					Type targetType;
-					string selectorKey;
-					bool includeAssignableTypes;
+			IDependencyManager _unusedDependencyManager = null;
+			Type _unusedType = null;
+			string _unusedString = null;
+			Type targetType;
+			string selectorKey;
+			bool includeAssignableTypes;
 
-					mockFactory = new MockFactory();
-					mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
+			mockFactory = new MockFactory();
+			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
-					targetType = typeof(IFormattable);
-					selectorKey = UNCOMMON_SELECTOR_KEY;
-					includeAssignableTypes = false;
+			targetType = typeof(IFormattable);
+			selectorKey = UNCOMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-					agnosticAppDomain.DependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
+			assemblyDependencyDomain.DependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
 
-					Expect.On(mockDependencyResolution).Any.Method(m => m.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(agnosticAppDomain.DependencyManager, targetType, selectorKey).WillReturn(1234.5678);
+			Expect.On(mockDependencyResolution).Any.Method(m => m.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(assemblyDependencyDomain.DependencyManager, targetType, selectorKey).WillReturn(1234.5678);
 
-					Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
-
-					break;
-				case AssemblyLoaderEventType.Shutdown:
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(assemblyLoaderEventType), assemblyLoaderEventType, null);
-			}
+			Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
 		}
 
-		public static void NotMarkedAsAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AgnosticAppDomain agnosticAppDomain)
+		public static void NotMarkedAsDependencyMagicMethod(AssemblyDependencyDomain assemblyDependencyDomain)
 		{
 			throw new Exception();
 		}
 
-		[AssemblyLoaderEventSinkMethod]
-		private static void ShouldNotMatchPrivateAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AgnosticAppDomain agnosticAppDomain)
+		[DependencyMagicMethod]
+		private static void ShouldNotMatchPrivateDependencyMagicMethod(AssemblyDependencyDomain assemblyDependencyDomain)
 		{
 			throw new Exception();
 		}
 
-		[AssemblyLoaderEventSinkMethod]
-		public static void ShouldNotMatchSignatureAssemblyLoaderEventSinkMethod(int unused)
+		[DependencyMagicMethod]
+		public static void ShouldNotMatchSignatureDependencyMagicMethod(int unused)
 		{
 			throw new Exception();
 		}
@@ -1269,9 +1259,9 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			selectorKey = UNCOMMON_SELECTOR_KEY;
 			includeAssignableTypes = false;
 
-			//AgnosticAppDomain.Default.ScanAssembly<DependencyManagerTests>();
+			//AssemblyDependencyDomain.Default.ScanAssembly<DependencyManagerTests>();
 
-			formattable = AgnosticAppDomain.Default.DependencyManager.ResolveDependency<IFormattable>(selectorKey, includeAssignableTypes);
+			formattable = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IFormattable>(selectorKey, includeAssignableTypes);
 
 			Assert.IsNotNull(formattable);
 			Assert.IsInstanceOf<double>(formattable);
@@ -1286,7 +1276,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		{
 			#region Methods/Operators
 
-			[AssemblyLoaderEventSinkMethod]
+			[DependencyMagicMethod]
 			public static void ShouldNotMatchPrivateType()
 			{
 				throw new Exception();

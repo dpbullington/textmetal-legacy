@@ -88,7 +88,7 @@ namespace TextMetal.Middleware.Solder.Injection
 					constructorInfo = constructorInfos[constructorIndex];
 
 					// on constructor
-					dependencyInjectionAttribute = AgnosticAppDomain.Default.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(constructorInfo);
+					dependencyInjectionAttribute = AssemblyDependencyDomain.Default.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(constructorInfo);
 
 					if ((object)dependencyInjectionAttribute == null)
 						continue;
@@ -113,7 +113,7 @@ namespace TextMetal.Middleware.Solder.Injection
 						parameterType = parameterInfo.ParameterType;
 
 						// on parameter
-						parameterDependencyInjectionAttribute = AgnosticAppDomain.Default.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
+						parameterDependencyInjectionAttribute = AssemblyDependencyDomain.Default.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
 
 						if ((object)parameterDependencyInjectionAttribute == null)
 							throw new DependencyException(string.Format("A constructor for activator type '{0}' specifying the '{1}' with selector key '{2}' had at least one parameter missing the '{1}': index='{3}';name='{4}';type='{5}'.", activatorType.FullName, nameof(DependencyInjectionAttribute), selectorKey, parameterIndex, parameterInfo.Name, parameterInfo.ParameterType.FullName));
