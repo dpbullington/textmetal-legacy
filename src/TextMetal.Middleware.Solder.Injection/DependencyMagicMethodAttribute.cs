@@ -8,7 +8,7 @@ using System;
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
-	/// Marks a static void (AssemblyDependencyDomain) method as a dependency magic method.
+	/// Marks a static void (IDependencyManager) method as a dependency magic method.
 	/// These methods are used to register dependencies when an assembly is loaded.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]

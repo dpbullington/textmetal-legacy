@@ -5,6 +5,8 @@
 
 using System;
 
+using TextMetal.Middleware.Solder.Utilities;
+
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
@@ -20,8 +22,35 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// Initializes a new instance of the TransientActivatorAutoWiringDependencyResolution`1 class.
 		/// </summary>
 		public TransientActivatorAutoWiringDependencyResolution()
+			: this(AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(string.Empty, false))
+		{
+		}
+
+		public TransientActivatorAutoWiringDependencyResolution(IReflectionFascade reflectionFascade)
 			: base(DependencyLifetime.Transient)
 		{
+			if ((object)reflectionFascade == null)
+				throw new ArgumentNullException(nameof(reflectionFascade));
+
+			this.reflectionFascade = reflectionFascade;
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly IReflectionFascade reflectionFascade;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		private IReflectionFascade ReflectionFascade
+		{
+			get
+			{
+				return this.reflectionFascade;
+			}
 		}
 
 		#endregion
@@ -36,7 +65,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			if ((object)selectorKey == null)
 				throw new ArgumentNullException(nameof(selectorKey));
 
-			return TransientActivatorAutoWiringDependencyResolution.AutoWireResolve<TResolution>(typeof(TResolution), dependencyManager, typeof(TResolution), selectorKey);
+			return TransientActivatorAutoWiringDependencyResolution.AutoWireResolve<TResolution>(this.ReflectionFascade, typeof(TResolution), dependencyManager, typeof(TResolution), selectorKey);
 		}
 
 		protected override void Dispose(bool disposing)

@@ -7,6 +7,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 
+using TextMetal.Middleware.Solder.Utilities;
+
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
@@ -23,11 +25,20 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// </summary>
 		/// <param name="activatorType"> The activator type of the resolution. </param>
 		public TransientActivatorAutoWiringDependencyResolution(Type activatorType)
+			: this(AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(string.Empty, false), activatorType)
+		{
+		}
+
+		public TransientActivatorAutoWiringDependencyResolution(IReflectionFascade reflectionFascade, Type activatorType)
 			: base(DependencyLifetime.Transient)
 		{
+			if ((object)reflectionFascade == null)
+				throw new ArgumentNullException(nameof(reflectionFascade));
+
 			if ((object)activatorType == null)
 				throw new ArgumentNullException(nameof(activatorType));
 
+			this.reflectionFascade = reflectionFascade;
 			this.activatorType = activatorType;
 		}
 
@@ -36,6 +47,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		#region Fields/Constants
 
 		private readonly Type activatorType;
+		private readonly IReflectionFascade reflectionFascade;
 
 		#endregion
 
@@ -49,11 +61,19 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
+		private IReflectionFascade ReflectionFascade
+		{
+			get
+			{
+				return this.reflectionFascade;
+			}
+		}
+
 		#endregion
 
 		#region Methods/Operators
 
-		internal static TResolution AutoWireResolve<TResolution>(Type activatorType, IDependencyManager dependencyManager, Type resolutionType, string selectorKey)
+		internal static TResolution AutoWireResolve<TResolution>(IReflectionFascade reflectionFascade, Type activatorType, IDependencyManager dependencyManager, Type resolutionType, string selectorKey)
 		{
 			ConstructorInfo constructorInfo;
 			ConstructorInfo[] constructorInfos;
@@ -61,6 +81,9 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			DependencyInjectionAttribute dependencyInjectionAttribute;
 			Lazy<TResolution> lazyConstructorInvokation = null;
+
+			if ((object)reflectionFascade == null)
+				throw new ArgumentNullException(nameof(reflectionFascade));
 
 			if ((object)activatorType == null)
 				throw new ArgumentNullException(nameof(activatorType));
@@ -88,7 +111,7 @@ namespace TextMetal.Middleware.Solder.Injection
 					constructorInfo = constructorInfos[constructorIndex];
 
 					// on constructor
-					dependencyInjectionAttribute = AssemblyDependencyDomain.Default.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(constructorInfo);
+					dependencyInjectionAttribute = reflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(constructorInfo);
 
 					if ((object)dependencyInjectionAttribute == null)
 						continue;
@@ -113,7 +136,7 @@ namespace TextMetal.Middleware.Solder.Injection
 						parameterType = parameterInfo.ParameterType;
 
 						// on parameter
-						parameterDependencyInjectionAttribute = AssemblyDependencyDomain.Default.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
+						parameterDependencyInjectionAttribute = reflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
 
 						if ((object)parameterDependencyInjectionAttribute == null)
 							throw new DependencyException(string.Format("A constructor for activator type '{0}' specifying the '{1}' with selector key '{2}' had at least one parameter missing the '{1}': index='{3}';name='{4}';type='{5}'.", activatorType.FullName, nameof(DependencyInjectionAttribute), selectorKey, parameterIndex, parameterInfo.Name, parameterInfo.ParameterType.FullName));
@@ -157,7 +180,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			if ((object)selectorKey == null)
 				throw new ArgumentNullException(nameof(selectorKey));
 
-			return AutoWireResolve<object>(this.ActivatorType, dependencyManager, resolutionType, selectorKey);
+			return AutoWireResolve<object>(this.ReflectionFascade, this.ActivatorType, dependencyManager, resolutionType, selectorKey);
 		}
 
 		protected override void Dispose(bool disposing)

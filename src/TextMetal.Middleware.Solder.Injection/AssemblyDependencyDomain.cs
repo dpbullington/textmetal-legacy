@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Threading;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
@@ -16,7 +17,7 @@ using Microsoft.Extensions.DependencyModel;
 using TextMetal.Middleware.Solder.Primitives;
 using TextMetal.Middleware.Solder.Utilities;
 
-using DependencyMagicMethod = System.Action<TextMetal.Middleware.Solder.Injection.AssemblyDependencyDomain>;
+using DependencyMagicMethod = System.Action<TextMetal.Middleware.Solder.Injection.IDependencyManager>;
 
 namespace TextMetal.Middleware.Solder.Injection
 {
@@ -25,7 +26,7 @@ namespace TextMetal.Middleware.Solder.Injection
 	/// This constructor should remain private unless the notion of wrapping
 	/// an assembly load context and dependency context extends beyond the runtime defaults.
 	/// </summary>
-	public sealed class AssemblyDependencyDomain
+	public sealed class AssemblyDependencyDomain : IDisposable
 	{
 		#region Constructors/Destructors
 
@@ -40,14 +41,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			this.assemblyLoadContext = assemblyLoadContext;
 			this.dependencyContext = dependencyContext;
 
-			// trusted dependencies
-			this.dataTypeFascade = new DataTypeFascade();
-			this.reflectionFascade = new ReflectionFascade(this.DataTypeFascade);
-			this.configurationRoot = LoadAppConfigFile(APP_CONFIG_FILE_NAME);
-			this.appConfigFascade = new AppConfigFascade(this.ConfigurationRoot, this.DataTypeFascade);
-			this.assemblyInformationFascade = new AssemblyInformationFascade(this.ReflectionFascade, Assembly.GetEntryAssembly());
-
-			this.SetUp();
+			this.Initialize();
 		}
 
 		#endregion
@@ -55,14 +49,13 @@ namespace TextMetal.Middleware.Solder.Injection
 		#region Fields/Constants
 
 		private const string APP_CONFIG_FILE_NAME = "appconfig.json";
-		private readonly IAppConfigFascade appConfigFascade;
-		private readonly IAssemblyInformationFascade assemblyInformationFascade;
+		private readonly IDictionary<Assembly, IReadOnlyCollection<DependencyMagicMethod>> assemblyDependencyMagicMethods = new Dictionary<Assembly, IReadOnlyCollection<DependencyMagicMethod>>();
 		private readonly AssemblyLoadContext assemblyLoadContext;
-		private readonly IConfigurationRoot configurationRoot;
-		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly DependencyContext dependencyContext;
 		private readonly IDependencyManager dependencyManager = new DependencyManager();
-		private readonly IReflectionFascade reflectionFascade;
+		private readonly ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+		private bool disposed;
+		private bool initialized;
 
 		#endregion
 
@@ -80,19 +73,11 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		private IAppConfigFascade AppConfigFascade
+		private IDictionary<Assembly, IReadOnlyCollection<DependencyMagicMethod>> AssemblyDependencyMagicMethods
 		{
 			get
 			{
-				return this.appConfigFascade;
-			}
-		}
-
-		internal IAssemblyInformationFascade AssemblyInformationFascade
-		{
-			get
-			{
-				return this.assemblyInformationFascade;
+				return this.assemblyDependencyMagicMethods;
 			}
 		}
 
@@ -101,22 +86,6 @@ namespace TextMetal.Middleware.Solder.Injection
 			get
 			{
 				return this.assemblyLoadContext;
-			}
-		}
-
-		private IConfigurationRoot ConfigurationRoot
-		{
-			get
-			{
-				return this.configurationRoot;
-			}
-		}
-
-		private IDataTypeFascade DataTypeFascade
-		{
-			get
-			{
-				return this.dataTypeFascade;
 			}
 		}
 
@@ -139,11 +108,41 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		internal IReflectionFascade ReflectionFascade
+		private ReaderWriterLockSlim ReaderWriterLock
 		{
 			get
 			{
-				return this.reflectionFascade;
+				return this.readerWriterLock;
+			}
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether the current instance has been disposed.
+		/// </summary>
+		public bool Disposed
+		{
+			get
+			{
+				return this.disposed;
+			}
+			private set
+			{
+				this.disposed = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether the current instance has been initialized.
+		/// </summary>
+		private bool Initialized
+		{
+			get
+			{
+				return this.initialized;
+			}
+			set
+			{
+				this.initialized = value;
 			}
 		}
 
@@ -151,14 +150,14 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Methods/Operators
 
-		private static IEnumerable<Assembly> DiscoverAssemblies(DependencyContext dependencyContext)
+		private static IEnumerable<Assembly> DiscoverRuntimeLibraryAssemblies(DependencyContext dependencyContext)
 		{
 			if ((object)dependencyContext == null)
 				return new Assembly[] { };
 
 			return dependencyContext.RuntimeLibraries
 				.SelectMany(library => library.GetDefaultAssemblyNames(dependencyContext))
-				.Select(Assembly.Load);
+				.Select(assemblyName => Assembly.Load(assemblyName));
 		}
 
 		private static AssemblyDependencyDomain FromDefaultRuntimeContexts()
@@ -185,7 +184,18 @@ namespace TextMetal.Middleware.Solder.Injection
 			return configurationRoot;
 		}
 
-		private void AssemblyLoadContext_OnUnloading(AssemblyLoadContext assemblyLoadContext)
+		private Assembly AssemblyLoadContext_Resolving(AssemblyLoadContext assemblyLoadContext, AssemblyName assemblyName)
+		{
+			return null;
+		}
+
+		/// <summary>
+		/// Private thread-safe method which dismantles an assembly/dependency domain.
+		/// Note that the AssemblyLoadContext.Unloading event can/will
+		/// executeon a thread different that that of the main thread.
+		/// </summary>
+		/// <param name="assemblyLoadContext"> </param>
+		private void AssemblyLoadContext_Unloading(AssemblyLoadContext assemblyLoadContext)
 		{
 			if ((object)assemblyLoadContext == null)
 				throw new ArgumentNullException(nameof(assemblyLoadContext));
@@ -193,7 +203,104 @@ namespace TextMetal.Middleware.Solder.Injection
 			if (this.AssemblyLoadContext != assemblyLoadContext)
 				this.HaltAndCatchFire(new DependencyException(string.Format("Assembly load context mismatch during unload notificaiton.")));
 
-			this.TearDown();
+			// simply dispose
+			this.Dispose();
+		}
+
+		public void Dispose()
+		{
+			if (this.Disposed)
+				return;
+
+			// cop a reader lock
+			this.ReaderWriterLock.EnterUpgradeableReadLock();
+
+			try
+			{
+				// cop a writer lock
+				this.ReaderWriterLock.EnterWriteLock();
+
+				try
+				{
+					OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::{1} --> {2}", nameof(AssemblyDependencyDomain), nameof(this.Dispose), Environment.CurrentManagedThreadId));
+
+					this.AssemblyDependencyMagicMethods.Clear();
+
+					if ((object)this.DependencyManager != null)
+						this.DependencyManager.Dispose();
+
+					// unhook the assembly events
+					this.AssemblyLoadContext.Unloading -= this.AssemblyLoadContext_Unloading;
+					//this.AssemblyLoadContext.Resolving -= this.AssemblyLoadContext_Resolving;
+				}
+				finally
+				{
+					this.ReaderWriterLock.ExitWriteLock();
+				}
+			}
+			finally
+			{
+				this.ReaderWriterLock.ExitUpgradeableReadLock();
+				this.Disposed = true;
+				GC.SuppressFinalize(this);
+			}
+		}
+
+		/// <summary>
+		/// Fire order is not guaranteed.
+		/// </summary>
+		/// <param name="assemblyType"> </param>
+		private void FireDependencyMagicMethods(Type assemblyType)
+		{
+			MethodInfo[] methodInfos;
+			DependencyMagicMethodAttribute dependencyMagicMethodAttribute;
+			DependencyMagicMethod dependencyMagicMethod;
+
+			IReflectionFascade reflectionFascade;
+
+			// dogfooding here ;)
+			//reflectionFascade = new ReflectionFascade(new DataTypeFascade());
+			reflectionFascade = this.DependencyManager.ResolveDependency<IReflectionFascade>(string.Empty, false);
+
+			methodInfos = assemblyType.GetMethods(BindingFlags.Public | BindingFlags.Static);
+
+			if ((object)assemblyType == null)
+				throw new ArgumentNullException(nameof(assemblyType));
+
+			if ((object)methodInfos != null)
+			{
+				foreach (MethodInfo methodInfo in methodInfos)
+				{
+					dependencyMagicMethodAttribute = reflectionFascade.GetOneAttribute<DependencyMagicMethodAttribute>(methodInfo);
+
+					if ((object)dependencyMagicMethodAttribute == null)
+						continue;
+
+					if (!methodInfo.IsStatic)
+						continue;
+
+					if (!methodInfo.IsPublic)
+						continue;
+
+					if (methodInfo.ReturnType != typeof(void))
+						continue;
+
+					if (methodInfo.GetParameters().Count() != 1 ||
+						methodInfo.GetParameters()[0].ParameterType != typeof(IDependencyManager))
+						continue;
+
+					dependencyMagicMethod = (DependencyMagicMethod)(methodInfo.CreateDelegate(typeof(DependencyMagicMethod), null /* static */));
+
+					if ((object)dependencyMagicMethod == null)
+						continue;
+
+					// notify
+					OnlyWhen._PROFILE_ThenPrint(string.Format("{1}::{0}", methodInfo.Name, methodInfo.DeclaringType.FullName));
+
+					lock (this) // should we track which we have seen?
+						dependencyMagicMethod(this.DependencyManager);
+				}
+			}
 		}
 
 		public void HaltAndCatchFire(Exception fatalException)
@@ -206,12 +313,79 @@ namespace TextMetal.Middleware.Solder.Injection
 			Environment.FailFast(string.Empty, fatalException);
 		}
 
+		/// <summary>
+		/// Private thread-safe method which bootstraps an assembly/dependency domain.
+		/// </summary>
+		private void Initialize()
+		{
+			if (this.Initialized)
+				this.HaltAndCatchFire(new DependencyException("This instance has already been initialized."));
+
+			if (this.Disposed)
+				throw new ObjectDisposedException(typeof(AssemblyDependencyDomain).FullName);
+
+			// cop a reader lock
+			this.ReaderWriterLock.EnterUpgradeableReadLock();
+
+			try
+			{
+				// cop a writer lock
+				this.ReaderWriterLock.EnterWriteLock();
+
+				try
+				{
+					OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::{1} --> {2}", nameof(AssemblyDependencyDomain), nameof(this.Initialize), Environment.CurrentManagedThreadId));
+
+					// add trusted dependencies
+					{
+						IDataTypeFascade dataTypeFascade;
+						IReflectionFascade reflectionFascade;
+						IConfigurationRoot configurationRoot;
+						IAppConfigFascade appConfigFascade;
+						IAssemblyInformationFascade assemblyInformationFascade;
+
+						dataTypeFascade = new DataTypeFascade();
+						reflectionFascade = new ReflectionFascade(dataTypeFascade);
+						configurationRoot = LoadAppConfigFile(APP_CONFIG_FILE_NAME);
+						appConfigFascade = new AppConfigFascade(configurationRoot, dataTypeFascade);
+						assemblyInformationFascade = new AssemblyInformationFascade(reflectionFascade, Assembly.GetEntryAssembly());
+
+						this.DependencyManager.AddResolution<IConfigurationRoot>(string.Empty, false, new SingletonWrapperDependencyResolution<IConfigurationRoot>(new InstanceDependencyResolution<IConfigurationRoot>(configurationRoot)));
+						this.DependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new InstanceDependencyResolution<IDataTypeFascade>(dataTypeFascade)));
+						this.DependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new InstanceDependencyResolution<IReflectionFascade>(reflectionFascade)));
+						this.DependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new InstanceDependencyResolution<IAppConfigFascade>(appConfigFascade)));
+						this.DependencyManager.AddResolution<IAssemblyInformationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAssemblyInformationFascade>(new InstanceDependencyResolution<IAssemblyInformationFascade>(assemblyInformationFascade)));
+					}
+
+					// hook the assembly events
+					//this.AssemblyLoadContext.Resolving += this.AssemblyLoadContext_Resolving;
+					this.AssemblyLoadContext.Unloading += this.AssemblyLoadContext_Unloading;
+
+					// probe known assemblies at build time
+					this.ScanAssemblies(DiscoverRuntimeLibraryAssemblies(this.DependencyContext));
+				}
+				finally
+				{
+					this.ReaderWriterLock.ExitWriteLock();
+				}
+			}
+			finally
+			{
+				this.Initialized = true;
+				this.ReaderWriterLock.ExitUpgradeableReadLock();
+			}
+		}
+
 		public Assembly LoadAssembly(AssemblyName assemblyName)
 		{
 			Assembly assembly;
 
+			if (this.Disposed)
+				throw new ObjectDisposedException(typeof(AssemblyDependencyDomain).FullName);
+
 			assembly = this.AssemblyLoadContext.LoadFromAssemblyName(assemblyName);
 
+			// probe explicit dynamically loaded assmblies
 			if ((object)assembly != null)
 				this.ScanAssembly(assembly);
 
@@ -225,9 +399,6 @@ namespace TextMetal.Middleware.Solder.Injection
 		private void ScanAssemblies(IEnumerable<Assembly> assemblies)
 		{
 			Type[] assemblyTypes;
-			MethodInfo[] methodInfos;
-			DependencyMagicMethodAttribute dependencyMagicMethodAttribute;
-			DependencyMagicMethod dependencyMagicMethod;
 
 			if ((object)assemblies != null)
 			{
@@ -249,48 +420,15 @@ namespace TextMetal.Middleware.Solder.Injection
 					{
 						foreach (Type assemblyType in assemblyTypes)
 						{
-							methodInfos = assemblyType.GetMethods(BindingFlags.Public | BindingFlags.Static);
-
-							if ((object)methodInfos != null)
-							{
-								foreach (MethodInfo methodInfo in methodInfos)
-								{
-									dependencyMagicMethodAttribute = this.ReflectionFascade.GetOneAttribute<DependencyMagicMethodAttribute>(methodInfo);
-
-									if ((object)dependencyMagicMethodAttribute == null)
-										continue;
-
-									if (!methodInfo.IsStatic)
-										continue;
-
-									if (!methodInfo.IsPublic)
-										continue;
-
-									if (methodInfo.ReturnType != typeof(void))
-										continue;
-
-									if (methodInfo.GetParameters().Count() != 1 ||
-										methodInfo.GetParameters()[0].ParameterType != typeof(AssemblyDependencyDomain))
-										continue;
-
-									dependencyMagicMethod = (DependencyMagicMethod)(methodInfo.CreateDelegate(typeof(DependencyMagicMethod), null /* static */));
-
-									if ((object)dependencyMagicMethod == null)
-										continue;
-
-									// notify
-									OnlyWhen._PROFILE_ThenPrint(string.Format("{1}::{0}", methodInfo.Name, methodInfo.DeclaringType.FullName));
-
-									dependencyMagicMethod(this);
-								}
-							}
+							// TODO: in the future we could support real auto-wire via type probing
+							this.FireDependencyMagicMethods(assemblyType);
 						}
 					}
 				}
 			}
 		}
 
-		public void ScanAssembly(Assembly assembly)
+		private void ScanAssembly(Assembly assembly)
 		{
 			Assembly[] assemblies;
 
@@ -300,48 +438,6 @@ namespace TextMetal.Middleware.Solder.Injection
 			assemblies = new Assembly[] { assembly };
 
 			this.ScanAssemblies(assemblies);
-		}
-
-		/// <summary>
-		/// Private thread-safe method which bootstraps an assembly/dependency domain.
-		/// </summary>
-		private void SetUp()
-		{
-			lock (this)
-			{
-				OnlyWhen._PROFILE_ThenPrint(string.Format("SetUp {0}", Environment.CurrentManagedThreadId));
-
-				// add trusted dependencies
-				this.DependencyManager.AddResolution<IConfigurationRoot>(string.Empty, false, new SingletonWrapperDependencyResolution<IConfigurationRoot>(new InstanceDependencyResolution<IConfigurationRoot>(this.ConfigurationRoot)));
-				this.DependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new InstanceDependencyResolution<IDataTypeFascade>(this.DataTypeFascade)));
-				this.DependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new InstanceDependencyResolution<IReflectionFascade>(this.ReflectionFascade)));
-				this.DependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new InstanceDependencyResolution<IAppConfigFascade>(this.AppConfigFascade)));
-				this.DependencyManager.AddResolution<IAssemblyInformationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAssemblyInformationFascade>(new InstanceDependencyResolution<IAssemblyInformationFascade>(this.AssemblyInformationFascade)));
-
-				// hook the unload event
-				this.AssemblyLoadContext.Unloading += this.AssemblyLoadContext_OnUnloading;
-
-				// probe known assemblies at build time - does not probe dynamically loaded assmblies yet
-				this.ScanAssemblies(DiscoverAssemblies(this.DependencyContext));
-			}
-		}
-
-		/// <summary>
-		/// Private thread-safe method which dismantles an assembly/dependency domain.
-		/// Note that the AssemblyLoadContext.Unloading event can/will
-		/// executeon a thread different that that of the main thread.
-		/// </summary>
-		private void TearDown()
-		{
-			lock (this)
-			{
-				if ((object)this.DependencyManager != null)
-					this.DependencyManager.Dispose();
-
-				this.AssemblyLoadContext.Unloading -= this.AssemblyLoadContext_OnUnloading;
-
-				OnlyWhen._PROFILE_ThenPrint(string.Format("TearDown {0}", Environment.CurrentManagedThreadId));
-			}
 		}
 
 		#endregion

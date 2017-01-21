@@ -13,23 +13,28 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 	[Obsolete("Stop using this")]
 	public static class DatazoidLegacyInstanceAccessor
 	{
+		#region Fields/Constants
+
+		private static readonly IAdoNetBufferingFascade adoNetBufferingLegacyInstance = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IAdoNetBufferingFascade>(String.Empty, true);
+		private static readonly IAdoNetStreamingFascade adoNetStreamingFascade = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IAdoNetStreamingFascade>(String.Empty, true);
+
+		#endregion
+
 		#region Properties/Indexers/Events
 
-		[Obsolete("Stop using this")]
 		public static IAdoNetBufferingFascade AdoNetBufferingLegacyInstance
 		{
 			get
 			{
-				return AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IAdoNetBufferingFascade>(String.Empty, true);
+				return adoNetBufferingLegacyInstance;
 			}
 		}
 
-		[Obsolete("Stop using this")]
 		public static IAdoNetStreamingFascade AdoNetStreamingFascade
 		{
 			get
 			{
-				return AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IAdoNetStreamingFascade>(String.Empty, true);
+				return adoNetStreamingFascade;
 			}
 		}
 

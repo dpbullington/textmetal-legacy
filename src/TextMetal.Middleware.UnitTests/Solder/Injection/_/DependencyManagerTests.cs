@@ -35,10 +35,10 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		#region Methods/Operators
 
 		[DependencyMagicMethod]
-		public static void IsValidDependencyMagicMethod(AssemblyDependencyDomain assemblyDependencyDomain)
+		public static void IsValidDependencyMagicMethod(IDependencyManager dependencyManager)
 		{
-			if ((object)assemblyDependencyDomain == null)
-				throw new ArgumentNullException(nameof(assemblyDependencyDomain));
+			if ((object)dependencyManager == null)
+				throw new ArgumentNullException(nameof(dependencyManager));
 
 			MockFactory mockFactory;
 			IDependencyResolution mockDependencyResolution;
@@ -57,20 +57,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			selectorKey = UNCOMMON_SELECTOR_KEY;
 			includeAssignableTypes = false;
 
-			assemblyDependencyDomain.DependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
 
-			Expect.On(mockDependencyResolution).Any.Method(m => m.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(assemblyDependencyDomain.DependencyManager, targetType, selectorKey).WillReturn(1234.5678);
+			Expect.On(mockDependencyResolution).Any.Method(m => m.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(dependencyManager, targetType, selectorKey).WillReturn(1234.5678);
 
 			Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
 		}
 
-		public static void NotMarkedAsDependencyMagicMethod(AssemblyDependencyDomain assemblyDependencyDomain)
+		public static void NotMarkedAsDependencyMagicMethod(IDependencyManager dependencyManager)
 		{
 			throw new Exception();
 		}
 
 		[DependencyMagicMethod]
-		private static void ShouldNotMatchPrivateDependencyMagicMethod(AssemblyDependencyDomain assemblyDependencyDomain)
+		private static void ShouldNotMatchPrivateDependencyMagicMethod(IDependencyManager dependencyManager)
 		{
 			throw new Exception();
 		}
@@ -1258,8 +1258,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			selectorKey = UNCOMMON_SELECTOR_KEY;
 			includeAssignableTypes = false;
-
-			//AssemblyDependencyDomain.Default.ScanAssembly<DependencyManagerTests>();
 
 			formattable = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IFormattable>(selectorKey, includeAssignableTypes);
 

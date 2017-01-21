@@ -43,6 +43,9 @@ $testsuite_for_assembly_name = "TextMetal.Middleware.Solder.Injection"
 $testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
 $testsuite_filter_sub_ns_frag = "Solder.Injection._"
 
+
+# -----------------------------------------------------------------------
+
 $testsuite_filter_namespace = "$testsuite_assembly_name.$testsuite_filter_sub_ns_frag"
 $testsuite_assembly_dir = "$src_dir_path\$testsuite_assembly_name\bin\$build_flavor\$build_tfm"
 $testsuite_assembly_path = "$testsuite_assembly_dir\$testsuite_assembly_name.dll"

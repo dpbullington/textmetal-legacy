@@ -13,23 +13,28 @@ namespace TextMetal.Middleware.Solder.Extensions
 	[Obsolete("Stop using this")]
 	public static class SolderLegacyInstanceAccessor
 	{
+		#region Fields/Constants
+
+		private static readonly IDataTypeFascade dataTypeFascadeLegacyInstance = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IDataTypeFascade>(String.Empty, true);
+		private static readonly IReflectionFascade reflectionFascadeLegacyInstance = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(String.Empty, true);
+
+		#endregion
+
 		#region Properties/Indexers/Events
 
-		[Obsolete("Stop using this")]
 		public static IDataTypeFascade DataTypeFascadeLegacyInstance
 		{
 			get
 			{
-				return AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IDataTypeFascade>(String.Empty, true);
+				return dataTypeFascadeLegacyInstance;
 			}
 		}
 
-		[Obsolete("Stop using this")]
 		public static IReflectionFascade ReflectionFascadeLegacyInstance
 		{
 			get
 			{
-				return AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(String.Empty, true);
+				return reflectionFascadeLegacyInstance;
 			}
 		}
 

@@ -76,21 +76,19 @@ namespace TextMetal.Middleware.Solder.Executive
 			}
 		}
 
-		public static bool LaunchDebuggerOnEntryPoint
+		private bool LaunchDebuggerOnEntryPoint
 		{
 			get
 			{
-				IDataTypeFascade dataTypeFascade;
 				string svalue;
 				bool ovalue;
 
-				dataTypeFascade = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IDataTypeFascade>(string.Empty, true);
 				svalue = Environment.GetEnvironmentVariable(SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT);
 
 				if ((object)svalue == null)
 					return false;
 
-				if (!dataTypeFascade.TryParse<bool>(svalue, out ovalue))
+				if (!this.DataTypeFascade.TryParse<bool>(svalue, out ovalue))
 					return false;
 
 				return !Debugger.IsAttached && ovalue;
@@ -105,21 +103,19 @@ namespace TextMetal.Middleware.Solder.Executive
 			}
 		}
 
-		public static bool HookUnhandledExceptions
+		private bool HookUnhandledExceptions
 		{
 			get
 			{
-				IDataTypeFascade dataTypeFascade;
 				string svalue;
 				bool ovalue;
 
-				dataTypeFascade = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IDataTypeFascade>(string.Empty, true);
 				svalue = Environment.GetEnvironmentVariable(SOLDER_HOOK_UNHANDLED_EXCEPTIONS);
 
 				if ((object)svalue == null)
 					return false;
 
-				if (!dataTypeFascade.TryParse<bool>(svalue, out ovalue))
+				if (!this.DataTypeFascade.TryParse<bool>(svalue, out ovalue))
 					return false;
 
 				return !Debugger.IsAttached && ovalue;

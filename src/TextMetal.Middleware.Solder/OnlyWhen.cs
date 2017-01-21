@@ -17,15 +17,15 @@ namespace TextMetal.Middleware.Solder
 
 		[Conditional("DEBUG")]
 		[DependencyMagicMethod]
-		public static void OnAssemblyLoaderEvent(AssemblyDependencyDomain assemblyDependencyDomain)
+		public static void OnDependencyMagic(IDependencyManager dependencyManager)
 		{
 #if DEBUG
 			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
 		
-			if ((object)assemblyDependencyDomain == null)
-				throw new ArgumentNullException(nameof(assemblyDependencyDomain));
+			if ((object)dependencyManager == null)
+				throw new ArgumentNullException(nameof(dependencyManager));
 
-			__OnlyWhen._PROFILE_ThenPrint(string.Format("OnAssemblyLoaderEvent"));
+			__OnlyWhen._PROFILE_ThenPrint(string.Format("OnDependencyMagic"));
 #endif
 		}
 
