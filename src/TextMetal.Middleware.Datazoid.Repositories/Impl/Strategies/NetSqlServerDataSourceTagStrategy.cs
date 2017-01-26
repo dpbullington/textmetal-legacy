@@ -131,7 +131,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		{
 			string retVal;
 
-			retVal = !SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(schemaName) ?
+			retVal = !SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(schemaName) ?
 				string.Format(NET_SQL_SERVER_SCHEMA_PROCEDURE_NAME_FORMAT, schemaName, procedureName) :
 				string.Format(NET_SQL_SERVER_PROCEDURE_NAME_FORMAT, procedureName);
 
@@ -151,7 +151,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		{
 			string retVal;
 
-			retVal = !SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(schemaName) ?
+			retVal = !SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(schemaName) ?
 				string.Format(NET_SQL_SERVER_SCHEMA_TABLE_NAME_FORMAT, schemaName, tableName) :
 				string.Format(NET_SQL_SERVER_TABLE_NAME_FORMAT, tableName);
 

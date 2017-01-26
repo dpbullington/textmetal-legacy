@@ -71,7 +71,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 
 			_value = (String)value;
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(_value))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(_value))
 				return _value;
 
 			_value = _value.Trim();
@@ -94,7 +94,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 			if ((object)fidelityMap == null)
 				throw new ArgumentNullException(nameof(fidelityMap));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(value))
 				return;
 
 			sb = new StringBuilder(value);
@@ -118,7 +118,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 
 			fidelityMap = new Dictionary<int, char>();
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(value))
 			{
 				value = value;
 				return fidelityMap;

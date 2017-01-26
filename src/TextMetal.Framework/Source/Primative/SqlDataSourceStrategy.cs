@@ -57,7 +57,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)connectionString == null)
 				throw new ArgumentNullException(nameof(connectionString));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(connectionString))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(connectionString))
 				throw new ArgumentOutOfRangeException(nameof(connectionString));
 
 			tokenizer = new Tokenizer(true);
@@ -126,7 +126,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			connectionAqtn = null;
@@ -151,13 +151,13 @@ namespace TextMetal.Framework.Source.Primative
 					connectionString = values[0];
 			}
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(connectionString))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(connectionString))
 				throw new InvalidOperationException(string.Format("The connection string cannot be null or whitespace."));
 
 			if (properties.TryGetValue(PROP_TOKEN_GET_SCHEMA_ONLY, out values))
 			{
 				if ((object)values != null && values.Count == 1)
-					SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out getSchemaOnly);
+					SolderFascadeAccessor.DataTypeFascade.TryParse<bool>(values[0], out getSchemaOnly);
 			}
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);

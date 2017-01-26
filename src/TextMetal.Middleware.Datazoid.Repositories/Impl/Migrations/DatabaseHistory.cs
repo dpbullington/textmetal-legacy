@@ -138,7 +138,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Migrations
 			{
 				svalue = unitOfWork.ExecuteScalar<string>(CommandType.Text, this.GetSchemaVersionCommandText, null);
 
-				if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse(svalue, out schemaRevision))
+				if (!SolderFascadeAccessor.DataTypeFascade.TryParse(svalue, out schemaRevision))
 					throw new InvalidOperationException(string.Format("The schema revision scalar value returned from the database '{0}' could not be parsed into a valid '{1}'.", svalue, typeof(int)));
 			}
 
@@ -174,7 +174,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Migrations
 
 			svalue = unitOfWork.ExecuteScalar<string>(CommandType.Text, this.GetSchemaVersionCommandText, null);
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse(svalue, out schemaRevision))
+			if (!SolderFascadeAccessor.DataTypeFascade.TryParse(svalue, out schemaRevision))
 				throw new InvalidOperationException(string.Format("The schema revision scalar value returned from the database '{0}' could not be parsed into a valid '{1}'.", svalue, typeof(int)));
 
 			if (schemaRevision != currentSchemaRevision)

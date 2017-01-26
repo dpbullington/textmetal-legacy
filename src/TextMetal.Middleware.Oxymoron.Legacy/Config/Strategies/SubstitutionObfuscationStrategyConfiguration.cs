@@ -50,7 +50,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Strategies
 
 			messages = new List<Message>();
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.DictionaryReference))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.DictionaryReference))
 				messages.Add(NewError(string.Format("Column[{0}/{1}] dictionary reference is required.", columnIndex, this.Parent.ColumnName)));
 
 			return messages;

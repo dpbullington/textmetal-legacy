@@ -150,7 +150,7 @@ namespace TextMetal.Framework.Tokenization
 		{
 			string[] args;
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace((call ?? string.Empty).Trim()))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace((call ?? string.Empty).Trim()))
 				return new string[] { };
 
 			// fixup argument list
@@ -205,7 +205,7 @@ namespace TextMetal.Framework.Tokenization
 		/// <returns> A string value with all possible replacements made. </returns>
 		public string ExpandTokens(string tokenizedValue, IWildcardTokenReplacementStrategy optionalWildcardTokenReplacementStrategy)
 		{
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(tokenizedValue))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(tokenizedValue))
 				return tokenizedValue;
 
 			// clean token collection
@@ -237,7 +237,7 @@ namespace TextMetal.Framework.Tokenization
 
 			argumentList = match.Groups[2].Success ? GetArgs(match.Groups[2].Value) : null;
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(rawToken))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(rawToken))
 				return GetOriginalValueOrThrowExecption(this.StrictMatching, match.Value, "token missing");
 
 			// break any token paths into token list
@@ -268,7 +268,7 @@ namespace TextMetal.Framework.Tokenization
 			}
 			catch (Exception ex)
 			{
-				return GetOriginalValueOrThrowExecption(this.StrictMatching, match.Value, string.Format("function exception {{" + Environment.NewLine + "{0}" + Environment.NewLine + "}}", SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetErrors(ex, 0)));
+				return GetOriginalValueOrThrowExecption(this.StrictMatching, match.Value, string.Format("function exception {{" + Environment.NewLine + "{0}" + Environment.NewLine + "}}", SolderFascadeAccessor.ReflectionFascade.GetErrors(ex, 0)));
 			}
 
 			if ((object)tokens == null ||
@@ -279,7 +279,7 @@ namespace TextMetal.Framework.Tokenization
 			foreach (string token in tokens)
 			{
 				// only do logical lookup here
-				if (!SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(tokenLogicalValue, token, out tokenLogicalValue))
+				if (!SolderFascadeAccessor.ReflectionFascade.GetLogicalPropertyValue(tokenLogicalValue, token, out tokenLogicalValue))
 					return GetOriginalValueOrThrowExecption(this.StrictMatching, match.Value, string.Format("logical property expansion failed {{{0}}}", token));
 			}
 

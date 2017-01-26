@@ -37,9 +37,9 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 				return isNullable ? null : string.Empty;
 
 			if (isNullable)
-				valueType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(valueType);
+				valueType = SolderFascadeAccessor.ReflectionFascade.MakeNullableType(valueType);
 
-			return SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.DefaultValue(valueType);
+			return SolderFascadeAccessor.DataTypeFascade.DefaultValue(valueType);
 		}
 
 		protected override object CoreGetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration<DefaultingObfuscationStrategyConfiguration> columnConfiguration, IColumn column, object columnValue)

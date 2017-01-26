@@ -2415,7 +2415,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		//	args.Add("-arg8:value8c");
 		//	args.Add("-arg8:value8a");
 
-		//	cmdlnargs = AppConfigFascade.ReflectionFascadeLegacyInstance.ParseCommandLineArguments(args.ToArray());
+		//	cmdlnargs = AppConfigFascade.ReflectionFascade.ParseCommandLineArguments(args.ToArray());
 
 		//	Assert.IsNotNull(cmdlnargs);
 		//	Assert.AreEqual(3, cmdlnargs.Count);

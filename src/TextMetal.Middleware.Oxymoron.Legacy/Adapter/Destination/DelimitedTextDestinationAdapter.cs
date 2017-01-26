@@ -59,7 +59,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 			AdapterConfiguration<DelimitedTextAdapterConfiguration> sourceAdapterConfiguration;
 			DelimitedTextSpec effectiveDelimitedTextSpec;
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextFilePath))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextFilePath))
 				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "DestinationAdapterConfiguration.DelimitedTextAdapterConfiguration.DelimitedTextFilePath"));
 
 			upstreamTextHeaderSpec = this.UpstreamMetadata.Select(um => um.Context).OfType<IRecord>().Select(r => r.Context).OfType<TextHeaderSpec>().ToArray();

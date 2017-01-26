@@ -112,7 +112,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config
 
 			messages = new List<Message>();
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.DictionaryId))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.DictionaryId))
 				messages.Add(NewError(string.Format("Dictionary[{0}] ID is required.", index)));
 
 			if ((object)this.DictionaryAdapterConfiguration == null)

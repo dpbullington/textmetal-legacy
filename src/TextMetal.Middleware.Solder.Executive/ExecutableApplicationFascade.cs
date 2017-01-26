@@ -21,7 +21,7 @@ namespace TextMetal.Middleware.Solder.Executive
 	{
 		#region Constructors/Destructors
 
-		public ExecutableApplicationFascade(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IReflectionFascade reflectionFascade, IAssemblyInformationFascade assemblyInformationFascade)
+		protected ExecutableApplicationFascade(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IReflectionFascade reflectionFascade, IAssemblyInformationFascade assemblyInformationFascade)
 		{
 			if ((object)dataTypeFascade == null)
 				throw new ArgumentNullException(nameof(dataTypeFascade));

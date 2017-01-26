@@ -69,7 +69,7 @@ namespace TextMetal.Middleware.Textual.Delimited
 			if ((object)targetValue == null)
 				throw new ArgumentNullException("targetValue");
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(targetValue))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(targetValue))
 				throw new ArgumentOutOfRangeException("targetValue");
 
 			// look-behind CHECK
@@ -112,13 +112,13 @@ namespace TextMetal.Middleware.Textual.Delimited
 
 			// now determine what to do based on parser state
 			matchedRecordDelimiter = !this.ParserState.isQuotedValue &&
-									!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.RecordDelimiter) &&
+									!SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.RecordDelimiter) &&
 									LookBehindFixup(this.ParserState.transientStringBuilder, this.DelimitedTextSpec.RecordDelimiter);
 
 			if (!matchedRecordDelimiter)
 			{
 				matchedFieldDelimiter = !this.ParserState.isQuotedValue &&
-										!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.FieldDelimiter) &&
+										!SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.FieldDelimiter) &&
 										LookBehindFixup(this.ParserState.transientStringBuilder, this.DelimitedTextSpec.FieldDelimiter);
 			}
 			else
@@ -153,17 +153,17 @@ namespace TextMetal.Middleware.Textual.Delimited
 
 					fieldType = textHeaderSpec.GetClrTypeFromFieldType() ?? typeof(String);
 
-					if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(tempStringValue))
-						fieldValue = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.DefaultValue(fieldType);
+					if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(tempStringValue))
+						fieldValue = SolderFascadeAccessor.DataTypeFascade.DefaultValue(fieldType);
 					else
-						SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse(fieldType, tempStringValue, out fieldValue);
+						SolderFascadeAccessor.DataTypeFascade.TryParse(fieldType, tempStringValue, out fieldValue);
 
 					// lookup header name (key) by index and commit value to record
 					this.ParserState.record.Add(textHeaderSpec.HeaderName, fieldValue);
 				}
 
 				// handle blank records (we assume that an records with valid record delimiter is OK)
-				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(tempStringValue) && this.ParserState.record.Keys.Count == 1)
+				if (SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(tempStringValue) && this.ParserState.record.Keys.Count == 1)
 					this.ParserState.record = null;
 
 				// now what to do?
@@ -193,7 +193,7 @@ namespace TextMetal.Middleware.Textual.Delimited
 			}
 			else if (!this.ParserState.isEOF &&
 					!this.ParserState.isQuotedValue &&
-					!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue) &&
+					!SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue) &&
 					LookBehindFixup(this.ParserState.transientStringBuilder, this.DelimitedTextSpec.QuoteValue))
 			{
 				// BEGIN::QUOTE_VALUE
@@ -201,7 +201,7 @@ namespace TextMetal.Middleware.Textual.Delimited
 			}
 			//else if (!this.ParserState.isEOF &&
 			//	this.ParserState.isQuotedValue &&
-			//	!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue) &&
+			//	!SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue) &&
 			//	LookBehindFixup(this.ParserState.transientStringBuilder, this.DelimitedTextSpec.QuoteValue) &&
 			//	this.ParserState.peekNextCharacter.ToString() == this.DelimitedTextSpec.QuoteValue)
 			//{
@@ -210,7 +210,7 @@ namespace TextMetal.Middleware.Textual.Delimited
 			//}
 			else if (!this.ParserState.isEOF &&
 					this.ParserState.isQuotedValue &&
-					!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue) &&
+					!SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue) &&
 					LookBehindFixup(this.ParserState.transientStringBuilder, this.DelimitedTextSpec.QuoteValue))
 			{
 				// END::QUOTE_VALUE
@@ -330,7 +330,7 @@ namespace TextMetal.Middleware.Textual.Delimited
 									{
 										textHeaderSpec = this.DelimitedTextSpec.TextHeaderSpecs[headerIndex];
 
-										if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(textHeaderSpec.HeaderName) &&
+										if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(textHeaderSpec.HeaderName) &&
 											textHeaderSpec.HeaderName.ToLower() != headerNames[headerIndex].ToLower())
 											throw new InvalidOperationException(string.Format("Header name mismatch: '{0}' <> '{1}'.", textHeaderSpec.HeaderName, headerNames[headerIndex]));
 

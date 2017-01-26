@@ -247,7 +247,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy
 
 			_value = (String)value;
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(_value))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(_value))
 				return DEFAULT_HASH;
 
 			_value = _value.Trim();

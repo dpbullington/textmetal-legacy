@@ -80,7 +80,7 @@ namespace TextMetal.Framework.InputOutput
 			*/
 			if ((object)xmlObject != null)
 				serializationStrategy = new XpeSerializationStrategy(this.Xpe);
-			else if ((object)SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlRootAttribute>(obj.GetType()) != null)
+			else if ((object)SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlRootAttribute>(obj.GetType()) != null)
 				serializationStrategy = new XmlSerializationStrategy();
 			else
 				serializationStrategy = new JsonSerializationStrategy();

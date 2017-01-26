@@ -104,12 +104,12 @@ namespace TextMetal.Framework.Template
 			scopeName = templatingContext.Tokenizer.ExpandTokens(this.ScopeName, dynamicWildcardTokenReplacementStrategy);
 			appendMode = this.Append;
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.EncodingName))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.EncodingName))
 				encoding = Encoding.GetEncoding(this.EncodingName);
 			else
 				encoding = Encoding.UTF8;
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(scopeName))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(scopeName))
 			{
 				new AllocConstruct()
 				{
@@ -117,7 +117,7 @@ namespace TextMetal.Framework.Template
 				}.ExpandTemplate(templatingContext);
 			}
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(scopeName))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(scopeName))
 			{
 				IExpressionContainerConstruct expressionContainerConstruct;
 				ValueConstruct valueConstruct;
@@ -151,7 +151,7 @@ namespace TextMetal.Framework.Template
 			templatingContext.Output.LeaveScope(scopeName);
 			templatingContext.Output.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tLeaving output scope '{1}'.", DateTime.UtcNow, scopeName);
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(scopeName))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(scopeName))
 			{
 				new FreeConstruct()
 				{

@@ -178,7 +178,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 
 			messages = new List<Message>();
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.ParameterName))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.ParameterName))
 				messages.Add(NewError(string.Format("Parameter[{0}] name is required.", parameterIndex)));
 
 			return messages;

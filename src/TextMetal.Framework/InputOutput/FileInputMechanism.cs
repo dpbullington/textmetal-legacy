@@ -94,7 +94,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)assemblyName == null)
 				throw new ArgumentNullException(nameof(assemblyName));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(assemblyName))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(assemblyName))
 				throw new ArgumentOutOfRangeException(nameof(assemblyName));
 
 			_assemblyName = new AssemblyName(assemblyName);
@@ -111,7 +111,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)contentName == null)
 				throw new ArgumentNullException(nameof(contentName));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(contentName))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(contentName))
 				throw new ArgumentOutOfRangeException(nameof(contentName));
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, contentName));
@@ -137,7 +137,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceName))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(sourceName))
 				throw new ArgumentOutOfRangeException(nameof(sourceName));
 
 			//fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, sourceName));
@@ -157,7 +157,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)templateName == null)
 				throw new ArgumentNullException(nameof(templateName));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(templateName))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(templateName))
 				throw new ArgumentOutOfRangeException(nameof(templateName));
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, templateName));

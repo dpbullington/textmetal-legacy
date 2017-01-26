@@ -79,7 +79,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 			set
 			{
-				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
+				if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(value))
 					this.ParameterClrNonNullableType = null;
 				else
 					this.ParameterClrNonNullableType = Type.GetType(value, false);
@@ -95,7 +95,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 			set
 			{
-				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
+				if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(value))
 					this.ParameterClrNullableType = null;
 				else
 					this.ParameterClrNullableType = Type.GetType(value, false);
@@ -111,7 +111,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 			set
 			{
-				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
+				if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(value))
 					this.ParameterClrType = null;
 				else
 					this.ParameterClrType = Type.GetType(value, false);

@@ -35,9 +35,6 @@ EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.NopCLI", "TextMetal.NopCLI\TextMetal.NopCLI.xproj", "{F796E936-A05D-466D-92FF-B67E05FA90CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solder", "Solder", "{009E0012-E258-4542-94BA-6CCB5A47980A}"
-	ProjectSection(SolutionItems) = preProject
-		TextMetal.Middleware.Solder.Bootstrap\TextMetal.Middleware.Solder.Bootstrap.xproj = TextMetal.Middleware.Solder.Bootstrap\TextMetal.Middleware.Solder.Bootstrap.xproj
-	EndProjectSection
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder.Context", "TextMetal.Middleware.Solder.Context\TextMetal.Middleware.Solder.Context.xproj", "{6ECA187F-D32C-48EF-B811-437F644B2E22}"
 EndProject
@@ -114,6 +111,8 @@ EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Messaging.Core", "TextMetal.Messaging.Core\TextMetal.Messaging.Core.xproj", "{6499624E-6176-4BF4-BADD-FC2E36216237}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Messaging.Store", "TextMetal.Messaging.Store\TextMetal.Messaging.Store.xproj", "{85BB47B3-320B-4554-8952-AB3556E9E8DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.TestRunner.ConsoleTool", "TextMetal.TestRunner.ConsoleTool\TextMetal.TestRunner.ConsoleTool.csproj", "{919F8063-72B9-45AB-9209-204DA76A61D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -350,6 +349,12 @@ Global
 		{85BB47B3-320B-4554-8952-AB3556E9E8DB}.Development|Any CPU.Build.0 = Debug|Any CPU
 		{85BB47B3-320B-4554-8952-AB3556E9E8DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85BB47B3-320B-4554-8952-AB3556E9E8DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{919F8063-72B9-45AB-9209-204DA76A61D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{919F8063-72B9-45AB-9209-204DA76A61D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{919F8063-72B9-45AB-9209-204DA76A61D1}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{919F8063-72B9-45AB-9209-204DA76A61D1}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{919F8063-72B9-45AB-9209-204DA76A61D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{919F8063-72B9-45AB-9209-204DA76A61D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -406,5 +411,6 @@ Global
 		{E6FA5574-0A30-415B-BFD6-950277E9C23D} = {64ADAC3F-C7B6-44C0-B858-3B2A73C72A6D}
 		{6499624E-6176-4BF4-BADD-FC2E36216237} = {E6FA5574-0A30-415B-BFD6-950277E9C23D}
 		{85BB47B3-320B-4554-8952-AB3556E9E8DB} = {E6FA5574-0A30-415B-BFD6-950277E9C23D}
+		{919F8063-72B9-45AB-9209-204DA76A61D1} = {CA834366-EDFF-4998-AEF9-D50B4CC6BA4E}
 	EndGlobalSection
 EndGlobal

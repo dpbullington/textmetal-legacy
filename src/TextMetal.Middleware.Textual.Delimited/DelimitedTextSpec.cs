@@ -100,13 +100,13 @@ namespace TextMetal.Middleware.Textual.Delimited
 
 			strings = new List<string>();
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.RecordDelimiter))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.RecordDelimiter))
 				strings.Add(this.RecordDelimiter);
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.FieldDelimiter))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.FieldDelimiter))
 				strings.Add(this.FieldDelimiter);
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.QuoteValue))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.QuoteValue))
 				strings.Add(this.QuoteValue);
 
 			if (strings.GroupBy(s => s).Where(gs => gs.Count() > 1).Any())

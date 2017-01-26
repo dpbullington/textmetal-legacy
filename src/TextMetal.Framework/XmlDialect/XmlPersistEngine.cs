@@ -110,10 +110,10 @@ namespace TextMetal.Framework.XmlDialect
 				foreach (PropertyInfo parentPropertyInfo in parentPropertyInfos)
 				{
 					// get potential attribute mapping metadata
-					xmlAttributeMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlAttributeMappingAttribute>(parentPropertyInfo);
+					xmlAttributeMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlAttributeMappingAttribute>(parentPropertyInfo);
 
 					// get the potential child mapping metadata
-					xmlChildElementMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlChildElementMappingAttribute>(parentPropertyInfo);
+					xmlChildElementMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlChildElementMappingAttribute>(parentPropertyInfo);
 
 					// count what we found; there can only be one
 					attributeCount = 0;
@@ -161,7 +161,7 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)fileName == null)
 				throw new ArgumentNullException(nameof(fileName));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(fileName))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(fileName))
 				throw new ArgumentOutOfRangeException(nameof(fileName));
 
 			using (Stream stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -240,7 +240,7 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)attributes == null)
 				throw new ArgumentNullException(nameof(attributes));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(currentElementXmlName.LocalName))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(currentElementXmlName.LocalName))
 				throw new ArgumentOutOfRangeException(nameof(currentElementXmlName));
 
 			if (contextStack.Count > 0) // is this NOT the root node?
@@ -261,7 +261,7 @@ namespace TextMetal.Framework.XmlDialect
 					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 
 				// get parent mapping metadata
-				parentXmlElementMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlElementMappingAttribute>(parentType);
+				parentXmlElementMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlElementMappingAttribute>(parentType);
 
 				// sanity check
 				if ((object)parentXmlElementMappingAttribute == null)
@@ -274,10 +274,10 @@ namespace TextMetal.Framework.XmlDialect
 				foreach (PropertyInfo parentPropertyInfo in parentPropertyInfos)
 				{
 					// get potential attribute mapping metadata
-					xmlAttributeMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlAttributeMappingAttribute>(parentPropertyInfo);
+					xmlAttributeMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlAttributeMappingAttribute>(parentPropertyInfo);
 
 					// get the potential child mapping metadata
-					xmlChildElementMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlChildElementMappingAttribute>(parentPropertyInfo);
+					xmlChildElementMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlChildElementMappingAttribute>(parentPropertyInfo);
 
 					// count what we found; there can only be one
 					attributeCount = 0;
@@ -319,11 +319,11 @@ namespace TextMetal.Framework.XmlDialect
 					svalue = overrideCurrentXmlTextObject.Text;
 
 					// convert to strongly-typed value
-					if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse(parentPropertyToChildElementMapping.Value.Key.PropertyType, svalue, out ovalue))
-						ovalue = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.DefaultValue(parentPropertyToChildElementMapping.Value.Key.PropertyType);
+					if (!SolderFascadeAccessor.DataTypeFascade.TryParse(parentPropertyToChildElementMapping.Value.Key.PropertyType, svalue, out ovalue))
+						ovalue = SolderFascadeAccessor.DataTypeFascade.DefaultValue(parentPropertyToChildElementMapping.Value.Key.PropertyType);
 
 					// attempt to set the value
-					if (!SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.SetLogicalPropertyValue(parentXmlObject, parentPropertyToChildElementMapping.Value.Key.Name, ovalue))
+					if (!SolderFascadeAccessor.ReflectionFascade.SetLogicalPropertyValue(parentXmlObject, parentPropertyToChildElementMapping.Value.Key.Name, ovalue))
 						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 
 					// return null to prevent recursion
@@ -366,7 +366,7 @@ namespace TextMetal.Framework.XmlDialect
 						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 
 					// get parent-of-child mapping metadata
-					parentOfChildXmlElementMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlElementMappingAttribute>(parentPropertyToChildElementMapping.Value.Key.PropertyType);
+					parentOfChildXmlElementMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlElementMappingAttribute>(parentPropertyToChildElementMapping.Value.Key.PropertyType);
 
 					// sanity check
 					if ((object)parentOfChildXmlElementMappingAttribute == null)
@@ -394,7 +394,7 @@ namespace TextMetal.Framework.XmlDialect
 				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 
 			// get current mapping metadata
-			currentXmlElementMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlElementMappingAttribute>(currentType);
+			currentXmlElementMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlElementMappingAttribute>(currentType);
 
 			// sanity check
 			if ((object)currentXmlElementMappingAttribute == null)
@@ -407,10 +407,10 @@ namespace TextMetal.Framework.XmlDialect
 			foreach (PropertyInfo currentPropertyInfo in currentPropertyInfos)
 			{
 				// get potential attribute mapping metadata
-				xmlAttributeMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlAttributeMappingAttribute>(currentPropertyInfo);
+				xmlAttributeMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlAttributeMappingAttribute>(currentPropertyInfo);
 
 				// get the potential child mapping metadata
-				xmlChildElementMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlChildElementMappingAttribute>(currentPropertyInfo);
+				xmlChildElementMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlChildElementMappingAttribute>(currentPropertyInfo);
 
 				// count what we found; there can only be one
 				attributeCount = 0;
@@ -447,11 +447,11 @@ namespace TextMetal.Framework.XmlDialect
 						.Select(a => a.Value).SingleOrDefault();
 
 					// convert to strongly-typed value
-					if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse(currentPropertyToAttributeMapping.Key.PropertyType, svalue, out ovalue))
-						ovalue = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.DefaultValue(currentPropertyToAttributeMapping.Key.PropertyType);
+					if (!SolderFascadeAccessor.DataTypeFascade.TryParse(currentPropertyToAttributeMapping.Key.PropertyType, svalue, out ovalue))
+						ovalue = SolderFascadeAccessor.DataTypeFascade.DefaultValue(currentPropertyToAttributeMapping.Key.PropertyType);
 
 					// attempt to set the values
-					if (!SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.SetLogicalPropertyValue(currentXmlObject, currentPropertyToAttributeMapping.Key.Name, ovalue))
+					if (!SolderFascadeAccessor.ReflectionFascade.SetLogicalPropertyValue(currentXmlObject, currentPropertyToAttributeMapping.Key.Name, ovalue))
 						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 				}
 			}
@@ -460,7 +460,7 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)parentPropertyToChildElementMapping != null)
 			{
 				// store this as a child element of parent XML object
-				if (!SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.SetLogicalPropertyValue(parentXmlObject, parentPropertyToChildElementMapping.Value.Key.Name, currentXmlObject))
+				if (!SolderFascadeAccessor.ReflectionFascade.SetLogicalPropertyValue(parentXmlObject, parentPropertyToChildElementMapping.Value.Key.Name, currentXmlObject))
 					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 			}
 			else if ((object)parentXmlElementMappingAttribute != null)
@@ -716,7 +716,7 @@ namespace TextMetal.Framework.XmlDialect
 			parentType = parentXmlObject.GetType();
 
 			// get the parent emlement mapping metadata
-			parentXmlElementMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlElementMappingAttribute>(parentType);
+			parentXmlElementMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlElementMappingAttribute>(parentType);
 
 			// sanity check
 			if ((object)parentXmlElementMappingAttribute == null)
@@ -813,7 +813,7 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)targetType == null)
 				throw new ArgumentNullException(nameof(targetType));
 
-			xmlElementMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlElementMappingAttribute>(targetType);
+			xmlElementMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlElementMappingAttribute>(targetType);
 
 			if ((object)xmlElementMappingAttribute == null)
 				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
@@ -933,7 +933,7 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)fileName == null)
 				throw new ArgumentNullException(nameof(fileName));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(fileName))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(fileName))
 				throw new ArgumentOutOfRangeException(nameof(fileName));
 
 			using (Stream stream = File.Open(fileName, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -1008,7 +1008,7 @@ namespace TextMetal.Framework.XmlDialect
 			{
 				// write as CDATA if name is invalid (expected)
 				if ((object)currentXmlTextObject.Name == null ||
-					SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(currentXmlTextObject.Name.LocalName))
+					SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(currentXmlTextObject.Name.LocalName))
 				{
 					xmlWriter.WriteCData(currentXmlTextObject.Text);
 					return;
@@ -1024,7 +1024,7 @@ namespace TextMetal.Framework.XmlDialect
 				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 
 			// get the current mapping metadata
-			currentXmlElementMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlElementMappingAttribute>(currentType);
+			currentXmlElementMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlElementMappingAttribute>(currentType);
 
 			// sanity check
 			if ((object)currentXmlElementMappingAttribute == null)
@@ -1037,10 +1037,10 @@ namespace TextMetal.Framework.XmlDialect
 			foreach (PropertyInfo currentPropertyInfo in currentPropertyInfos)
 			{
 				// get potential attribute mapping metadata
-				xmlAttributeMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlAttributeMappingAttribute>(currentPropertyInfo);
+				xmlAttributeMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlAttributeMappingAttribute>(currentPropertyInfo);
 
 				// get potential child element mapping metadata
-				xmlChildElementMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlChildElementMappingAttribute>(currentPropertyInfo);
+				xmlChildElementMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlChildElementMappingAttribute>(currentPropertyInfo);
 
 				// count what we found; there can only be one
 				attributeCount = 0;
@@ -1060,7 +1060,7 @@ namespace TextMetal.Framework.XmlDialect
 
 			// begin current element
 			if ((object)overrideXmlName != null &&
-				!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(overrideXmlName.LocalName)) // overriden element is special case for parent DOT property convention
+				!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(overrideXmlName.LocalName)) // overriden element is special case for parent DOT property convention
 			{
 				// write the start of the element
 				xmlWriter.WriteStartElement(overrideXmlName.LocalName, overrideXmlName.NamespaceUri);
@@ -1068,7 +1068,7 @@ namespace TextMetal.Framework.XmlDialect
 			else
 			{
 				// sanity check
-				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(currentXmlElementMappingAttribute.LocalName))
+				if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(currentXmlElementMappingAttribute.LocalName))
 					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 
 				// write the start of the element
@@ -1085,7 +1085,7 @@ namespace TextMetal.Framework.XmlDialect
 						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 
 					// get the strongly-typed value
-					if (!SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(currentXmlObject, currentPropertyToAttributeMapping.Key.Name, out ovalue))
+					if (!SolderFascadeAccessor.ReflectionFascade.GetLogicalPropertyValue(currentXmlObject, currentPropertyToAttributeMapping.Key.Name, out ovalue))
 						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 
 					// convert to loosely-typed formatted string
@@ -1106,10 +1106,10 @@ namespace TextMetal.Framework.XmlDialect
 					if (!currentPropertyToChildElementMapping.Key.CanRead)
 						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 
-					if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(currentPropertyToChildElementMapping.Value.LocalName))
+					if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(currentPropertyToChildElementMapping.Value.LocalName))
 						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 
-					if (!SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(currentXmlObject, currentPropertyToChildElementMapping.Key.Name, out ovalue))
+					if (!SolderFascadeAccessor.ReflectionFascade.GetLogicalPropertyValue(currentXmlObject, currentPropertyToChildElementMapping.Key.Name, out ovalue))
 						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 
 					svalue = ovalue.SafeToString();
@@ -1133,7 +1133,7 @@ namespace TextMetal.Framework.XmlDialect
 
 					// get the XML object property value
 					object _out;
-					if (!SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(currentXmlObject, currentPropertyToChildElementMapping.Key.Name, out _out))
+					if (!SolderFascadeAccessor.ReflectionFascade.GetLogicalPropertyValue(currentXmlObject, currentPropertyToChildElementMapping.Key.Name, out _out))
 						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");
 					childElement = (IXmlObject)_out;
 
@@ -1235,7 +1235,7 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)targetType == null)
 				throw new ArgumentNullException(nameof(targetType));
 
-			xmlElementMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlElementMappingAttribute>(targetType);
+			xmlElementMappingAttribute = SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlElementMappingAttribute>(targetType);
 
 			if ((object)xmlElementMappingAttribute == null)
 				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message.");

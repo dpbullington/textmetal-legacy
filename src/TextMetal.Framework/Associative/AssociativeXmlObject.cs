@@ -154,7 +154,7 @@ namespace TextMetal.Framework.Associative
 				{
 					foreach (IAssociativeXmlObject item in this.Items)
 					{
-						if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(item.Name) &&
+						if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(item.Name) &&
 							!dictionary.ContainsKey(item.Name))
 							dictionary.Add(item.Name, item.GetAssociativeObjectValue(NullTemplatingContext.Instance));
 					}

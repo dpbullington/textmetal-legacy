@@ -50,7 +50,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Strategies
 
 			messages = new List<Message>();
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.SourceCode))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.SourceCode))
 				messages.Add(NewError(string.Format("Column[{0}/{1}] source code is required.", columnIndex, this.Parent.ColumnName)));
 
 			return messages;

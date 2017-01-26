@@ -61,7 +61,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 			this.DestinationUnitOfWork = this.AdapterConfiguration.AdapterSpecificConfiguration.GetUnitOfWork();
 
 			if (this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand != null &&
-				!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand.CommandText))
+				!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand.CommandText))
 			{
 				dbParameters = this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand.GetDbDataParameters(this.DestinationUnitOfWork);
 
@@ -100,7 +100,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 			IEnumerable<DbParameter> dbParameters;
 
 			if (this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand != null &&
-				!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand.CommandText))
+				!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand.CommandText))
 			{
 				dbParameters = this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand.GetDbDataParameters(this.DestinationUnitOfWork);
 

@@ -164,7 +164,7 @@ namespace TextMetal.Framework.Template
 			varCt = templatingContext.Tokenizer.ExpandTokens(this.VarCt, dynamicWildcardTokenReplacementStrategy);
 			varIx = templatingContext.Tokenizer.ExpandTokens(this.VarIx, dynamicWildcardTokenReplacementStrategy);
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(varItem))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(varItem))
 			{
 				new AllocConstruct()
 				{
@@ -172,7 +172,7 @@ namespace TextMetal.Framework.Template
 				}.ExpandTemplate(templatingContext);
 			}
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(varCt))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(varCt))
 			{
 				new AllocConstruct()
 				{
@@ -180,7 +180,7 @@ namespace TextMetal.Framework.Template
 				}.ExpandTemplate(templatingContext);
 			}
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(varIx))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(varIx))
 			{
 				new AllocConstruct()
 				{
@@ -244,7 +244,7 @@ namespace TextMetal.Framework.Template
 			if ((object)this.Sort != null)
 				values = this.Sort.EvaluateSort(templatingContext, values);
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(varCt))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(varCt))
 			{
 				IExpressionContainerConstruct expressionContainerConstruct;
 				ValueConstruct valueConstruct;
@@ -270,7 +270,7 @@ namespace TextMetal.Framework.Template
 			{
 				foreach (object value in values)
 				{
-					if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(varItem))
+					if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(varItem))
 					{
 						IExpressionContainerConstruct expressionContainerConstruct;
 						ValueConstruct valueConstruct;
@@ -291,7 +291,7 @@ namespace TextMetal.Framework.Template
 						}.ExpandTemplate(templatingContext);
 					}
 
-					if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(varIx))
+					if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(varIx))
 					{
 						IExpressionContainerConstruct expressionContainerConstruct;
 						ValueConstruct valueConstruct;
@@ -323,7 +323,7 @@ namespace TextMetal.Framework.Template
 					index++;
 				}
 
-				if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(varIx))
+				if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(varIx))
 				{
 					new FreeConstruct()
 					{
@@ -331,7 +331,7 @@ namespace TextMetal.Framework.Template
 					}.ExpandTemplate(templatingContext);
 				}
 
-				if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(varCt))
+				if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(varCt))
 				{
 					new FreeConstruct()
 					{
@@ -339,7 +339,7 @@ namespace TextMetal.Framework.Template
 					}.ExpandTemplate(templatingContext);
 				}
 
-				if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(varItem))
+				if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(varItem))
 				{
 					new FreeConstruct()
 					{

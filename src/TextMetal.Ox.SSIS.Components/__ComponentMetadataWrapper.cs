@@ -112,7 +112,7 @@ namespace TextMetal.Ox.SSIS.Components
 		{
 			ObfuscationConfiguration obfuscationConfiguration;
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.ObfuscationConfigurationJsonText))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.ObfuscationConfigurationJsonText))
 			{
 				obfuscationConfiguration = new ObfuscationConfiguration()
 											{

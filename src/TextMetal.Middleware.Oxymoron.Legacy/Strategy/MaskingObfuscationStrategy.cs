@@ -54,7 +54,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 
 			_value = (String)value;
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(_value))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(_value))
 				return _value;
 
 			_value = _value.Trim();

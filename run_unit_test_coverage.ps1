@@ -39,9 +39,25 @@ echo "The operation is starting..."
 #$testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
 #$testsuite_filter_sub_ns_frag = "Solder.Utilities._"
 
-$testsuite_for_assembly_name = "TextMetal.Middleware.Solder.Injection"
+#$testsuite_for_assembly_name = "TextMetal.Middleware.Solder.Injection"
+#$testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
+#$testsuite_filter_sub_ns_frag = "Solder.Injection._"
+
+#	$testsuite_for_assembly_name = "TextMetal.Middleware.Solder.Interception"
+#	$testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
+#	$testsuite_filter_sub_ns_frag = "Solder.Interception._"
+
+#	$testsuite_for_assembly_name = "TextMetal.Middleware.Solder.Serialization"
+#	$testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
+#	$testsuite_filter_sub_ns_frag = "Solder.Serialization._"
+
+#	$testsuite_for_assembly_name = "TextMetal.Middleware.Solder.Extensions"
+#	$testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
+#	$testsuite_filter_sub_ns_frag = "Solder.Extensions._"
+
+$testsuite_for_assembly_name = "TextMetal.Middleware.Solder.Executive"
 $testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
-$testsuite_filter_sub_ns_frag = "Solder.Injection._"
+$testsuite_filter_sub_ns_frag = "Solder.Executive._"
 
 
 # -----------------------------------------------------------------------

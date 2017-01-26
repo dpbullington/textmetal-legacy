@@ -96,7 +96,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config
 		{
 			Type sourceAdapterType;
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterAqtn))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.AdapterAqtn))
 				return null;
 
 			sourceAdapterType = Type.GetType(this.AdapterAqtn, false);
@@ -122,7 +122,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config
 
 			messages = new List<Message>();
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterAqtn))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.AdapterAqtn))
 				messages.Add(NewError(string.Format("{0} adapter AQTN is required.", adapterContext)));
 			else
 			{

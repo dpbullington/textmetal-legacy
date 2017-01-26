@@ -19,19 +19,7 @@ namespace TextMetal.Middleware.Solder.Extensions
 		/// Deserializes an object from an assembly manifest resource.
 		/// </summary>
 		/// <typeparam name="TObject"> The run-time type of the object root to deserialize. </typeparam>
-		/// <param name="resourceType"> A type within the source assembly where the manifest resource lives. </param>
-		/// <param name="resourceName"> The fully qualified manifest resource name to load. </param>
-		/// <param name="result"> A valid object of the specified type or null if the manifest resource name was not found in the assembly of the resource type. </param>
-		/// <returns> A value indicating whether the manifest resource name was found in the target type's assembly. </returns>
-		public static bool TryGetFromAssemblyResource<TObject>(Type resourceType, string resourceName, out TObject result)
-		{
-			return XmlSerializationStrategy.Instance.TryGetFromAssemblyResource<TObject>(resourceType, resourceName, out result);
-		}
-
-		/// <summary>
-		/// Deserializes an object from an assembly manifest resource.
-		/// </summary>
-		/// <typeparam name="TObject"> The run-time type of the object root to deserialize. </typeparam>
+		/// <param name="serializationStrategy"> The serialization strategy. </param>
 		/// <param name="resourceType"> A type within the source assembly where the manifest resource lives. </param>
 		/// <param name="resourceName"> The fully qualified manifest resource name to load. </param>
 		/// <param name="result"> A valid object of the specified type or null if the manifest resource name was not found in the assembly of the resource type. </param>

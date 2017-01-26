@@ -60,7 +60,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
@@ -72,7 +72,7 @@ namespace TextMetal.Framework.Source.Primative
 			{
 				if ((object)values != null && values.Count == 1)
 				{
-					if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out firstRecordIsHeader))
+					if (!SolderFascadeAccessor.DataTypeFascade.TryParse<bool>(values[0], out firstRecordIsHeader))
 						firstRecordIsHeader = false;
 				}
 			}
@@ -105,7 +105,7 @@ namespace TextMetal.Framework.Source.Primative
 					quoteValue = values[0];
 			}
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(fieldDelimiter))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(fieldDelimiter))
 			{
 				fieldDelimiter = fieldDelimiter.Replace("\\\\t", "\t");
 				fieldDelimiter = fieldDelimiter.Replace("\\\\r", "\r");
@@ -113,7 +113,7 @@ namespace TextMetal.Framework.Source.Primative
 				fieldDelimiter = fieldDelimiter.Replace("\\\"", "\"");
 			}
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(recordDelimiter))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(recordDelimiter))
 			{
 				recordDelimiter = recordDelimiter.Replace("\\\\t", "\t");
 				recordDelimiter = recordDelimiter.Replace("\\\\r", "\r");
@@ -121,7 +121,7 @@ namespace TextMetal.Framework.Source.Primative
 				recordDelimiter = recordDelimiter.Replace("\\\"", "\"");
 			}
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(quoteValue))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(quoteValue))
 			{
 				quoteValue = quoteValue.Replace("\\\\t", "\t");
 				quoteValue = quoteValue.Replace("\\\\r", "\r");

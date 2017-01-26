@@ -120,7 +120,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config
 		{
 			Type type;
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.ObfuscationStrategyAqtn))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.ObfuscationStrategyAqtn))
 				return null;
 
 			type = Type.GetType(this.ObfuscationStrategyAqtn, false);
@@ -146,10 +146,10 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config
 
 			messages = new List<Message>();
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.ColumnName))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.ColumnName))
 				messages.Add(NewError(string.Format("Column[{0}] name is required.", columnIndex)));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.ObfuscationStrategyAqtn))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.ObfuscationStrategyAqtn))
 				messages.Add(NewError(string.Format("Column[{0}/{1}] obfuscation strategy AQTN is required.", columnIndex, this.ColumnName)));
 			else
 			{

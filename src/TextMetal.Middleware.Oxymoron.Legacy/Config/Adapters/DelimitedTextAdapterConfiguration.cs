@@ -64,20 +64,20 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 
 			messages = new List<Message>();
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.DelimitedTextFilePath))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.DelimitedTextFilePath))
 				messages.Add(NewError(string.Format("{0} adapter delimited text file path is required.", adapterContext)));
 
 			if ((object)this.DelimitedTextSpec == null)
 				messages.Add(NewError(string.Format("{0} adapter delimited text specification is required.", adapterContext)));
 			else
 			{
-				//if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue))
+				//if (SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue))
 				//	messages.Add(NewError(string.Format("{0} adapter delimited text quote value is required.", adapterContext)));
 
-				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.RecordDelimiter))
+				if (SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.RecordDelimiter))
 					messages.Add(NewError(string.Format("{0} adapter delimited text record delimiter is required.", adapterContext)));
 
-				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.FieldDelimiter))
+				if (SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.FieldDelimiter))
 					messages.Add(NewError(string.Format("{0} adapter delimited text field delimiter is required.", adapterContext)));
 			}
 

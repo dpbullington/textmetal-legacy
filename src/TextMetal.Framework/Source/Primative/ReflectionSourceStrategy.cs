@@ -344,7 +344,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)parent == null)
 				throw new ArgumentNullException(nameof(parent));
 
-			customAttributes = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetAllAttributes<Attribute>(customAttributeProvider);
+			customAttributes = SolderFascadeAccessor.ReflectionFascade.GetAllAttributes<Attribute>(customAttributeProvider);
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "CustomAttributes";
@@ -380,7 +380,7 @@ namespace TextMetal.Framework.Source.Primative
 							propertyConstruct01.RawValue = publicPropertyInfo.Name;
 							objectConstruct01.Items.Add(propertyConstruct01);
 
-							if (SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(customAttribute, publicPropertyInfo.Name, out value))
+							if (SolderFascadeAccessor.ReflectionFascade.GetLogicalPropertyValue(customAttribute, publicPropertyInfo.Name, out value))
 							{
 								propertyConstruct01 = new PropertyConstruct();
 								propertyConstruct01.Name = "CustomAttributePropertyValue";
@@ -1312,7 +1312,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			assemblies = new List<Assembly>();

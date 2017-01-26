@@ -153,7 +153,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		{
 			string retVal;
 
-			retVal = !SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(schemaName) ?
+			retVal = !SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(schemaName) ?
 				string.Format(NET_SQLITE_SCHEMA_TABLE_NAME_FORMAT, schemaName, tableName) :
 				string.Format(NET_SQLITE_TABLE_NAME_FORMAT, tableName);
 

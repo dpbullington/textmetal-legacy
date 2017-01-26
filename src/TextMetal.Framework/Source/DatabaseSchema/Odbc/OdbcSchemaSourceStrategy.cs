@@ -105,8 +105,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ReflectionFascadeLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ReflectionFascadeLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ReflectionFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ReflectionFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
 							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};

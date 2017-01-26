@@ -111,7 +111,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)scopeName == null)
 				throw new ArgumentNullException(nameof(scopeName));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(scopeName))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(scopeName))
 				throw new ArgumentOutOfRangeException(nameof(scopeName));
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, scopeName));
@@ -135,7 +135,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)scopeName == null)
 				throw new ArgumentNullException(nameof(scopeName));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(scopeName))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(scopeName))
 				throw new ArgumentOutOfRangeException(nameof(scopeName));
 
 			textWriter = this.TextWriters.Pop();
@@ -155,7 +155,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)objectName == null)
 				throw new ArgumentNullException(nameof(objectName));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(objectName))
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(objectName))
 				throw new ArgumentOutOfRangeException(nameof(objectName));
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, objectName));
@@ -168,7 +168,7 @@ namespace TextMetal.Framework.InputOutput
 			*/
 			if ((object)xmlObject != null)
 				serializationStrategy = new XpeSerializationStrategy(this.Xpe);
-			else if ((object)SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlRootAttribute>(obj.GetType()) != null)
+			else if ((object)SolderFascadeAccessor.ReflectionFascade.GetOneAttribute<XmlRootAttribute>(obj.GetType()) != null)
 				serializationStrategy = new XmlSerializationStrategy();
 			else
 				serializationStrategy = new JsonSerializationStrategy();
@@ -199,7 +199,7 @@ namespace TextMetal.Framework.InputOutput
 			string fullFilePath;
 			string fullDirectoryPath;
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(this.LogFileName))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(this.LogFileName))
 			{
 				fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, this.LogFileName));
 				fullDirectoryPath = Path.GetDirectoryName(fullFilePath);

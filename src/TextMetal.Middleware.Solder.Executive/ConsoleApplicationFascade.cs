@@ -17,7 +17,7 @@ namespace TextMetal.Middleware.Solder.Executive
 	{
 		#region Constructors/Destructors
 
-		public ConsoleApplicationFascade(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IReflectionFascade reflectionFascade, IAssemblyInformationFascade assemblyInformationFascade)
+		protected ConsoleApplicationFascade(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IReflectionFascade reflectionFascade, IAssemblyInformationFascade assemblyInformationFascade)
 			: base(dataTypeFascade, appConfigFascade, reflectionFascade, assemblyInformationFascade)
 		{
 		}

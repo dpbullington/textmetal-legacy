@@ -63,7 +63,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source
 			this.SourceUnitOfWork = this.AdapterConfiguration.AdapterSpecificConfiguration.GetUnitOfWork();
 
 			if (this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand != null &&
-				!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand.CommandText))
+				!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand.CommandText))
 			{
 				dbParameters = this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand.GetDbDataParameters(this.SourceUnitOfWork);
 
@@ -78,7 +78,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source
 			}
 
 			if (this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand != null ||
-				!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText))
+				!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText))
 			{
 				dbParameters = this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.GetDbDataParameters(this.SourceUnitOfWork);
 
@@ -131,7 +131,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source
 			if ((object)this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand == null)
 				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand)));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText))
 				throw new InvalidOperationException(string.Format("Configuration missing: '{0}.{1}'.", nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand), nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText)));
 
 			dbParameters = this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.GetDbDataParameters(this.SourceUnitOfWork);
@@ -152,7 +152,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source
 			IEnumerable<DbParameter> dbParameters;
 
 			if (this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand != null &&
-				!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand.CommandText))
+				!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand.CommandText))
 			{
 				dbParameters = this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand.GetDbDataParameters(this.SourceUnitOfWork);
 

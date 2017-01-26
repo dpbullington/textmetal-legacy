@@ -106,7 +106,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 		{
 			Type connectionType;
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.ConnectionAqtn))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.ConnectionAqtn))
 				return null;
 
 			connectionType = Type.GetType(this.ConnectionAqtn, false);
@@ -118,10 +118,10 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 		{
 			Type dictionaryConnectionType;
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.ConnectionAqtn))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.ConnectionAqtn))
 				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "AdoNetAdapterConfiguration.ConnectionAqtn"));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.ConnectionString))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.ConnectionString))
 				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "AdoNetAdapterConfiguration.ConnectionString"));
 
 			dictionaryConnectionType = this.GetConnectionType();
@@ -141,10 +141,10 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 
 			messages = new List<Message>();
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.ConnectionAqtn))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.ConnectionAqtn))
 				messages.Add(NewError(string.Format("{0} adapter ADO.NET connection AQTN is required.", adapterContext)));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.ConnectionString))
+			if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(this.ConnectionString))
 				messages.Add(NewError(string.Format("{0} adapter ADO.NET connection string is required.", adapterContext)));
 
 			if ((object)this.PreExecuteCommand != null)

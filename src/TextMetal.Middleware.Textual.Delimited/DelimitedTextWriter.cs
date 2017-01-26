@@ -62,15 +62,15 @@ namespace TextMetal.Middleware.Textual.Delimited
 			if ((object)transientStringBuilder == null)
 				throw new ArgumentNullException("transientStringBuilder");
 
-			if (!first && !SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.FieldDelimiter))
+			if (!first && !SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.FieldDelimiter))
 				transientStringBuilder.Append(this.DelimitedTextSpec.FieldDelimiter);
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue))
 				transientStringBuilder.Append(this.DelimitedTextSpec.QuoteValue);
 
 			transientStringBuilder.Append(fieldValue);
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue))
 				transientStringBuilder.Append(this.DelimitedTextSpec.QuoteValue);
 		}
 
@@ -98,7 +98,7 @@ namespace TextMetal.Middleware.Textual.Delimited
 				}
 			}
 
-			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.RecordDelimiter))
+			if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.RecordDelimiter))
 				transientStringBuilder.Append(this.DelimitedTextSpec.RecordDelimiter);
 
 			tempStringValue = transientStringBuilder.ToString();
@@ -116,7 +116,7 @@ namespace TextMetal.Middleware.Textual.Delimited
 						first = false;
 				}
 
-				if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(this.DelimitedTextSpec.RecordDelimiter))
+				if (!SolderFascadeAccessor.DataTypeFascade.IsNullOrEmpty(this.DelimitedTextSpec.RecordDelimiter))
 					transientStringBuilder.Append(this.DelimitedTextSpec.RecordDelimiter);
 
 				tempStringValue = transientStringBuilder.ToString();
