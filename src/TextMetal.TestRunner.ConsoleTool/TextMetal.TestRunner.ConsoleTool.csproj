@@ -47,21 +47,57 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.Configuration">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.1.1.0\lib\netstandard1.1\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.FileExtensions">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.FileExtensions.1.1.0\lib\net451\Microsoft.Extensions.Configuration.FileExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Json">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Json.1.1.0\lib\net451\Microsoft.Extensions.Configuration.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Abstractions">
+      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Physical">
+      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Physical.1.1.0\lib\net451\Microsoft.Extensions.FileProviders.Physical.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.1.1.0\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.2-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Runtime.Loader">
-      <HintPath>..\packages\System.Runtime.Loader.4.0.0\ref\netstandard1.5\System.Runtime.Loader.dll</HintPath>
+    <Reference Include="System.Console">
+      <HintPath>..\packages\System.Console.4.0.0\ref\net46\System.Console.dll</HintPath>
     </Reference>
-    <Reference Include="TextMetal.Middleware.Solder.Executive, Version=9.0.0.29072, Culture=neutral, PublicKeyToken=ef3acca86250098d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TextMetal.Middleware.Solder.Executive\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Executive.dll</HintPath>
+    <Reference Include="System.Reflection">
+      <HintPath>..\packages\System.Reflection.4.3.0\ref\net462\System.Reflection.dll</HintPath>
     </Reference>
-    <Reference Include="TextMetal.Middleware.Solder.Injection, Version=9.0.0.29071, Culture=neutral, PublicKeyToken=ef3acca86250098d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TextMetal.Middleware.Solder.Injection\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Injection.dll</HintPath>
+    <Reference Include="System.Reflection.TypeExtensions">
+      <HintPath>..\packages\System.Reflection.TypeExtensions.4.1.0\ref\net462\System.Reflection.TypeExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="TextMetal.Middleware.Solder.Utilities, Version=9.0.0.29069, Culture=neutral, PublicKeyToken=ef3acca86250098d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TextMetal.Middleware.Solder.Utilities\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Utilities.dll</HintPath>
+    <Reference Include="System.Runtime">
+      <HintPath>..\packages\System.Runtime.4.3.0\ref\net462\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Extensions">
+      <HintPath>..\packages\System.Runtime.Extensions.4.3.0\ref\net462\System.Runtime.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="TextMetal.Middleware.Solder.Abstractions">
+      <HintPath>..\TextMetal.Middleware.Solder.Executive\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="TextMetal.Middleware.Solder.Executive">
+      <HintPath>..\TextMetal.Middleware.Solder.Executive\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Executive.dll</HintPath>
+    </Reference>
+    <Reference Include="TextMetal.Middleware.Solder.Injection">
+      <HintPath>..\TextMetal.Middleware.Solder.Executive\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Injection.dll</HintPath>
+    </Reference>
+    <Reference Include="TextMetal.Middleware.Solder.Utilities">
+      <HintPath>..\TextMetal.Middleware.Solder.Executive\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Utilities.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

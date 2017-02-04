@@ -57,8 +57,8 @@ namespace TextMetal.Mz.ConsoleTool
 
 			//System.Console.WriteLine("ENGINE: Inbound message notification on thread {0}.", Thread.CurrentThread.ManagedThreadId);
 
-			integrationFactory = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IIntegrationFactory>(string.Empty, false);
-			integrationMessageStore = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IIntegrationMessageStore>(string.Empty, false);
+			integrationFactory = AssemblyDomain.Default.DependencyManager.ResolveDependency<IIntegrationFactory>(string.Empty, false);
+			integrationMessageStore = AssemblyDomain.Default.DependencyManager.ResolveDependency<IIntegrationMessageStore>(string.Empty, false);
 
 			// get the message
 			originalIntegrationMessage = e.IntegrationMessage;
@@ -133,8 +133,8 @@ namespace TextMetal.Mz.ConsoleTool
 				integrationMessageStore.Freeze();
 				integrationMessageStore.Initialize();
 
-				AssemblyDependencyDomain.Default.DependencyManager.AddResolution<IIntegrationFactory>(string.Empty, false, new SingletonWrapperDependencyResolution<IIntegrationFactory>(new InstanceDependencyResolution<IIntegrationFactory>(integrationFactory)));
-				AssemblyDependencyDomain.Default.DependencyManager.AddResolution<IIntegrationMessageStore>(string.Empty, false, new SingletonWrapperDependencyResolution<IIntegrationMessageStore>(new InstanceDependencyResolution<IIntegrationMessageStore>(integrationMessageStore)));
+				AssemblyDomain.Default.DependencyManager.AddResolution<IIntegrationFactory>(string.Empty, false, new SingletonWrapperDependencyResolution<IIntegrationFactory>(new InstanceDependencyResolution<IIntegrationFactory>(integrationFactory)));
+				AssemblyDomain.Default.DependencyManager.AddResolution<IIntegrationMessageStore>(string.Empty, false, new SingletonWrapperDependencyResolution<IIntegrationMessageStore>(new InstanceDependencyResolution<IIntegrationMessageStore>(integrationMessageStore)));
 
 				inboundAdapters = new List<IInboundAdapter>();
 				inboundAdapters.Add(new MemoryInboundAdapter());
@@ -193,8 +193,8 @@ namespace TextMetal.Mz.ConsoleTool
 
 				integrationMessageStore.Terminate();
 
-				AssemblyDependencyDomain.Default.DependencyManager.RemoveResolution<IIntegrationFactory>(string.Empty, false);
-				AssemblyDependencyDomain.Default.DependencyManager.RemoveResolution<IIntegrationMessageStore>(string.Empty, false);
+				AssemblyDomain.Default.DependencyManager.RemoveResolution<IIntegrationFactory>(string.Empty, false);
+				AssemblyDomain.Default.DependencyManager.RemoveResolution<IIntegrationMessageStore>(string.Empty, false);
 			}
 		}
 

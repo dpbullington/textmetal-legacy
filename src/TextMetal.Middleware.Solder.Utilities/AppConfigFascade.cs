@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 namespace TextMetal.Middleware.Solder.Utilities
 {
 	/// <summary>
-	/// Provides static helper and/or extension methods for strongly typed read access to an app.config or web.config file.
+	/// Provides for strongly typed read access to an an app model/run-time specific configuration file.
 	/// </summary>
 	public class AppConfigFascade : IAppConfigFascade
 	{

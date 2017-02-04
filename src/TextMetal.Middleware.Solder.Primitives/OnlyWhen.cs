@@ -17,7 +17,11 @@ namespace TextMetal.Middleware.Solder.Primitives
 		{
 #if DEBUG
 			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
+
+			ConsoleColor oldConsoleColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.DarkGray;
 			Console.WriteLine(message);
+			Console.ForegroundColor = oldConsoleColor;
 #endif
 		}
 

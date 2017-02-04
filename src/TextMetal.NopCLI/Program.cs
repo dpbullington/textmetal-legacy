@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using TextMetal.Middleware.Solder.Executive;
 using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
+using TextMetal.Middleware.Solder._netcoreapp_;
 
 namespace TextMetal.NopCLI
 {
@@ -37,9 +38,11 @@ namespace TextMetal.NopCLI
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			AssemblyDependencyDomain.Default.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
+			//AssemblyDomain.UseRuntimeAdapter(new NetCoreRuntimeAdapter());
+			AssemblyDomain.UseRuntimeAdapter<NetCoreRuntimeAdapter>();
+			AssemblyDomain.Default.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
 
-			using (ConsoleApplicationFascade program = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
+			using (ConsoleApplicationFascade program = AssemblyDomain.Default.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
 				return program.EntryPoint(args);
 		}
 		

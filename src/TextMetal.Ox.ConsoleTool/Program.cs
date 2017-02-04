@@ -47,11 +47,11 @@ namespace TextMetal.Ox.ConsoleTool
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			AssemblyDependencyDomain.Default.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
-			AssemblyDependencyDomain.Default.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientDefaultConstructorDependencyResolution<ToolHost>()));
-			AssemblyDependencyDomain.Default.DependencyManager.AddResolution<IAdoNetStreamingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetStreamingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetStreamingFascade>()));
+			AssemblyDomain.Default.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
+			AssemblyDomain.Default.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientDefaultConstructorDependencyResolution<ToolHost>()));
+			AssemblyDomain.Default.DependencyManager.AddResolution<IAdoNetStreamingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetStreamingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetStreamingFascade>()));
 
-			using (ConsoleApplicationFascade program = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
+			using (ConsoleApplicationFascade program = AssemblyDomain.Default.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
 				return program.EntryPoint(args);
 		}
 
@@ -140,7 +140,7 @@ namespace TextMetal.Ox.ConsoleTool
 							});
 			}*/
 
-			using (IToolHost toolHost = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IToolHost>(string.Empty, true))
+			using (IToolHost toolHost = AssemblyDomain.Default.DependencyManager.ResolveDependency<IToolHost>(string.Empty, true))
 				toolHost.Host(sourceFilePath);
 
 			return 0;

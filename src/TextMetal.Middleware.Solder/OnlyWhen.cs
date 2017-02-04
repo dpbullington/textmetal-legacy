@@ -6,8 +6,9 @@
 using System;
 using System.Diagnostics;
 
-using __OnlyWhen = TextMetal.Middleware.Solder.Primitives.OnlyWhen;
 using TextMetal.Middleware.Solder.Injection;
+
+using __OnlyWhen = TextMetal.Middleware.Solder.Primitives.OnlyWhen;
 
 namespace TextMetal.Middleware.Solder
 {
@@ -21,7 +22,7 @@ namespace TextMetal.Middleware.Solder
 		{
 #if DEBUG
 			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
-		
+
 			if ((object)dependencyManager == null)
 				throw new ArgumentNullException(nameof(dependencyManager));
 

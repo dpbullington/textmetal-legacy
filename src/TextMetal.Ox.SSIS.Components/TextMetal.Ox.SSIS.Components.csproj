@@ -55,22 +55,22 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="TextMetal.Middleware.Datazoid.UoW">
-      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.6\TextMetal.Middleware.Datazoid.UoW.dll</HintPath>
+      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.5\TextMetal.Middleware.Datazoid.UoW.dll</HintPath>
     </Reference>
     <Reference Include="TextMetal.Middleware.Oxymoron.Legacy">
-      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.6\TextMetal.Middleware.Oxymoron.Legacy.dll</HintPath>
+      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.5\TextMetal.Middleware.Oxymoron.Legacy.dll</HintPath>
     </Reference>
     <Reference Include="TextMetal.Middleware.Solder.Extensions">
-      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Extensions.dll</HintPath>
+      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="TextMetal.Middleware.Solder.Primitives">
-      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Primitives.dll</HintPath>
+      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="TextMetal.Middleware.Solder.Serialization">
-      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Serialization.dll</HintPath>
+      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="TextMetal.Middleware.Solder.Utilities">
-      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Utilities.dll</HintPath>
+      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Utilities.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

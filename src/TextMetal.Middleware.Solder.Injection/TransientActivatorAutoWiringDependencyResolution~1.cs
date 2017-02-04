@@ -22,7 +22,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// Initializes a new instance of the TransientActivatorAutoWiringDependencyResolution`1 class.
 		/// </summary>
 		public TransientActivatorAutoWiringDependencyResolution()
-			: this(AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(string.Empty, false))
+			: this(AssemblyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(string.Empty, false))
 		{
 		}
 

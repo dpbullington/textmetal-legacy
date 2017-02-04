@@ -36,16 +36,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 
 			Assert.IsNotNull(contextualStorageStrategy);
 
-			defaultContextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.GlobalDispatchSafe);
-			contextualStorageStrategy = defaultContextualStorageFactory.GetContextualStorage();
-
-			Assert.IsNull(contextualStorageStrategy);
-
-			defaultContextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.LocalFrameSafe);
-			contextualStorageStrategy = defaultContextualStorageFactory.GetContextualStorage();
-
-			Assert.IsNull(contextualStorageStrategy);
-
 			defaultContextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.LocalThreadSafe);
 			contextualStorageStrategy = defaultContextualStorageFactory.GetContextualStorage();
 

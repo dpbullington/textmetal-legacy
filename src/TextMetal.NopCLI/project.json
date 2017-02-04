@@ -59,6 +59,7 @@
 
 	"dependencies":
 	{
-		"TextMetal.Middleware.Solder": "9.0.0-*"
+		"TextMetal.Middleware.Solder": "9.0.0-*",
+		"TextMetal.Middleware.Solder._netcoreapp_": "9.0.0-*"
 	}
 }

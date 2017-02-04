@@ -15,8 +15,8 @@ namespace TextMetal.Middleware.Solder.Extensions
 	{
 		#region Fields/Constants
 
-		private static readonly IDataTypeFascade dataTypeFascade = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IDataTypeFascade>(String.Empty, false);
-		private static readonly IReflectionFascade reflectionFascade = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(String.Empty, false);
+		private static readonly IDataTypeFascade dataTypeFascade = AssemblyDomain.Default.DependencyManager.ResolveDependency<IDataTypeFascade>(String.Empty, false);
+		private static readonly IReflectionFascade reflectionFascade = AssemblyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(String.Empty, false);
 
 		#endregion
 

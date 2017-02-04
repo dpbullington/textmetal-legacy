@@ -46,15 +46,11 @@ namespace TextMetal.Middleware.Solder.Context
 			switch (this.ContextScope)
 			{
 				case ContextScope.GlobalStaticUnsafe:
-					return new SharedStaticContextualStorageStrategy();
-				case ContextScope.GlobalDispatchSafe:
-					return null;
-				case ContextScope.LocalFrameSafe:
-					return null;
+					return new GlobalStaticContextualStorageStrategy();
 				case ContextScope.LocalThreadSafe:
 					return new ThreadLocalContextualStorageStrategy();
 				case ContextScope.LocalAsyncSafe:
-					return new SharedStaticContextualStorageStrategy();
+					return new AsyncLocalContextualStorageStrategy();
 				case ContextScope.LocalRequestSafe:
 					return new HttpContextAccessorContextualStorageStrategy(null);
 				default:

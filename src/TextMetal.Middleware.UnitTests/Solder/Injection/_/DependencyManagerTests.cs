@@ -1259,7 +1259,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			selectorKey = UNCOMMON_SELECTOR_KEY;
 			includeAssignableTypes = false;
 
-			formattable = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IFormattable>(selectorKey, includeAssignableTypes);
+			formattable = AssemblyDomain.Default.DependencyManager.ResolveDependency<IFormattable>(selectorKey, includeAssignableTypes);
 
 			Assert.IsNotNull(formattable);
 			Assert.IsInstanceOf<double>(formattable);

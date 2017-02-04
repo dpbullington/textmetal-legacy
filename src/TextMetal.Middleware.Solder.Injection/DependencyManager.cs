@@ -110,9 +110,6 @@ namespace TextMetal.Middleware.Solder.Injection
 			Tuple<Type, string> trait;
 			IEnumerable<KeyValuePair<Tuple<Type, string>, IDependencyResolution>> candidateResolutions;
 
-			if (this.Disposed)
-				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
-
 			if ((object)resolutionType == null)
 				throw new ArgumentNullException(nameof(resolutionType));
 
@@ -127,6 +124,9 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			try
 			{
+				if (this.Disposed)
+					throw new ObjectDisposedException(typeof(DependencyManager).FullName);
+
 				// cop a writer lock
 				this.ReaderWriterLock.EnterWriteLock();
 
@@ -159,14 +159,14 @@ namespace TextMetal.Middleware.Solder.Injection
 		{
 			bool result;
 
-			if (this.Disposed)
-				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
-
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
+				if (this.Disposed)
+					throw new ObjectDisposedException(typeof(DependencyManager).FullName);
+
 				// cop a writer lock
 				this.ReaderWriterLock.EnterWriteLock();
 
@@ -215,9 +215,6 @@ namespace TextMetal.Middleware.Solder.Injection
 			int count = 0;
 			IEnumerable<KeyValuePair<Tuple<Type, string>, IDependencyResolution>> candidateResolutions;
 
-			if (this.Disposed)
-				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
-
 			if ((object)resolutionType == null)
 				throw new ArgumentNullException(nameof(resolutionType));
 
@@ -226,6 +223,9 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			try
 			{
+				if (this.Disposed)
+					throw new ObjectDisposedException(typeof(DependencyManager).FullName);
+
 				// cop a writer lock
 				this.ReaderWriterLock.EnterWriteLock();
 
@@ -262,14 +262,14 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// </summary>
 		public void Dispose()
 		{
-			if (this.Disposed)
-				return;
-
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
+				if (this.Disposed)
+					return;
+
 				// cop a writer lock
 				this.ReaderWriterLock.EnterWriteLock();
 
@@ -379,9 +379,6 @@ namespace TextMetal.Middleware.Solder.Injection
 		{
 			IDependencyResolution dependencyResolution;
 
-			if (this.Disposed)
-				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
-
 			if ((object)resolutionType == null)
 				throw new ArgumentNullException(nameof(resolutionType));
 
@@ -394,6 +391,9 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			try
 			{
+				if (this.Disposed)
+					throw new ObjectDisposedException(typeof(DependencyManager).FullName);
+
 				dependencyResolution = this.GetDependencyResolution(resolutionType, selectorKey, includeAssignableTypes);
 
 				return (object)dependencyResolution != null;
@@ -436,9 +436,6 @@ namespace TextMetal.Middleware.Solder.Injection
 			Tuple<Type, string> trait;
 			IDependencyResolution dependencyResolution;
 
-			if (this.Disposed)
-				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
-
 			if ((object)resolutionType == null)
 				throw new ArgumentNullException(nameof(resolutionType));
 
@@ -450,6 +447,9 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			try
 			{
+				if (this.Disposed)
+					throw new ObjectDisposedException(typeof(DependencyManager).FullName);
+
 				// cop a writer lock
 				this.ReaderWriterLock.EnterWriteLock();
 
@@ -513,9 +513,6 @@ namespace TextMetal.Middleware.Solder.Injection
 			IDependencyResolution dependencyResolution;
 			Type typeOfValue;
 
-			if (this.Disposed)
-				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
-
 			if ((object)resolutionType == null)
 				throw new ArgumentNullException(nameof(resolutionType));
 
@@ -527,6 +524,9 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			try
 			{
+				if (this.Disposed)
+					throw new ObjectDisposedException(typeof(DependencyManager).FullName);
+
 				dependencyResolution = this.GetDependencyResolution(resolutionType, selectorKey, includeAssignableTypes);
 
 				if ((object)dependencyResolution == null) // nothing to offer up

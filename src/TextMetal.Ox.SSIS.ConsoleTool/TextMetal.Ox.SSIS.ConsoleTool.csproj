@@ -217,22 +217,22 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="TextMetal.Framework">
-      <HintPath>..\TextMetal.Framework\bin\Debug\netstandard1.6\TextMetal.Framework.dll</HintPath>
+      <HintPath>..\TextMetal.Framework\bin\Debug\netstandard1.5\TextMetal.Framework.dll</HintPath>
     </Reference>
     <Reference Include="TextMetal.Middleware.Solder.Executive">
-      <HintPath>..\TextMetal.Middleware.Solder.Executive\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Executive.dll</HintPath>
+      <HintPath>..\TextMetal.Middleware.Solder.Executive\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Executive.dll</HintPath>
     </Reference>
     <Reference Include="TextMetal.Middleware.Solder.Extensions">
-      <HintPath>..\TextMetal.Middleware.Solder.Extensions\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Extensions.dll</HintPath>
+      <HintPath>..\TextMetal.Middleware.Solder.Extensions\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="TextMetal.Middleware.Solder.Injection">
-      <HintPath>..\TextMetal.Middleware.Solder.Injection\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Injection.dll</HintPath>
+      <HintPath>..\TextMetal.Middleware.Solder.Injection\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Injection.dll</HintPath>
     </Reference>
     <Reference Include="TextMetal.Middleware.Solder.Serialization">
-      <HintPath>..\TextMetal.Middleware.Solder.Serialization\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Serialization.dll</HintPath>
+      <HintPath>..\TextMetal.Middleware.Solder.Serialization\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="TextMetal.Middleware.Solder.Utilities">
-      <HintPath>..\TextMetal.Middleware.Solder.Utilities\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Utilities.dll</HintPath>
+      <HintPath>..\TextMetal.Middleware.Solder.Utilities\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Utilities.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

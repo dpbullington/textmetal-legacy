@@ -7,11 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 
-using TextMetal.Middleware.Solder.Context;
-using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Primitives;
 using TextMetal.Middleware.Solder.Utilities;
 
@@ -39,8 +36,6 @@ namespace TextMetal.Middleware.Solder.Executive
 			this.appConfigFascade = appConfigFascade;
 			this.reflectionFascade = reflectionFascade;
 			this.assemblyInformationFascade = assemblyInformationFascade;
-
-			Current = this;
 		}
 
 		#endregion
@@ -50,11 +45,9 @@ namespace TextMetal.Middleware.Solder.Executive
 		private const string APPCONFIG_ARGS_REGEX = @"-(" + APPCONFIG_ID_REGEX_UNBOUNDED + @"{0,63}):(.{0,})";
 		private const string APPCONFIG_ID_REGEX_UNBOUNDED = @"[a-zA-Z_\.][a-zA-Z_\.0-9]";
 		private const string APPCONFIG_PROPS_REGEX = @"(" + APPCONFIG_ID_REGEX_UNBOUNDED + @"{0,63})=(.{0,})";
-		private const string SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT = "SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT";
 		private const string SOLDER_HOOK_UNHANDLED_EXCEPTIONS = "SOLDER_HOOK_UNHANDLED_EXCEPTIONS";
-		private static readonly IContextualStorageFactory contextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.LocalThreadSafe);
+		private const string SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT = "SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT";
 
-		private static readonly string EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY = typeof(ExecutableApplicationFascade).GetTypeInfo().GUID.ToString("N");
 		private readonly IAppConfigFascade appConfigFascade;
 		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly IReflectionFascade reflectionFascade;
@@ -76,52 +69,6 @@ namespace TextMetal.Middleware.Solder.Executive
 			}
 		}
 
-		private bool LaunchDebuggerOnEntryPoint
-		{
-			get
-			{
-				string svalue;
-				bool ovalue;
-
-				svalue = Environment.GetEnvironmentVariable(SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT);
-
-				if ((object)svalue == null)
-					return false;
-
-				if (!this.DataTypeFascade.TryParse<bool>(svalue, out ovalue))
-					return false;
-
-				return !Debugger.IsAttached && ovalue;
-			}
-		}
-
-		protected static IContextualStorageFactory ContextualStorageFactory
-		{
-			get
-			{
-				return contextualStorageFactory;
-			}
-		}
-
-		private bool HookUnhandledExceptions
-		{
-			get
-			{
-				string svalue;
-				bool ovalue;
-
-				svalue = Environment.GetEnvironmentVariable(SOLDER_HOOK_UNHANDLED_EXCEPTIONS);
-
-				if ((object)svalue == null)
-					return false;
-
-				if (!this.DataTypeFascade.TryParse<bool>(svalue, out ovalue))
-					return false;
-
-				return !Debugger.IsAttached && ovalue;
-			}
-		}
-
 		/// <summary>
 		/// Gets the regular expression pattern for properties.
 		/// </summary>
@@ -130,21 +77,6 @@ namespace TextMetal.Middleware.Solder.Executive
 			get
 			{
 				return APPCONFIG_PROPS_REGEX;
-			}
-		}
-
-		public static ExecutableApplicationFascade Current
-		{
-			get
-			{
-				return ContextualStorageFactory.GetContextualStorage().GetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
-			}
-			set
-			{
-				if (ContextualStorageFactory.GetContextualStorage().HasValue(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY))
-					ContextualStorageFactory.GetContextualStorage().RemoveValue(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
-
-				ContextualStorageFactory.GetContextualStorage().SetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
 			}
 		}
 
@@ -169,6 +101,44 @@ namespace TextMetal.Middleware.Solder.Executive
 			get
 			{
 				return this.dataTypeFascade;
+			}
+		}
+
+		private bool HookUnhandledExceptions
+		{
+			get
+			{
+				string svalue;
+				bool ovalue;
+
+				svalue = Environment.GetEnvironmentVariable(SOLDER_HOOK_UNHANDLED_EXCEPTIONS);
+
+				if ((object)svalue == null)
+					return false;
+
+				if (!this.DataTypeFascade.TryParse<bool>(svalue, out ovalue))
+					return false;
+
+				return !Debugger.IsAttached && ovalue;
+			}
+		}
+
+		private bool LaunchDebuggerOnEntryPoint
+		{
+			get
+			{
+				string svalue;
+				bool ovalue;
+
+				svalue = Environment.GetEnvironmentVariable(SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT);
+
+				if ((object)svalue == null)
+					return false;
+
+				if (!this.DataTypeFascade.TryParse<bool>(svalue, out ovalue))
+					return false;
+
+				return !Debugger.IsAttached && ovalue;
 			}
 		}
 
@@ -224,8 +194,7 @@ namespace TextMetal.Middleware.Solder.Executive
 
 			if (disposing)
 			{
-				if ((object)Current != null)
-					Current = null;
+				// do nothing
 			}
 		}
 
@@ -236,10 +205,10 @@ namespace TextMetal.Middleware.Solder.Executive
 		/// <returns> The resulting exit code. </returns>
 		public int EntryPoint(string[] args)
 		{
-			if (LaunchDebuggerOnEntryPoint)
+			if (this.LaunchDebuggerOnEntryPoint)
 				Debugger.Launch();
 
-			if (HookUnhandledExceptions)
+			if (this.HookUnhandledExceptions)
 				return this.TryStartup(args);
 			else
 				return this.Startup(args);

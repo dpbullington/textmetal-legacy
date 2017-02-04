@@ -30,7 +30,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 		[Test]
 		public void ShouldCreateCrossThreadTest()
 		{
-			SharedStaticContextualStorageStrategy sharedStaticContextualStorageStrategy;
+			GlobalStaticContextualStorageStrategy globalStaticContextualStorageStrategy;
 			const string KEY = "somekey";
 			bool result;
 			string value;
@@ -40,19 +40,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 			int managedThreadId;
 
 			managedThreadId = Thread.CurrentThread.ManagedThreadId;
-			sharedStaticContextualStorageStrategy = new SharedStaticContextualStorageStrategy();
-			sharedStaticContextualStorageStrategy.ResetValues();
+			globalStaticContextualStorageStrategy = new GlobalStaticContextualStorageStrategy();
+			globalStaticContextualStorageStrategy.ResetValues();
 
 			// set unset
 			expected = Guid.NewGuid().ToString("N");
-			sharedStaticContextualStorageStrategy.SetValue(KEY, expected);
+			globalStaticContextualStorageStrategy.SetValue(KEY, expected);
 
 			// has isset
-			result = sharedStaticContextualStorageStrategy.HasValue(KEY);
+			result = globalStaticContextualStorageStrategy.HasValue(KEY);
 			Assert.IsTrue(result);
 
 			// get isset
-			value = sharedStaticContextualStorageStrategy.GetValue<string>(KEY);
+			value = globalStaticContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNotNull(value);
 			Assert.AreEqual(expected, value);
 
@@ -63,7 +63,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 									Assert.AreNotEqual(_managedThreadId, managedThreadId);
 
 									// has isset(other thread)
-									result = sharedStaticContextualStorageStrategy.HasValue(KEY);
+									result = globalStaticContextualStorageStrategy.HasValue(KEY);
 									Assert.IsTrue(result);
 								});
 
@@ -74,58 +74,58 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 		[Test]
 		public void ShouldCreateTest()
 		{
-			SharedStaticContextualStorageStrategy sharedStaticContextualStorageStrategy;
+			GlobalStaticContextualStorageStrategy globalStaticContextualStorageStrategy;
 			const string KEY = "somekey";
 			bool result;
 			string value;
 			string expected;
 
-			sharedStaticContextualStorageStrategy = new SharedStaticContextualStorageStrategy();
-			sharedStaticContextualStorageStrategy.ResetValues();
+			globalStaticContextualStorageStrategy = new GlobalStaticContextualStorageStrategy();
+			globalStaticContextualStorageStrategy.ResetValues();
 
 			// has unset
-			result = sharedStaticContextualStorageStrategy.HasValue(KEY);
+			result = globalStaticContextualStorageStrategy.HasValue(KEY);
 			Assert.IsFalse(result);
 
 			// get unset
-			value = sharedStaticContextualStorageStrategy.GetValue<string>(KEY);
+			value = globalStaticContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNull(value);
 
 			// remove unset
-			sharedStaticContextualStorageStrategy.RemoveValue(KEY);
+			globalStaticContextualStorageStrategy.RemoveValue(KEY);
 
 			// set unset
 			expected = Guid.NewGuid().ToString("N");
-			sharedStaticContextualStorageStrategy.SetValue(KEY, expected);
+			globalStaticContextualStorageStrategy.SetValue(KEY, expected);
 
 			// has isset
-			result = sharedStaticContextualStorageStrategy.HasValue(KEY);
+			result = globalStaticContextualStorageStrategy.HasValue(KEY);
 			Assert.IsTrue(result);
 
 			// get isset
-			value = sharedStaticContextualStorageStrategy.GetValue<string>(KEY);
+			value = globalStaticContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNotNull(value);
 			Assert.AreEqual(expected, value);
 
 			// set isset
 			expected = Guid.NewGuid().ToString("N");
-			sharedStaticContextualStorageStrategy.SetValue(KEY, expected);
+			globalStaticContextualStorageStrategy.SetValue(KEY, expected);
 
-			result = sharedStaticContextualStorageStrategy.HasValue(KEY);
+			result = globalStaticContextualStorageStrategy.HasValue(KEY);
 			Assert.IsTrue(result);
 
-			value = sharedStaticContextualStorageStrategy.GetValue<string>(KEY);
+			value = globalStaticContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNotNull(value);
 			Assert.AreEqual(expected, value);
 
 			// remove isset
-			sharedStaticContextualStorageStrategy.RemoveValue(KEY);
+			globalStaticContextualStorageStrategy.RemoveValue(KEY);
 
 			// verify remove
-			result = sharedStaticContextualStorageStrategy.HasValue(KEY);
+			result = globalStaticContextualStorageStrategy.HasValue(KEY);
 			Assert.IsFalse(result);
 
-			value = sharedStaticContextualStorageStrategy.GetValue<string>(KEY);
+			value = globalStaticContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNull(value);
 		}
 
@@ -140,11 +140,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 		public void ShouldFailOnNullSharedStaticCreateTest()
 		{
 			IDictionary<string, object> mockSharedStatic;
-			SharedStaticContextualStorageStrategy sharedStaticContextualStorageStrategy;
+			GlobalStaticContextualStorageStrategy globalStaticContextualStorageStrategy;
 
 			mockSharedStatic = null;
 
-			sharedStaticContextualStorageStrategy = new SharedStaticContextualStorageStrategy(mockSharedStatic);
+			globalStaticContextualStorageStrategy = new GlobalStaticContextualStorageStrategy(mockSharedStatic);
 		}
 
 		#endregion

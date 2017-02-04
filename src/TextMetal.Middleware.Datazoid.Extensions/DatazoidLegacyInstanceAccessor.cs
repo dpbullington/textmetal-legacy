@@ -15,8 +15,8 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 	{
 		#region Fields/Constants
 
-		private static readonly IAdoNetBufferingFascade adoNetBufferingLegacyInstance = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IAdoNetBufferingFascade>(String.Empty, true);
-		private static readonly IAdoNetStreamingFascade adoNetStreamingFascade = AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IAdoNetStreamingFascade>(String.Empty, true);
+		private static readonly IAdoNetBufferingFascade adoNetBufferingLegacyInstance = AssemblyDomain.Default.DependencyManager.ResolveDependency<IAdoNetBufferingFascade>(String.Empty, true);
+		private static readonly IAdoNetStreamingFascade adoNetStreamingFascade = AssemblyDomain.Default.DependencyManager.ResolveDependency<IAdoNetStreamingFascade>(String.Empty, true);
 
 		#endregion
 

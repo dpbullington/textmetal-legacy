@@ -39,11 +39,11 @@
 
 	"frameworks":
 	{
-		"netstandard1.6":
+		"netstandard1.5":
 		{
 			"dependencies":
 			{
-
+			
 			}
 		}
 	},

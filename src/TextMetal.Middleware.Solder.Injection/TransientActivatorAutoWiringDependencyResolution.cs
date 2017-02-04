@@ -25,7 +25,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// </summary>
 		/// <param name="activatorType"> The activator type of the resolution. </param>
 		public TransientActivatorAutoWiringDependencyResolution(Type activatorType)
-			: this(AssemblyDependencyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(string.Empty, false), activatorType)
+			: this(AssemblyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(string.Empty, false), activatorType)
 		{
 		}
 
