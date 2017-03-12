@@ -87,6 +87,9 @@
     <Reference Include="System.Runtime.Extensions">
       <HintPath>..\packages\System.Runtime.Extensions.4.3.0\ref\net462\System.Runtime.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="TextMetal.Middleware.Solder">
+      <HintPath>..\TextMetal.Middleware.Solder\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.dll</HintPath>
+    </Reference>
     <Reference Include="TextMetal.Middleware.Solder.Abstractions">
       <HintPath>..\TextMetal.Middleware.Solder.Executive\bin\Debug\netstandard1.5\TextMetal.Middleware.Solder.Abstractions.dll</HintPath>
     </Reference>

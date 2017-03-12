@@ -56,9 +56,10 @@
 	"dependencies":
 	{
 		"TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
+		"TextMetal.Middleware.UnitTests": "9.0.0-*",
+		"TextMetal.Middleware.Solder._netcoreapp_": "9.0.0-*",
 		"TextMetal.Imports": "9.0.0-*",
-		"TextMetal.Framework": "9.0.0-*",
-		"TextMetal.Middleware.UnitTests": "9.0.0-*"
+		"TextMetal.Framework": "9.0.0-*"
 	},
 
 	"commands":

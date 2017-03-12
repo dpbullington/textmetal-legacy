@@ -64,6 +64,8 @@ namespace TextMetal.TestRunner.ConsoleTool
 			if ((object)arguments == null)
 				throw new ArgumentNullException(nameof(arguments));
 
+			var t = typeof(TextMetal.Middleware.Solder.OnlyWhen);
+
 			return 0;
 		}
 
@@ -87,9 +89,9 @@ namespace TextMetal.TestRunner.ConsoleTool
 
 				this.appDomain = appDomain;
 
-				// hook assembly load context events
-				this.AppDomain.AssemblyLoad += this.AppDomain_AssemblyLoad;
+				// hook app domain events
 				this.AppDomain.DomainUnload += this.AppDomain_DomainUnload;
+				this.AppDomain.AssemblyLoad += this.AppDomain_AssemblyLoad;
 			}
 
 			#endregion
@@ -138,9 +140,9 @@ namespace TextMetal.TestRunner.ConsoleTool
 
 			public override void Dispose()
 			{
-				// unhook assembly load context events
-				this.AppDomain.DomainUnload -= this.AppDomain_DomainUnload;
+				// unhook appp domain events
 				this.AppDomain.AssemblyLoad -= this.AppDomain_AssemblyLoad;
+				this.AppDomain.DomainUnload -= this.AppDomain_DomainUnload;
 			}
 
 			public override IEnumerable<Assembly> GetLoadedAssemblies()

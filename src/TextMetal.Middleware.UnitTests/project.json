@@ -62,6 +62,7 @@
 	"dependencies":
 	{
 		"TextMetal.Imports": "9.0.0-*",
+		"TextMetal.Middleware.Solder._netcoreapp_": "9.0.0-*",
 		"TextMetal.Middleware.Solder.Context": "9.0.0-*",
 		"TextMetal.Middleware.Solder.Executive": "9.0.0-*",
 		"TextMetal.Middleware.Solder.Extensions": "9.0.0-*",

@@ -50,6 +50,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		private readonly IRuntimeAdapter runtimeAdapter;
 		private bool disposed;
 		private bool initialized;
+		private readonly IDictionary<AssemblyName, Assembly> knownAssemblies = new Dictionary<AssemblyName, Assembly>();
 
 		#endregion
 
@@ -121,6 +122,14 @@ namespace TextMetal.Middleware.Solder.Injection
 			set
 			{
 				this.initialized = value;
+			}
+		}
+
+		private IDictionary<AssemblyName, Assembly> KnownAssemblies
+		{
+			get
+			{
+				return this.knownAssemblies;
 			}
 		}
 
@@ -358,6 +367,9 @@ namespace TextMetal.Middleware.Solder.Injection
 		{
 			Assembly assembly;
 
+			if ((object)assemblyName == null)
+				throw new ArgumentNullException(nameof(assemblyName));
+
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
@@ -382,6 +394,9 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		private void RuntimeAdapter_OnAssemblyLoaded(Assembly assembly)
 		{
+			if ((object)assembly == null)
+				throw new ArgumentNullException(nameof(assembly));
+			
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
@@ -424,12 +439,22 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		private void ScanAssembly(Assembly assembly)
 		{
+			AssemblyName assemblyName;
+
 			Type[] assemblyTypes;
 
 			if ((object)assembly == null)
 				throw new ArgumentNullException(nameof(assembly));
 
+			assemblyName = assembly.GetName();
+
+			if (this.KnownAssemblies.ContainsKey(assemblyName))
+				return;
+
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}.", assembly.FullName));
+
+			// track which ones we have seen - not sure if AN is fully ==...
+			this.KnownAssemblies.Add(assemblyName, assembly);
 
 			try
 			{

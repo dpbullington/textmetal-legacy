@@ -162,6 +162,25 @@
           }
         }
       },
+      "Microsoft.DotNet.PlatformAbstractions/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "System.AppContext": "4.1.0",
+          "System.Collections": "4.0.11",
+          "System.IO": "4.1.0",
+          "System.IO.FileSystem": "4.0.1",
+          "System.Reflection.TypeExtensions": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0",
+          "System.Runtime.InteropServices.RuntimeInformation": "4.0.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/Microsoft.DotNet.PlatformAbstractions.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/Microsoft.DotNet.PlatformAbstractions.dll": {}
+        }
+      },
       "Microsoft.Extensions.Configuration/1.1.0": {
         "type": "package",
         "dependencies": {
@@ -218,6 +237,22 @@
         },
         "runtime": {
           "lib/netstandard1.3/Microsoft.Extensions.Configuration.Json.dll": {}
+        }
+      },
+      "Microsoft.Extensions.DependencyModel/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.DotNet.PlatformAbstractions": "1.1.0",
+          "Newtonsoft.Json": "9.0.1",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Dynamic.Runtime": "4.0.11",
+          "System.Linq": "4.1.0"
+        },
+        "compile": {
+          "lib/netstandard1.6/Microsoft.Extensions.DependencyModel.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.6/Microsoft.Extensions.DependencyModel.dll": {}
         }
       },
       "Microsoft.Extensions.FileProviders.Abstractions/1.1.0": {
@@ -1923,10 +1958,10 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.5/_._": {}
+          "ref/netstandard1.5/System.Runtime.Loader.dll": {}
         },
         "runtime": {
-          "lib/netstandard1.5/_._": {}
+          "lib/netstandard1.5/System.Runtime.Loader.dll": {}
         }
       },
       "System.Runtime.Numerics/4.3.0": {
@@ -2871,6 +2906,22 @@
           "netstandard1.5/TextMetal.Middleware.Solder.Utilities.dll": {}
         }
       },
+      "TextMetal.Middleware.Solder._netcoreapp_/9.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyModel": "1.1.0",
+          "NETStandard.Library": "1.6.1",
+          "System.Runtime.Loader": "4.3.0",
+          "TextMetal.Middleware.Solder.Abstractions": "9.0.0"
+        },
+        "compile": {
+          "netstandard1.6/TextMetal.Middleware.Solder._netcoreapp_.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/TextMetal.Middleware.Solder._netcoreapp_.dll": {}
+        }
+      },
       "TextMetal.Middleware.Textual/9.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.5",
@@ -3098,6 +3149,17 @@
         "runtimes/win8-arm/native/Microsoft.DiaSymReader.Native.arm.dll"
       ]
     },
+    "Microsoft.DotNet.PlatformAbstractions/1.1.0": {
+      "sha512": "Bl6KYfbFSIW3QIRHAp931iR5h01qHjKghdpAtncwbzNUs0+IUZ+XfwkIU0sQsR33ufGvi3u4dZMIYYFysjpHAA==",
+      "type": "package",
+      "path": "Microsoft.DotNet.PlatformAbstractions/1.1.0",
+      "files": [
+        "Microsoft.DotNet.PlatformAbstractions.1.1.0.nupkg.sha512",
+        "Microsoft.DotNet.PlatformAbstractions.nuspec",
+        "lib/net451/Microsoft.DotNet.PlatformAbstractions.dll",
+        "lib/netstandard1.3/Microsoft.DotNet.PlatformAbstractions.dll"
+      ]
+    },
     "Microsoft.Extensions.Configuration/1.1.0": {
       "sha512": "iqp8UepCsS902j0kPO/d7hrd9PSyK7l84UFlpqdV8QY+/pMUY5k8wlAIuN6mWdW97HI8a8BJyvjhJbJps2GwZw==",
       "type": "package",
@@ -3144,6 +3206,18 @@
         "lib/net451/Microsoft.Extensions.Configuration.Json.xml",
         "lib/netstandard1.3/Microsoft.Extensions.Configuration.Json.dll",
         "lib/netstandard1.3/Microsoft.Extensions.Configuration.Json.xml"
+      ]
+    },
+    "Microsoft.Extensions.DependencyModel/1.1.0": {
+      "sha512": "TG7dJ8GY1Myz9lZ8DJL4i6D05ncJQBi5CjBMXMdJ4edKxaW+vP2DndDd1jJabdMdmVRdGrvybzqkB+A6Df7eDw==",
+      "type": "package",
+      "path": "Microsoft.Extensions.DependencyModel/1.1.0",
+      "files": [
+        "Microsoft.Extensions.DependencyModel.1.1.0.nupkg.sha512",
+        "Microsoft.Extensions.DependencyModel.nuspec",
+        "lib/net451/Microsoft.Extensions.DependencyModel.dll",
+        "lib/netstandard1.3/Microsoft.Extensions.DependencyModel.dll",
+        "lib/netstandard1.6/Microsoft.Extensions.DependencyModel.dll"
       ]
     },
     "Microsoft.Extensions.FileProviders.Abstractions/1.1.0": {
@@ -8469,6 +8543,11 @@
       "path": "../TextMetal.Middleware.Solder.Utilities/project.json",
       "msbuildProject": "../TextMetal.Middleware.Solder.Utilities/TextMetal.Middleware.Solder.Utilities.xproj"
     },
+    "TextMetal.Middleware.Solder._netcoreapp_/9.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder._netcoreapp_/project.json",
+      "msbuildProject": "../TextMetal.Middleware.Solder._netcoreapp_/TextMetal.Middleware.Solder._netcoreapp_.xproj"
+    },
     "TextMetal.Middleware.Textual/9.0.0": {
       "type": "project",
       "path": "../TextMetal.Middleware.Textual/project.json",
@@ -8489,7 +8568,8 @@
     "": [
       "TextMetal.Framework >= 9.0.0-*",
       "TextMetal.Imports >= 9.0.0-*",
-      "TextMetal.Middleware.Solder.Primitives >= 9.0.0-*"
+      "TextMetal.Middleware.Solder.Primitives >= 9.0.0-*",
+      "TextMetal.Middleware.Solder._netcoreapp_ >= 9.0.0-*"
     ],
     ".NETCoreApp,Version=v1.1": [
       "Microsoft.NETCore.App >= 1.1.0"

@@ -38,6 +38,7 @@ namespace TextMetal.Middleware.Solder._netcoreapp_
 
 			// hook assembly load context events
 			this.AssemblyLoadContext.Unloading += this.AssemblyLoadContext_OnUnloading;
+			this.AssemblyLoadContext.Resolving += this.AssemblyLoadContext_OnResolving;
 		}
 
 		#endregion
@@ -71,6 +72,24 @@ namespace TextMetal.Middleware.Solder._netcoreapp_
 
 		#region Methods/Operators
 
+		private Assembly AssemblyLoadContext_OnResolving(AssemblyLoadContext assemblyLoadContext, AssemblyName assemblyName)
+		{
+			Assembly assembly;
+
+			if ((object)assemblyLoadContext == null)
+				throw new ArgumentNullException(nameof(assemblyLoadContext));
+
+			if ((object)assemblyName == null)
+				throw new ArgumentNullException(nameof(assemblyName));
+
+			// does this make sense??
+			assembly = this.AssemblyLoadContext.LoadFromAssemblyName(assemblyName);
+
+			this.OnAssemblyLoaded(assembly);
+
+			return assembly;
+		}
+
 		private void AssemblyLoadContext_OnUnloading(AssemblyLoadContext assemblyLoadContext)
 		{
 			if ((object)assemblyLoadContext == null)
@@ -82,23 +101,27 @@ namespace TextMetal.Middleware.Solder._netcoreapp_
 		public override void Dispose()
 		{
 			// unhook assembly load context events
+			this.AssemblyLoadContext.Resolving -= this.AssemblyLoadContext_OnResolving;
 			this.AssemblyLoadContext.Unloading -= this.AssemblyLoadContext_OnUnloading;
 		}
 
 		public override IEnumerable<Assembly> GetLoadedAssemblies()
 		{
-			return Enumerable.ToArray<Assembly>(this.DependencyContext.RuntimeLibraries
+			return this.DependencyContext.RuntimeLibraries
 				.SelectMany(library =>
 							{
 								var _dependencyContext = this.DependencyContext;
 								return DependencyContextExtensions.GetDefaultAssemblyNames(library, _dependencyContext);
 							})
-				.Select(assemblyName => Assembly.Load(assemblyName)));
+				.Select(assemblyName => Assembly.Load(assemblyName)).ToArray<Assembly>();
 		}
 
 		public override Assembly LoadAssembly(AssemblyName assemblyName)
 		{
 			Assembly assembly;
+
+			if ((object)assemblyName == null)
+				throw new ArgumentNullException(nameof(assemblyName));
 
 			assembly = this.AssemblyLoadContext.LoadFromAssemblyName(assemblyName);
 
