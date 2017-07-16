@@ -21,7 +21,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 
 		public WrappedDbDataReader(DbDataReader innerDbDataReader)
 		{
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::.ctor(...)", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::.ctor(...)", typeof(WrappedDbDataReader).Name));
 
 			if ((object)innerDbDataReader == null)
 				throw new ArgumentNullException(nameof(innerDbDataReader));
@@ -38,6 +38,11 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		private static void ThisTypeOnlyWhen_PROFILE_ThenPrint(string message)
+		{
+			//OnlyWhen._PROFILE_ThenPrint(message);
+		}
 
 		/// <summary> Gets the value of the specified column as an instance of <see cref="T:System.Object" />. </summary>
 		/// <returns> The value of the specified column. </returns>
@@ -151,12 +156,12 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		/// <param name="disposing"> true to release managed and unmanaged resources; false to release only unmanaged resources. </param>
 		protected override void Dispose(bool disposing)
 		{
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Dispose(...): enter", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::Dispose(...): enter", typeof(WrappedDbDataReader).Name));
 
 			if (disposing)
 				this.InnerDbDataReader.Dispose();
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Dispose(...): leave", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::Dispose(...): leave", typeof(WrappedDbDataReader).Name));
 		}
 
 		/// <summary> Gets the value of the specified column as a Boolean. </summary>
@@ -249,11 +254,11 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		{
 			Type retval;
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetFieldType(...): enter", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::GetFieldType(...): enter", typeof(WrappedDbDataReader).Name));
 
 			retval = this.InnerDbDataReader.GetFieldType(i);
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetFieldType(...): return name", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::GetFieldType(...): return name", typeof(WrappedDbDataReader).Name));
 
 			return retval;
 		}
@@ -316,11 +321,11 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		{
 			string retval;
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetName(...): enter", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::GetName(...): enter", typeof(WrappedDbDataReader).Name));
 
 			retval = this.InnerDbDataReader.GetName(i);
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetName(...): return name", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::GetName(...): return name", typeof(WrappedDbDataReader).Name));
 
 			return retval;
 		}
@@ -329,11 +334,11 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		{
 			int retval;
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetOrdinal(...): enter", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::GetOrdinal(...): enter", typeof(WrappedDbDataReader).Name));
 
 			retval = this.InnerDbDataReader.GetOrdinal(name);
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetOrdinal(...): return value", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::GetOrdinal(...): return value", typeof(WrappedDbDataReader).Name));
 
 			return retval;
 		}
@@ -398,11 +403,11 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		{
 			object retval;
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetValue(...): enter", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::GetValue(...): enter", typeof(WrappedDbDataReader).Name));
 
 			retval = this.InnerDbDataReader.GetValue(i);
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetValue(...): return value", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::GetValue(...): return value", typeof(WrappedDbDataReader).Name));
 
 			return retval;
 		}
@@ -432,11 +437,11 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		{
 			bool retval;
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::NextResult(...): enter", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::NextResult(...): enter", typeof(WrappedDbDataReader).Name));
 
 			retval = this.InnerDbDataReader.NextResult();
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::NextResult(...): return flag", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::NextResult(...): return flag", typeof(WrappedDbDataReader).Name));
 
 			return retval;
 		}
@@ -454,11 +459,11 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		{
 			bool retval;
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Read(...): enter", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::Read(...): enter", typeof(WrappedDbDataReader).Name));
 
 			retval = this.InnerDbDataReader.Read();
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Read(...): return flag", typeof(WrappedDbDataReader).Name));
+			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::Read(...): return flag", typeof(WrappedDbDataReader).Name));
 
 			return retval;
 		}

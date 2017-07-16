@@ -8,6 +8,27 @@ SET NOCOUNT ON
 GO
 
 
+CREATE TABLE [dbo].[stage_confidential_banking_data_txt]
+(
+	[id] [bigint] IDENTITY(0,1) NOT NULL,
+	[institution] [nvarchar](255) NULL,
+	[txid] [int] NULL,
+	[number] [nvarchar](255) NULL,
+	[date] [datetime] NULL,
+	[payee] [nvarchar](255) NULL,
+	[amount] [float] NULL,
+	[cleared] [bit] NULL DEFAULT(0),
+	[category] [nvarchar](255) NULL,
+	[due] [datetime] NULL,
+	[comments] [nvarchar](2047) NULL,
+	
+	CONSTRAINT [pk_stage_confidential_banking_data_txt] PRIMARY KEY
+	(
+		[id]
+	)
+)	
+GO
+
 CREATE TABLE [dbo].[CheckingAccountSource]
 (
 	[RecordId] [bigint] IDENTITY(0,1) NOT NULL,

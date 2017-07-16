@@ -5,20 +5,42 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using TextMetal.Middleware.Oxymoron.Legacy.Config;
 using TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters;
+using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Primitives;
+using TextMetal.Middleware.Textual.Delimited;
+using TextMetal.Middleware.Textual.Primitives;
 
 namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 {
-	public class NullDestinationAdapter : DestinationAdapter<AdapterSpecificConfiguration>, INullAdapter
+	public class ConsoleOutputDestinationAdapter : DestinationAdapter<AdapterSpecificConfiguration>, IConsoleAdapter
 	{
 		#region Constructors/Destructors
 
-		public NullDestinationAdapter()
+		public ConsoleOutputDestinationAdapter()
 		{
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly TextWriter textWriter = Console.Out;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		private TextWriter TextWriter
+		{
+			get
+			{
+				return this.textWriter;
+			}
 		}
 
 		#endregion
@@ -27,6 +49,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 
 		protected override void CoreInitialize()
 		{
+			// DO NOTHING
 		}
 
 		protected override void CorePushData(TableConfiguration tableConfiguration, IEnumerable<IRecord> sourceDataEnumerable)
@@ -37,11 +60,17 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 			if ((object)sourceDataEnumerable == null)
 				throw new ArgumentNullException(nameof(sourceDataEnumerable));
 
-			sourceDataEnumerable.Count(); // force enumeration
+			foreach (IRecord sourceDataRecord in sourceDataEnumerable)
+			{
+				string temp;
+				temp = string.Join("|", sourceDataRecord.Select(kvp => string.Format("{0}={1}", kvp.Key, kvp.Value.SafeToString("null"))).ToArray());
+				this.TextWriter.WriteLine(temp);
+			}
 		}
 
 		protected override void CoreTerminate()
 		{
+			// DO NOT DISPOSE
 		}
 
 		#endregion

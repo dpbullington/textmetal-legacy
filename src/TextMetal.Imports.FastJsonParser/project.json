@@ -1,6 +1,6 @@
 {
 	"version": "9.0.0-*",
-	"description": "TextMetal Console Ox App (obfuscation host)",
+	"description": "TextMetal Imports FastJsonParser Library",
 	"authors":
 	[
 		"©2002-2017 Daniel P. Bullington (dpbullington@gmail.com)"
@@ -29,38 +29,35 @@
 		"debugType": "portable",
 		"keyFile": "../TextMetal.snk",
 		"warningsAsErrors": false,
-		"emitEntryPoint": true,
 		"compile":
 		{
 			"exclude":
 			[
 			]
-		},
-		"copyToOutput":
-		[
-			"appconfig.json"
-		]
+		}
 	},
 
 	"frameworks":
 	{
-		"netcoreapp1.1":
+		"netstandard1.5":
 		{
+			"buildOptions":
+			{
+				"define":
+				[
+					"SILVERLIGHT",
+					"WINDOWS_PHONE"
+				]
+			},
+
 			"dependencies":
 			{
-				"Microsoft.NETCore.App":
-				{
-					"version": "1.1.0",
-					"type": "platform"
-				}
 			}
 		}
 	},
 
 	"dependencies":
 	{
-		"TextMetal.Middleware.Solder.Executive": "9.0.0-*",
-		"TextMetal.Middleware.Oxymoron.Legacy": "9.0.0-*",
-		"TextMetal.Middleware.Solder._netcoreapp_": "9.0.0-*"
+		"NETStandard.Library": "1.6.1"
 	}
 }

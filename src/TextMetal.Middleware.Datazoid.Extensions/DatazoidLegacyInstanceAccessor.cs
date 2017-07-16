@@ -7,6 +7,7 @@ using System;
 
 using TextMetal.Middleware.Datazoid.Primitives;
 using TextMetal.Middleware.Solder.Injection;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid.Extensions
 {
@@ -15,8 +16,8 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 	{
 		#region Fields/Constants
 
-		private static readonly IAdoNetBufferingFascade adoNetBufferingLegacyInstance = AssemblyDomain.Default.DependencyManager.ResolveDependency<IAdoNetBufferingFascade>(String.Empty, true);
-		private static readonly IAdoNetStreamingFascade adoNetStreamingFascade = AssemblyDomain.Default.DependencyManager.ResolveDependency<IAdoNetStreamingFascade>(String.Empty, true);
+		//private static readonly IAdoNetBufferingFascade adoNetBufferingLegacyInstance = AssemblyDomain.Default.DependencyManager.ResolveDependency<IAdoNetBufferingFascade>(String.Empty, false);
+		//private static readonly IAdoNetStreamingFascade adoNetStreamingFascade = AssemblyDomain.Default.DependencyManager.ResolveDependency<IAdoNetStreamingFascade>(String.Empty, false);
 
 		#endregion
 
@@ -26,7 +27,8 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 		{
 			get
 			{
-				return adoNetBufferingLegacyInstance;
+				return new AdoNetBufferingFascade(new ReflectionFascade(new DataTypeFascade()), new DataTypeFascade());
+				//return adoNetBufferingLegacyInstance;
 			}
 		}
 
@@ -34,7 +36,8 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 		{
 			get
 			{
-				return adoNetStreamingFascade;
+				return new AdoNetStreamingFascade(new ReflectionFascade(new DataTypeFascade()), new DataTypeFascade());
+				//return adoNetStreamingFascade;
 			}
 		}
 

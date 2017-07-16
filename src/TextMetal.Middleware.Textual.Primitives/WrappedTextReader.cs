@@ -16,7 +16,7 @@ namespace TextMetal.Middleware.Textual.Primitives
 		protected WrappedTextReader(TextReader innerTextReader)
 		{
 			if ((object)innerTextReader == null)
-				throw new ArgumentNullException("innerTextReader");
+				throw new ArgumentNullException(nameof(innerTextReader));
 
 			this.innerTextReader = innerTextReader;
 		}

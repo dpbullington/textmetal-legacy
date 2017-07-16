@@ -32,6 +32,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy
 			this.oxymoronHost = oxymoronHost;
 			this.obfuscationConfiguration = obfuscationConfiguration;
 
+			OnlyWhen._PROFILE_ThenPrint(string.Format("SECURITY_CRITICAL_OPTION: {0}={1}", nameof(obfuscationConfiguration.EnablePassThru), obfuscationConfiguration.EnablePassThru ?? false));
 			EnsureValidConfigurationOnce(this.ObfuscationConfiguration);
 		}
 
@@ -278,6 +279,9 @@ namespace TextMetal.Middleware.Oxymoron.Legacy
 
 			if ((object)columnValue == DBNull.Value)
 				columnValue = null;
+
+			if ((this.ObfuscationConfiguration.EnablePassThru ?? false))
+				return columnValue; // pass-thru
 
 			value = this._GetObfuscatedValue(column, columnValue);
 

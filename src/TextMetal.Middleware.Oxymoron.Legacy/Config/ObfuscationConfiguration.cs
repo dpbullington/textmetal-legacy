@@ -31,6 +31,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config
 		private readonly ConfigurationObjectCollection<DictionaryConfiguration> dictionaryConfigurations;
 		private Version configurationVersion;
 		private AdapterConfiguration destinationAdapterConfiguration;
+		private bool? enablePassThru;
 		private Version engineVersion;
 		private HashConfiguration hashConfiguration;
 		private AdapterConfiguration sourceAdapterConfiguration;
@@ -86,6 +87,18 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config
 			{
 				this.EnsureParentOnPropertySet(this.destinationAdapterConfiguration, value);
 				this.destinationAdapterConfiguration = value;
+			}
+		}
+
+		public bool? EnablePassThru
+		{
+			get
+			{
+				return this.enablePassThru;
+			}
+			set
+			{
+				this.enablePassThru = value;
 			}
 		}
 

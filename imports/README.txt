@@ -17,3 +17,7 @@ REQUIRED CHANGES TO SUPPORT netframework1.6
 nunit-4a11e8ed6384a879074804ad3b955eba4cc46a65.zip
 https://github.com/nunit/nunit
 NO CHANGES TO SUPPORT netframework1.6
+
+
+https://github.com/ysharplanguage/FastJsonParser
+https://github.com/JamesNK/Newtonsoft.Json
