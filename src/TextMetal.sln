@@ -1,58 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{61D501CE-BF7D-40FD-8BE7-86B7CE326A73}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{98EC87E5-FC09-4752-97B1-88FEDAFDF5B2}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder.Primitives", "TextMetal.Middleware.Solder.Primitives\TextMetal.Middleware.Solder.Primitives.xproj", "{B6D5B9FD-4DD7-446C-939F-BD0B2B3A31DC}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.ConsoleTool", "TextMetal.ConsoleTool\TextMetal.ConsoleTool.xproj", "{269E869E-C83B-4436-9A67-9273BFE1EF71}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.UnitTests", "TextMetal.Middleware.UnitTests\TextMetal.Middleware.UnitTests.xproj", "{232F02FA-A089-4128-8B56-6C22EDF2A5AC}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Framework", "TextMetal.Framework\TextMetal.Framework.xproj", "{35D30312-C72C-42A5-996D-0487E94EA3F0}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Framework.UnitTests", "TextMetal.Framework.UnitTests\TextMetal.Framework.UnitTests.xproj", "{F987EE58-8462-4A08-B0A2-F5CA0018432A}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Framework.IntegrationTests", "TextMetal.Framework.IntegrationTests\TextMetal.Framework.IntegrationTests.xproj", "{D4C2088D-10AF-4E59-B4DB-FF5536E82385}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.IntegrationTests", "TextMetal.Middleware.IntegrationTests\TextMetal.Middleware.IntegrationTests.xproj", "{2D980167-9B74-428C-BB4A-46136C804A94}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bin", "bin", "{572BB62D-9D94-4871-94A5-4935515997DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{64ADAC3F-C7B6-44C0-B858-3B2A73C72A6D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Datazoid", "TextMetal.Middleware.Datazoid\TextMetal.Middleware.Datazoid.xproj", "{D6F33FD2-A067-44FC-9631-C58ED92F0614}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Imports", "TextMetal.Imports\TextMetal.Imports.xproj", "{F5FC8E02-F454-4D26-AC1F-3F39A6E075C9}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.NopCLI", "TextMetal.NopCLI\TextMetal.NopCLI.xproj", "{F796E936-A05D-466D-92FF-B67E05FA90CD}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solder", "Solder", "{009E0012-E258-4542-94BA-6CCB5A47980A}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder.Context", "TextMetal.Middleware.Solder.Context\TextMetal.Middleware.Solder.Context.xproj", "{6ECA187F-D32C-48EF-B811-437F644B2E22}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder.Injection", "TextMetal.Middleware.Solder.Injection\TextMetal.Middleware.Solder.Injection.xproj", "{97A86335-5F03-4AB0-AA18-246562929462}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder.Interception", "TextMetal.Middleware.Solder.Interception\TextMetal.Middleware.Solder.Interception.xproj", "{09242A16-E781-4662-9638-3A5ACE01D38B}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder.Serialization", "TextMetal.Middleware.Solder.Serialization\TextMetal.Middleware.Solder.Serialization.xproj", "{89926C39-8448-494B-9F1A-C119EC8BBBC0}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder.Utilities", "TextMetal.Middleware.Solder.Utilities\TextMetal.Middleware.Solder.Utilities.xproj", "{8894561C-DCD7-4F42-B1C7-96AC135D74FA}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder.Executive", "TextMetal.Middleware.Solder.Executive\TextMetal.Middleware.Solder.Executive.xproj", "{31ED40D1-088D-41E2-A76D-2B13E0AAA670}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Datazoid", "Datazoid", "{C964B932-C257-4DD2-961A-19AE14FCFB18}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4AB6B02E-4FB3-493E-A576-65664D2EC41B}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder.Extensions", "TextMetal.Middleware.Solder.Extensions\TextMetal.Middleware.Solder.Extensions.xproj", "{FED2BAB6-3BBE-46F9-8C8B-76C6D3AAD2FC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{1F5F69A5-0A6F-46C9-B36F-0BBDCD4D78D9}"
 EndProject
@@ -60,57 +23,91 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Imports", "Imports", "{C768
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{B901A9C1-710A-430F-ADF5-B1A492ABEDFF}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Imports.CastleCore", "TextMetal.Imports.CastleCore\TextMetal.Imports.CastleCore.xproj", "{DCB7DC1E-5680-4EBE-AF14-6036AE1DC03F}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Imports.Jint", "TextMetal.Imports.Jint\TextMetal.Imports.Jint.xproj", "{CFCC29BD-0D0E-40E5-AB7F-6B5FFFD58EE6}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Imports.NMock", "TextMetal.Imports.NMock\TextMetal.Imports.NMock.xproj", "{4A88C98B-9D6C-47CD-8D27-9C2D4840A349}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Imports.NUnit", "TextMetal.Imports.NUnit\TextMetal.Imports.NUnit.xproj", "{F1E30B96-34BA-4136-8A49-AF3D35CC53EA}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder", "TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.xproj", "{8958F0E4-5879-4D05-9E60-DDBC5CB408C4}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Datazoid.Extensions", "TextMetal.Middleware.Datazoid.Extensions\TextMetal.Middleware.Datazoid.Extensions.xproj", "{6A682D9A-1D87-42BE-8799-445AAB2F0C05}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Datazoid.Models", "TextMetal.Middleware.Datazoid.Models\TextMetal.Middleware.Datazoid.Models.xproj", "{5A6A912D-129A-4ED0-B71F-D1BA27CE31A7}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Datazoid.Primitives", "TextMetal.Middleware.Datazoid.Primitives\TextMetal.Middleware.Datazoid.Primitives.xproj", "{BE650155-817B-4C7A-A71F-F4F2FBB56551}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Datazoid.Repositories", "TextMetal.Middleware.Datazoid.Repositories\TextMetal.Middleware.Datazoid.Repositories.xproj", "{7CA55388-AEF2-409C-BC89-A413895E1237}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Datazoid.UoW", "TextMetal.Middleware.Datazoid.UoW\TextMetal.Middleware.Datazoid.UoW.xproj", "{BBEE033E-9297-4D9E-9CD6-B0A1DE4874CC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textual", "Textual", "{F3309571-24C5-405C-9D1E-AE5FE7D353EC}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Textual.Primitives", "TextMetal.Middleware.Textual.Primitives\TextMetal.Middleware.Textual.Primitives.xproj", "{29B002B4-9992-45D3-AD76-AFD2014457F5}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Textual", "TextMetal.Middleware.Textual\TextMetal.Middleware.Textual.xproj", "{366CDACC-94CA-4875-8618-833530A5CDA5}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Textual.Delimited", "TextMetal.Middleware.Textual.Delimited\TextMetal.Middleware.Textual.Delimited.xproj", "{DBF0DA6C-2F81-49EE-8103-B9DA6F370371}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Oxymoron", "Oxymoron", "{25B1711D-E77F-48ED-917C-44B8F9F439CB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Ox.ConsoleTool", "TextMetal.Ox.ConsoleTool\TextMetal.Ox.ConsoleTool.xproj", "{0037E132-DDF9-4EA5-9192-2BBD91B67506}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Oxymoron.Legacy", "TextMetal.Middleware.Oxymoron.Legacy\TextMetal.Middleware.Oxymoron.Legacy.xproj", "{94DFAAC5-DF5B-4022-B0B7-E59EF3817530}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Middleware", "Middleware", "{7DF87AC9-2766-4BD1-84EE-7D27C2782060}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Mz.ConsoleTool", "TextMetal.Mz.ConsoleTool\TextMetal.Mz.ConsoleTool.xproj", "{27771806-20F4-482A-93F3-8344CBD23CED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Messaging", "Messaging", "{E6FA5574-0A30-415B-BFD6-950277E9C23D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Messaging.Core", "TextMetal.Messaging.Core\TextMetal.Messaging.Core.xproj", "{6499624E-6176-4BF4-BADD-FC2E36216237}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Solder.Primitives", "TextMetal.Middleware.Solder.Primitives\TextMetal.Middleware.Solder.Primitives.csproj", "{B6D5B9FD-4DD7-446C-939F-BD0B2B3A31DC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Messaging.Store", "TextMetal.Messaging.Store\TextMetal.Messaging.Store.xproj", "{85BB47B3-320B-4554-8952-AB3556E9E8DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.ConsoleTool", "TextMetal.ConsoleTool\TextMetal.ConsoleTool.csproj", "{269E869E-C83B-4436-9A67-9273BFE1EF71}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder.Abstractions", "TextMetal.Middleware.Solder.Abstractions\TextMetal.Middleware.Solder.Abstractions.xproj", "{FF18DD25-296E-4F59-A5EF-D8FC18667687}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.UnitTests", "TextMetal.Middleware.UnitTests\TextMetal.Middleware.UnitTests.csproj", "{232F02FA-A089-4128-8B56-6C22EDF2A5AC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder._netcoreapp_", "TextMetal.Middleware.Solder._netcoreapp_\TextMetal.Middleware.Solder._netcoreapp_.xproj", "{164A8BF8-397A-4BCA-84F6-BA06EAF8BA75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Framework", "TextMetal.Framework\TextMetal.Framework.csproj", "{35D30312-C72C-42A5-996D-0487E94EA3F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Framework.UnitTests", "TextMetal.Framework.UnitTests\TextMetal.Framework.UnitTests.csproj", "{F987EE58-8462-4A08-B0A2-F5CA0018432A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Framework.IntegrationTests", "TextMetal.Framework.IntegrationTests\TextMetal.Framework.IntegrationTests.csproj", "{D4C2088D-10AF-4E59-B4DB-FF5536E82385}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.IntegrationTests", "TextMetal.Middleware.IntegrationTests\TextMetal.Middleware.IntegrationTests.csproj", "{2D980167-9B74-428C-BB4A-46136C804A94}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Datazoid", "TextMetal.Middleware.Datazoid\TextMetal.Middleware.Datazoid.csproj", "{D6F33FD2-A067-44FC-9631-C58ED92F0614}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Imports", "TextMetal.Imports\TextMetal.Imports.csproj", "{F5FC8E02-F454-4D26-AC1F-3F39A6E075C9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.NopCLI", "TextMetal.NopCLI\TextMetal.NopCLI.csproj", "{F796E936-A05D-466D-92FF-B67E05FA90CD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Solder.Context", "TextMetal.Middleware.Solder.Context\TextMetal.Middleware.Solder.Context.csproj", "{6ECA187F-D32C-48EF-B811-437F644B2E22}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Solder.Injection", "TextMetal.Middleware.Solder.Injection\TextMetal.Middleware.Solder.Injection.csproj", "{97A86335-5F03-4AB0-AA18-246562929462}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Solder.Interception", "TextMetal.Middleware.Solder.Interception\TextMetal.Middleware.Solder.Interception.csproj", "{09242A16-E781-4662-9638-3A5ACE01D38B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Solder.Serialization", "TextMetal.Middleware.Solder.Serialization\TextMetal.Middleware.Solder.Serialization.csproj", "{89926C39-8448-494B-9F1A-C119EC8BBBC0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Solder.Utilities", "TextMetal.Middleware.Solder.Utilities\TextMetal.Middleware.Solder.Utilities.csproj", "{8894561C-DCD7-4F42-B1C7-96AC135D74FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Solder.Executive", "TextMetal.Middleware.Solder.Executive\TextMetal.Middleware.Solder.Executive.csproj", "{31ED40D1-088D-41E2-A76D-2B13E0AAA670}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Solder.Extensions", "TextMetal.Middleware.Solder.Extensions\TextMetal.Middleware.Solder.Extensions.csproj", "{FED2BAB6-3BBE-46F9-8C8B-76C6D3AAD2FC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Imports.CastleCore", "TextMetal.Imports.CastleCore\TextMetal.Imports.CastleCore.csproj", "{DCB7DC1E-5680-4EBE-AF14-6036AE1DC03F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Imports.Jint", "TextMetal.Imports.Jint\TextMetal.Imports.Jint.csproj", "{CFCC29BD-0D0E-40E5-AB7F-6B5FFFD58EE6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Imports.NMock", "TextMetal.Imports.NMock\TextMetal.Imports.NMock.csproj", "{4A88C98B-9D6C-47CD-8D27-9C2D4840A349}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Imports.NUnit", "TextMetal.Imports.NUnit\TextMetal.Imports.NUnit.csproj", "{F1E30B96-34BA-4136-8A49-AF3D35CC53EA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Solder", "TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.csproj", "{8958F0E4-5879-4D05-9E60-DDBC5CB408C4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Datazoid.Extensions", "TextMetal.Middleware.Datazoid.Extensions\TextMetal.Middleware.Datazoid.Extensions.csproj", "{6A682D9A-1D87-42BE-8799-445AAB2F0C05}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Datazoid.Models", "TextMetal.Middleware.Datazoid.Models\TextMetal.Middleware.Datazoid.Models.csproj", "{5A6A912D-129A-4ED0-B71F-D1BA27CE31A7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Datazoid.Primitives", "TextMetal.Middleware.Datazoid.Primitives\TextMetal.Middleware.Datazoid.Primitives.csproj", "{BE650155-817B-4C7A-A71F-F4F2FBB56551}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Datazoid.Repositories", "TextMetal.Middleware.Datazoid.Repositories\TextMetal.Middleware.Datazoid.Repositories.csproj", "{7CA55388-AEF2-409C-BC89-A413895E1237}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Datazoid.UoW", "TextMetal.Middleware.Datazoid.UoW\TextMetal.Middleware.Datazoid.UoW.csproj", "{BBEE033E-9297-4D9E-9CD6-B0A1DE4874CC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Textual.Primitives", "TextMetal.Middleware.Textual.Primitives\TextMetal.Middleware.Textual.Primitives.csproj", "{29B002B4-9992-45D3-AD76-AFD2014457F5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Textual", "TextMetal.Middleware.Textual\TextMetal.Middleware.Textual.csproj", "{366CDACC-94CA-4875-8618-833530A5CDA5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Textual.Delimited", "TextMetal.Middleware.Textual.Delimited\TextMetal.Middleware.Textual.Delimited.csproj", "{DBF0DA6C-2F81-49EE-8103-B9DA6F370371}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Ox.ConsoleTool", "TextMetal.Ox.ConsoleTool\TextMetal.Ox.ConsoleTool.csproj", "{0037E132-DDF9-4EA5-9192-2BBD91B67506}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Oxymoron.Legacy", "TextMetal.Middleware.Oxymoron.Legacy\TextMetal.Middleware.Oxymoron.Legacy.csproj", "{94DFAAC5-DF5B-4022-B0B7-E59EF3817530}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Mz.ConsoleTool", "TextMetal.Mz.ConsoleTool\TextMetal.Mz.ConsoleTool.csproj", "{27771806-20F4-482A-93F3-8344CBD23CED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Messaging.Core", "TextMetal.Messaging.Core\TextMetal.Messaging.Core.csproj", "{6499624E-6176-4BF4-BADD-FC2E36216237}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Messaging.Store", "TextMetal.Messaging.Store\TextMetal.Messaging.Store.csproj", "{85BB47B3-320B-4554-8952-AB3556E9E8DB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Solder.Abstractions", "TextMetal.Middleware.Solder.Abstractions\TextMetal.Middleware.Solder.Abstractions.csproj", "{FF18DD25-296E-4F59-A5EF-D8FC18667687}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Solder._netcoreapp_", "TextMetal.Middleware.Solder._netcoreapp_\TextMetal.Middleware.Solder._netcoreapp_.csproj", "{164A8BF8-397A-4BCA-84F6-BA06EAF8BA75}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.NopCLI._net_", "TextMetal.NopCLI._net_\TextMetal.NopCLI._net_.csproj", "{919F8063-72B9-45AB-9209-204DA76A61D1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Imports.FastJsonParser", "TextMetal.Imports.FastJsonParser\TextMetal.Imports.FastJsonParser.xproj", "{32E7EB8A-52EC-4FF7-B9DD-E3F6B8359E01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Imports.FastJsonParser", "TextMetal.Imports.FastJsonParser\TextMetal.Imports.FastJsonParser.csproj", "{32E7EB8A-52EC-4FF7-B9DD-E3F6B8359E01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -358,6 +355,18 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{572BB62D-9D94-4871-94A5-4935515997DA} = {98EC87E5-FC09-4752-97B1-88FEDAFDF5B2}
+		{64ADAC3F-C7B6-44C0-B858-3B2A73C72A6D} = {98EC87E5-FC09-4752-97B1-88FEDAFDF5B2}
+		{009E0012-E258-4542-94BA-6CCB5A47980A} = {7DF87AC9-2766-4BD1-84EE-7D27C2782060}
+		{C964B932-C257-4DD2-961A-19AE14FCFB18} = {7DF87AC9-2766-4BD1-84EE-7D27C2782060}
+		{4AB6B02E-4FB3-493E-A576-65664D2EC41B} = {572BB62D-9D94-4871-94A5-4935515997DA}
+		{1F5F69A5-0A6F-46C9-B36F-0BBDCD4D78D9} = {64ADAC3F-C7B6-44C0-B858-3B2A73C72A6D}
+		{C768FC92-FDCA-48DF-94BF-1902245BDF96} = {64ADAC3F-C7B6-44C0-B858-3B2A73C72A6D}
+		{B901A9C1-710A-430F-ADF5-B1A492ABEDFF} = {572BB62D-9D94-4871-94A5-4935515997DA}
+		{F3309571-24C5-405C-9D1E-AE5FE7D353EC} = {7DF87AC9-2766-4BD1-84EE-7D27C2782060}
+		{25B1711D-E77F-48ED-917C-44B8F9F439CB} = {7DF87AC9-2766-4BD1-84EE-7D27C2782060}
+		{7DF87AC9-2766-4BD1-84EE-7D27C2782060} = {64ADAC3F-C7B6-44C0-B858-3B2A73C72A6D}
+		{E6FA5574-0A30-415B-BFD6-950277E9C23D} = {64ADAC3F-C7B6-44C0-B858-3B2A73C72A6D}
 		{B6D5B9FD-4DD7-446C-939F-BD0B2B3A31DC} = {009E0012-E258-4542-94BA-6CCB5A47980A}
 		{269E869E-C83B-4436-9A67-9273BFE1EF71} = {B901A9C1-710A-430F-ADF5-B1A492ABEDFF}
 		{232F02FA-A089-4128-8B56-6C22EDF2A5AC} = {4AB6B02E-4FB3-493E-A576-65664D2EC41B}
@@ -365,24 +374,16 @@ Global
 		{F987EE58-8462-4A08-B0A2-F5CA0018432A} = {4AB6B02E-4FB3-493E-A576-65664D2EC41B}
 		{D4C2088D-10AF-4E59-B4DB-FF5536E82385} = {4AB6B02E-4FB3-493E-A576-65664D2EC41B}
 		{2D980167-9B74-428C-BB4A-46136C804A94} = {4AB6B02E-4FB3-493E-A576-65664D2EC41B}
-		{572BB62D-9D94-4871-94A5-4935515997DA} = {98EC87E5-FC09-4752-97B1-88FEDAFDF5B2}
-		{64ADAC3F-C7B6-44C0-B858-3B2A73C72A6D} = {98EC87E5-FC09-4752-97B1-88FEDAFDF5B2}
 		{D6F33FD2-A067-44FC-9631-C58ED92F0614} = {C964B932-C257-4DD2-961A-19AE14FCFB18}
 		{F5FC8E02-F454-4D26-AC1F-3F39A6E075C9} = {C768FC92-FDCA-48DF-94BF-1902245BDF96}
 		{F796E936-A05D-466D-92FF-B67E05FA90CD} = {B901A9C1-710A-430F-ADF5-B1A492ABEDFF}
-		{009E0012-E258-4542-94BA-6CCB5A47980A} = {7DF87AC9-2766-4BD1-84EE-7D27C2782060}
 		{6ECA187F-D32C-48EF-B811-437F644B2E22} = {009E0012-E258-4542-94BA-6CCB5A47980A}
 		{97A86335-5F03-4AB0-AA18-246562929462} = {009E0012-E258-4542-94BA-6CCB5A47980A}
 		{09242A16-E781-4662-9638-3A5ACE01D38B} = {009E0012-E258-4542-94BA-6CCB5A47980A}
 		{89926C39-8448-494B-9F1A-C119EC8BBBC0} = {009E0012-E258-4542-94BA-6CCB5A47980A}
 		{8894561C-DCD7-4F42-B1C7-96AC135D74FA} = {009E0012-E258-4542-94BA-6CCB5A47980A}
 		{31ED40D1-088D-41E2-A76D-2B13E0AAA670} = {009E0012-E258-4542-94BA-6CCB5A47980A}
-		{C964B932-C257-4DD2-961A-19AE14FCFB18} = {7DF87AC9-2766-4BD1-84EE-7D27C2782060}
-		{4AB6B02E-4FB3-493E-A576-65664D2EC41B} = {572BB62D-9D94-4871-94A5-4935515997DA}
 		{FED2BAB6-3BBE-46F9-8C8B-76C6D3AAD2FC} = {009E0012-E258-4542-94BA-6CCB5A47980A}
-		{1F5F69A5-0A6F-46C9-B36F-0BBDCD4D78D9} = {64ADAC3F-C7B6-44C0-B858-3B2A73C72A6D}
-		{C768FC92-FDCA-48DF-94BF-1902245BDF96} = {64ADAC3F-C7B6-44C0-B858-3B2A73C72A6D}
-		{B901A9C1-710A-430F-ADF5-B1A492ABEDFF} = {572BB62D-9D94-4871-94A5-4935515997DA}
 		{DCB7DC1E-5680-4EBE-AF14-6036AE1DC03F} = {C768FC92-FDCA-48DF-94BF-1902245BDF96}
 		{CFCC29BD-0D0E-40E5-AB7F-6B5FFFD58EE6} = {C768FC92-FDCA-48DF-94BF-1902245BDF96}
 		{4A88C98B-9D6C-47CD-8D27-9C2D4840A349} = {C768FC92-FDCA-48DF-94BF-1902245BDF96}
@@ -393,16 +394,12 @@ Global
 		{BE650155-817B-4C7A-A71F-F4F2FBB56551} = {C964B932-C257-4DD2-961A-19AE14FCFB18}
 		{7CA55388-AEF2-409C-BC89-A413895E1237} = {C964B932-C257-4DD2-961A-19AE14FCFB18}
 		{BBEE033E-9297-4D9E-9CD6-B0A1DE4874CC} = {C964B932-C257-4DD2-961A-19AE14FCFB18}
-		{F3309571-24C5-405C-9D1E-AE5FE7D353EC} = {7DF87AC9-2766-4BD1-84EE-7D27C2782060}
 		{29B002B4-9992-45D3-AD76-AFD2014457F5} = {F3309571-24C5-405C-9D1E-AE5FE7D353EC}
 		{366CDACC-94CA-4875-8618-833530A5CDA5} = {F3309571-24C5-405C-9D1E-AE5FE7D353EC}
 		{DBF0DA6C-2F81-49EE-8103-B9DA6F370371} = {F3309571-24C5-405C-9D1E-AE5FE7D353EC}
-		{25B1711D-E77F-48ED-917C-44B8F9F439CB} = {7DF87AC9-2766-4BD1-84EE-7D27C2782060}
 		{0037E132-DDF9-4EA5-9192-2BBD91B67506} = {B901A9C1-710A-430F-ADF5-B1A492ABEDFF}
 		{94DFAAC5-DF5B-4022-B0B7-E59EF3817530} = {25B1711D-E77F-48ED-917C-44B8F9F439CB}
-		{7DF87AC9-2766-4BD1-84EE-7D27C2782060} = {64ADAC3F-C7B6-44C0-B858-3B2A73C72A6D}
 		{27771806-20F4-482A-93F3-8344CBD23CED} = {B901A9C1-710A-430F-ADF5-B1A492ABEDFF}
-		{E6FA5574-0A30-415B-BFD6-950277E9C23D} = {64ADAC3F-C7B6-44C0-B858-3B2A73C72A6D}
 		{6499624E-6176-4BF4-BADD-FC2E36216237} = {E6FA5574-0A30-415B-BFD6-950277E9C23D}
 		{85BB47B3-320B-4554-8952-AB3556E9E8DB} = {E6FA5574-0A30-415B-BFD6-950277E9C23D}
 		{FF18DD25-296E-4F59-A5EF-D8FC18667687} = {009E0012-E258-4542-94BA-6CCB5A47980A}

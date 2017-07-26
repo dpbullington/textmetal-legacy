@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Copyright (c) 2010 Charlie Poole
+// Copyright (c) 2010 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -119,6 +119,15 @@ namespace NUnit.Framework.Interfaces
         }
 
         /// <summary>
+        /// Gets the number of test cases that had warnings
+        /// when running the test and all its children.
+        /// </summary>
+        int WarningCount
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the number of test cases that passed
         /// when running the test and all its children.
         /// </summary>
@@ -183,6 +192,14 @@ namespace NUnit.Framework.Interfaces
         /// Gets a list of AssertionResults associated with the test
         /// </summary>
         IList<AssertionResult> AssertionResults
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of files attached to the test
+        /// </summary>
+        ICollection<TestAttachment> TestAttachments
         {
             get;
         }

@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Copyright (c) 2013 Charlie Poole
+// Copyright (c) 2013 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -21,7 +21,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ***********************************************************************
 
-#if NET_4_0 || NET_4_5 || PORTABLE
+#if ASYNC
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +29,7 @@ using System.Reflection;
 using System.Threading;
 using NUnit.Compatibility;
 
-#if NET_4_5 || PORTABLE
+#if !NET_4_0
 using System.Runtime.ExceptionServices;
 #endif
 
@@ -46,7 +46,7 @@ namespace NUnit.Framework.Internal
 
         public static AsyncInvocationRegion Create(Delegate @delegate)
         {
-#if PORTABLE
+#if NETSTANDARD1_3 || NETSTANDARD1_6
             return Create(@delegate.GetMethodInfo());
 #else
             return Create(@delegate.Method);
@@ -75,7 +75,7 @@ at wrapping a non-async method invocation in an async region was done");
 
         public static bool IsAsyncOperation(Delegate @delegate)
         {
-#if PORTABLE
+#if NETSTANDARD1_3 || NETSTANDARD1_6
             return IsAsyncOperation(@delegate.GetMethodInfo());
 #else
             return IsAsyncOperation(@delegate.Method);

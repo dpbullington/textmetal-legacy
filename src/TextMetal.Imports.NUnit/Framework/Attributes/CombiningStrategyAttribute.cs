@@ -1,5 +1,5 @@
 // ***********************************************************************
-// Copyright (c) 2014-2015 Charlie Poole
+// Copyright (c) 2014-2015 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -46,7 +46,7 @@ namespace NUnit.Framework
 
         /// <summary>
         /// Construct a CombiningStrategyAttribute incorporating an
-        /// ICombiningStrategy and an IParamterDataProvider.
+        /// ICombiningStrategy and an IParameterDataProvider.
         /// </summary>
         /// <param name="strategy">Combining strategy to be used in combining data</param>
         /// <param name="provider">An IParameterDataProvider to supply data</param>

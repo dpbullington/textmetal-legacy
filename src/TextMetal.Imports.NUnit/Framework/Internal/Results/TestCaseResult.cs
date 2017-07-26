@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Copyright (c) 2015 Charlie Poole
+// Copyright (c) 2015 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -50,6 +50,15 @@ namespace NUnit.Framework.Internal
         public override int FailCount
         {
             get { return ResultState.Status == TestStatus.Failed ? 1 : 0; }
+        }
+
+        /// <summary>
+        /// Gets the number of test cases that had warnings
+        /// when running the test and all its children.
+        /// </summary>
+        public override int WarningCount
+        {
+            get { return ResultState.Status == TestStatus.Warning ? 1 : 0; }
         }
 
         /// <summary>

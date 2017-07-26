@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Copyright (c) 2015 Charlie Poole
+// Copyright (c) 2015 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -61,7 +61,7 @@ namespace NUnit.Framework.Internal
         private Type[] ParmTypes { get; set; }
 
         /// <summary>
-        /// Return the type argments for the method, deducing them
+        /// Return the type arguments for the method, deducing them
         /// from the arguments actually provided.
         /// </summary>
         /// <param name="argList">The arguments to the method</param>

@@ -1,5 +1,5 @@
 // ***********************************************************************
-// Copyright (c) 2007 Charlie Poole
+// Copyright (c) 2007 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -32,7 +32,7 @@ namespace NUnit.Framework.Interfaces
 	public class TestOutput
 	{
         /// <summary>
-        /// Construct with text, ouput destination type and
+        /// Construct with text, output destination type and
         /// the name of the test that produced the output.
         /// </summary>
         /// <param name="text">Text to be output</param>

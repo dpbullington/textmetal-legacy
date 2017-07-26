@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Copyright (c) 2011 Charlie Poole
+// Copyright (c) 2011 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -8,10 +8,10 @@
 // distribute, sublicense, and/or sell copies of the Software, and to
 // permit persons to whom the Software is furnished to do so, subject to
 // the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -77,7 +77,6 @@ namespace NUnit.Framework
             get { return TestExecutionContext.CurrentContext.OutWriter; }
         }
 
-#if !PORTABLE
         /// <summary>
         /// Gets a TextWriter that will send output directly to Console.Error
         /// </summary>
@@ -87,12 +86,18 @@ namespace NUnit.Framework
         /// Gets a TextWriter for use in displaying immediate progress messages
         /// </summary>
         public static readonly TextWriter Progress = new EventListenerTextWriter("Progress", Console.Error);
-#endif
 
         /// <summary>
         /// TestParameters object holds parameters for the test run, if any are specified
         /// </summary>
         public static readonly TestParameters Parameters = new TestParameters();
+
+        /// <summary>
+        /// Static DefaultWorkDirectory is now used as the source
+        /// of the public instance property WorkDirectory. This is
+        /// a bit odd but necessary to avoid breaking user tests.
+        /// </summary>
+        internal static string DefaultWorkDirectory;
 
         /// <summary>
         /// Get a representation of the current test.
@@ -103,22 +108,23 @@ namespace NUnit.Framework
         }
 
         /// <summary>
-        /// Gets a Representation of the TestResult for the current test. 
+        /// Gets a Representation of the TestResult for the current test.
         /// </summary>
         public ResultAdapter Result
         {
             get { return _result ?? (_result = new ResultAdapter(_testExecutionContext.CurrentResult)); }
         }
 
+#if PARALLEL
         /// <summary>
         /// Gets the unique name of the  Worker that is executing this test.
         /// </summary>
         public string WorkerId
         {
-            get { return _testExecutionContext.WorkerId; }
+            get { return _testExecutionContext.TestWorker.Name; }
         }
+#endif
 
-#if !PORTABLE
         /// <summary>
         /// Gets the directory containing the current test assembly.
         /// </summary>
@@ -126,16 +132,22 @@ namespace NUnit.Framework
         {
             get
             {
-                Test test = _testExecutionContext.CurrentTest;
-                if (test != null)
-                    return AssemblyHelper.GetDirectoryName(test.TypeInfo.Assembly);
+                Assembly assembly = _testExecutionContext?.CurrentTest?.TypeInfo?.Assembly;
 
+                if (assembly != null)
+                    return AssemblyHelper.GetDirectoryName(assembly);
+
+#if NETSTANDARD1_3 || NETSTANDARD1_6
+                // Test is null, we may be loading tests rather than executing.
+                // Assume that the NUnit framework is in the same directory as the tests
+                return AssemblyHelper.GetDirectoryName(typeof(TestContext).GetTypeInfo().Assembly);
+#else
                 // Test is null, we may be loading tests rather than executing.
                 // Assume that calling assembly is the test assembly.
                 return AssemblyHelper.GetDirectoryName(Assembly.GetCallingAssembly());
+#endif
             }
         }
-#endif
 
         /// <summary>
         /// Gets the directory to be used for outputting files created
@@ -143,7 +155,10 @@ namespace NUnit.Framework
         /// </summary>
         public string WorkDirectory
         {
-            get { return _testExecutionContext.WorkDirectory; }
+            get
+            {
+                return DefaultWorkDirectory;
+            }
         }
 
         /// <summary>
@@ -157,9 +172,9 @@ namespace NUnit.Framework
             get { return _testExecutionContext.RandomGenerator; }
         }
 
-        #endregion
+#endregion
 
-        #region Static Methods
+#region Static Methods
 
         /// <summary>Write the string representation of a boolean value to the current result</summary>
         public static void Write(bool value) { Out.Write(value); }
@@ -266,7 +281,7 @@ namespace NUnit.Framework
 
         /// <summary>
         /// This method adds the a new ValueFormatterFactory to the
-        /// chain of responsibility used for fomatting values in messages.
+        /// chain of responsibility used for formatting values in messages.
         /// The scope of the change is the current TestContext.
         /// </summary>
         /// <param name="formatterFactory">The factory delegate</param>
@@ -276,11 +291,32 @@ namespace NUnit.Framework
         }
 
         /// <summary>
+        /// Attach a file to the current test result
+        /// </summary>
+        /// <param name="filePath">Relative or absolute file path to attachment</param>
+        /// <param name="description">Optional description of attachment</param>
+        public static void AddTestAttachment(string filePath, string description = null)
+        {
+            Guard.ArgumentNotNull(filePath, nameof(filePath));
+            Guard.ArgumentValid(filePath.IndexOfAny(Path.GetInvalidPathChars()) == -1,
+                $"Test attachment file path contains invalid path characters. {filePath}", nameof(filePath));
+
+            if (!Path.IsPathRooted(filePath))
+                filePath = Path.Combine(TestContext.CurrentContext.WorkDirectory, filePath);
+
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException("Test attachment file path could not be found.", filePath);
+
+            var result = TestExecutionContext.CurrentContext.CurrentResult;
+            result.AddTestAttachment(new TestAttachment(filePath, description));
+        }
+
+        /// <summary>
         /// This method provides a simplified way to add a ValueFormatter
         /// delegate to the chain of responsibility, creating the factory
         /// delegate internally. It is useful when the Type of the object
         /// is the only criterion for selection of the formatter, since
-        /// it can be used without getting involved with a compould function.
+        /// it can be used without getting involved with a compound function.
         /// </summary>
         /// <typeparam name="TSUPPORTED">The type supported by this formatter</typeparam>
         /// <param name="formatter">The ValueFormatter delegate</param>
@@ -289,9 +325,9 @@ namespace NUnit.Framework
             AddFormatter(next => val => (val is TSUPPORTED) ? formatter(val) : next(val));
         }
 
-        #endregion
+#endregion
 
-        #region Nested TestAdapter Class
+#region Nested TestAdapter Class
 
         /// <summary>
         /// TestAdapter adapts a Test for consumption by
@@ -301,7 +337,7 @@ namespace NUnit.Framework
         {
             private readonly Test _test;
 
-            #region Constructor
+#region Constructor
 
             /// <summary>
             /// Construct a TestAdapter for a Test
@@ -312,9 +348,9 @@ namespace NUnit.Framework
                 _test = test;
             }
 
-            #endregion
+#endregion
 
-            #region Properties
+#region Properties
 
             /// <summary>
             /// Gets the unique Id of a test
@@ -332,7 +368,7 @@ namespace NUnit.Framework
             {
                 get { return _test.Name; }
             }
-            
+
             /// <summary>
             /// The name of the method representing the test.
             /// </summary>
@@ -370,12 +406,20 @@ namespace NUnit.Framework
                 get { return _test.Properties; }
             }
 
+            /// <summary>
+            /// The arguments to use in creating the test or empty array if none are required.
+            /// </summary>
+            public object[] Arguments
+            {
+                get { return _test.Arguments; }
+            }
+
             #endregion
         }
 
-        #endregion
+#endregion
 
-        #region Nested ResultAdapter Class
+#region Nested ResultAdapter Class
 
         /// <summary>
         /// ResultAdapter adapts a TestResult for consumption by
@@ -385,7 +429,7 @@ namespace NUnit.Framework
         {
             private readonly TestResult _result;
 
-            #region Constructor
+#region Constructor
 
             /// <summary>
             /// Construct a ResultAdapter for a TestResult
@@ -396,9 +440,9 @@ namespace NUnit.Framework
                 _result = result;
             }
 
-            #endregion
+#endregion
 
-            #region Properties
+#region Properties
 
             /// <summary>
             /// Gets a ResultState representing the outcome of the test.
@@ -436,6 +480,15 @@ namespace NUnit.Framework
             }
 
             /// <summary>
+            /// Gets the number of test cases that had warnings
+            /// when running the test and all its children.
+            /// </summary>
+            public int WarningCount
+            {
+                get { return _result.WarningCount; }
+            }
+
+            /// <summary>
             /// Gets the number of test cases that passed
             /// when running the test and all its children.
             /// </summary>
@@ -462,9 +515,9 @@ namespace NUnit.Framework
                 get { return _result.InconclusiveCount; }
             }
 
-            #endregion
+#endregion
         }
 
-        #endregion
+#endregion
     }
 }

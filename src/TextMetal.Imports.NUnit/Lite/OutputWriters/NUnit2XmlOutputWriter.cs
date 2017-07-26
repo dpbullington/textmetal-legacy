@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Copyright (c) 2011 Charlie Poole
+// Copyright (c) 2011 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -8,10 +8,10 @@
 // distribute, sublicense, and/or sell copies of the Software, and to
 // permit persons to whom the Software is furnished to do so, subject to
 // the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -31,6 +31,9 @@ using System.IO;
 using NUnit.Common;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
+#if NETSTANDARD1_3 || NETSTANDARD1_6
+using System.Runtime.InteropServices;
+#endif
 
 namespace NUnitLite
 {
@@ -61,19 +64,10 @@ namespace NUnitLite
         /// <param name="filter"></param>
         public override void WriteResultFile(ITestResult result, TextWriter writer, IDictionary<string, object> runSettings, TestFilter filter)
         {
-            // NOTE: Under .NET 1.1, XmlTextWriter does not implement IDisposable,
-            // but does implement Close(). Hence we cannot use a 'using' clause.
-            //using (XmlTextWriter xmlWriter = new XmlTextWriter(writer))
-            XmlTextWriter xmlWriter = new XmlTextWriter(writer);
-            xmlWriter.Formatting = Formatting.Indented;
-
-            try
+            var settings = new XmlWriterSettings { Indent = true };
+            using (var xmlWriter = XmlWriter.Create(writer, settings))
             {
                 WriteXmlOutput(result, xmlWriter);
-            }
-            finally
-            {
-                writer.Close();
             }
         }
 
@@ -122,7 +116,22 @@ namespace NUnitLite
             xmlWriter.WriteEndElement();
         }
 
+#if NETSTANDARD1_3 || NETSTANDARD1_6
         private void WriteEnvironment()
+        {
+            xmlWriter.WriteStartElement("environment");
+            var assemblyName = AssemblyHelper.GetAssemblyName(typeof(NUnit2XmlOutputWriter).GetTypeInfo().Assembly);
+            xmlWriter.WriteAttributeString("nunit-version", assemblyName.Version.ToString());
+            xmlWriter.WriteAttributeString("cwd", Directory.GetCurrentDirectory());
+            xmlWriter.WriteAttributeString("clr-version", RuntimeInformation.FrameworkDescription);
+            xmlWriter.WriteAttributeString("os-version", RuntimeInformation.OSDescription);
+#if !NETSTANDARD1_3
+            xmlWriter.WriteAttributeString("machine-name", Environment.MachineName);
+#endif
+            xmlWriter.WriteEndElement();
+        }
+#else
+            private void WriteEnvironment()
         {
             xmlWriter.WriteStartElement("environment");
             var assemblyName = AssemblyHelper.GetAssemblyName(Assembly.GetExecutingAssembly());
@@ -144,6 +153,7 @@ namespace NUnitLite
                                            Environment.UserDomainName);
             xmlWriter.WriteEndElement();
         }
+#endif
 
         private void WriteResultElement(ITestResult result)
         {
@@ -162,7 +172,7 @@ namespace NUnitLite
                     WriteFailureElement(result.Message, result.StackTrace);
                     break;
             }
-            
+
             if (result.Test is TestSuite)
                 WriteChildResults(result);
 
@@ -174,7 +184,9 @@ namespace NUnitLite
             xmlWriter.WriteEndElement(); // test-results
             xmlWriter.WriteEndDocument();
             xmlWriter.Flush();
+#if !NETSTANDARD1_3 && !NETSTANDARD1_6
             xmlWriter.Close();
+#endif
         }
 
 

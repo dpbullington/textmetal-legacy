@@ -1,5 +1,5 @@
 // ***********************************************************************
-// Copyright (c) 2008 Charlie Poole
+// Copyright (c) 2008 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,12 +27,30 @@ using System.Reflection;
 
 namespace NUnit.Framework.Internal
 {
+#if NETSTANDARD1_6
+    internal class AssemblyLoader : System.Runtime.Loader.AssemblyLoadContext
+    {
+        protected override Assembly Load(AssemblyName assemblyName)
+        {
+            return Assembly.Load(assemblyName);
+        }
+    }
+#endif
+
     /// <summary>
     /// AssemblyHelper provides static methods for working
     /// with assemblies.
     /// </summary>
     public static class AssemblyHelper
     {
+#if NETSTANDARD1_3 || NETSTANDARD1_6
+        const string UriSchemeFile = "file";
+        const string SchemeDelimiter = "://";
+#else
+        static readonly string UriSchemeFile = Uri.UriSchemeFile;
+        static readonly string SchemeDelimiter = Uri.SchemeDelimiter;
+#endif
+
         #region GetAssemblyPath
 
         /// <summary>
@@ -44,7 +62,7 @@ namespace NUnit.Framework.Internal
         /// <returns>The path.</returns>
         public static string GetAssemblyPath(Assembly assembly)
         {
-#if PORTABLE
+#if NETSTANDARD1_3
             return assembly.ManifestModule.FullyQualifiedName;
 #else
             string codeBase = assembly.CodeBase;
@@ -60,7 +78,6 @@ namespace NUnit.Framework.Internal
 
         #region GetDirectoryName
 
-#if !PORTABLE
         /// <summary>
         /// Gets the path to the directory from which an assembly was loaded.
         /// </summary>
@@ -70,7 +87,6 @@ namespace NUnit.Framework.Internal
         {
             return Path.GetDirectoryName(GetAssemblyPath(assembly));
         }
-#endif
 
         #endregion
 
@@ -83,18 +99,14 @@ namespace NUnit.Framework.Internal
         /// <returns>An AssemblyName</returns>
         public static AssemblyName GetAssemblyName(Assembly assembly)
         {
-#if PORTABLE
-            return new AssemblyName(assembly.FullName);
-#else
             return assembly.GetName();
-#endif
         }
 
         #endregion
 
         #region Load
 
-#if PORTABLE
+#if NETSTANDARD1_3
         /// <summary>
         /// Loads an assembly given a string, which is the AssemblyName
         /// </summary>
@@ -108,10 +120,30 @@ namespace NUnit.Framework.Internal
 
             return Assembly.Load(new AssemblyName { Name = name });
         }
-#else
-
+#elif NETSTANDARD1_6
         /// <summary>
-        /// Loads an assembly given a string, which may be the 
+        /// Loads an assembly given a string, which may be the
+        /// path to the assembly or the AssemblyName
+        /// </summary>
+        /// <param name="nameOrPath"></param>
+        /// <returns></returns>
+        public static Assembly Load(string nameOrPath)
+        {
+            var ext = Path.GetExtension(nameOrPath).ToLower();
+
+            // Handle case where this is the path to an assembly
+            if (ext == ".dll" || ext == ".exe")
+            {
+                var loader = new AssemblyLoader();
+                return loader.LoadFromAssemblyPath(Path.GetFullPath(nameOrPath));
+            }
+
+            // Assume it's the string representation of an AssemblyName
+            return Assembly.Load(new AssemblyName { Name = nameOrPath });
+        }
+#else
+        /// <summary>
+        /// Loads an assembly given a string, which may be the
         /// path to the assembly or the AssemblyName
         /// </summary>
         /// <param name="nameOrPath"></param>
@@ -135,10 +167,9 @@ namespace NUnit.Framework.Internal
 
         #region Helper Methods
 
-#if !PORTABLE
         private static bool IsFileUri(string uri)
         {
-            return uri.ToLower().StartsWith(Uri.UriSchemeFile);
+            return uri.ToLower().StartsWith(UriSchemeFile);
         }
 
         /// <summary>
@@ -150,7 +181,7 @@ namespace NUnit.Framework.Internal
         public static string GetAssemblyPathFromCodeBase(string codeBase)
         {
             // Skip over the file:// part
-            int start = Uri.UriSchemeFile.Length + Uri.SchemeDelimiter.Length;
+            int start = UriSchemeFile.Length + SchemeDelimiter.Length;
 
             if (codeBase[start] == '/') // third slash means a local path
             {
@@ -167,7 +198,6 @@ namespace NUnit.Framework.Internal
 
             return codeBase.Substring(start);
         }
-#endif
 
         #endregion
     }

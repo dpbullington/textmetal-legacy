@@ -1,7 +1,7 @@
 ﻿// **********************************************************************************
 // The MIT License (MIT)
 // 
-// Copyright (c) 2014 Charlie Poole
+// Copyright (c) 2014 Charlie Poole, Rob Prouse
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of
 // this software and associated documentation files (the "Software"), to deal in
@@ -35,7 +35,7 @@ namespace NUnit.Framework
     /// <summary>
     /// Provides the Author of a test or test fixture. 
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = false, Inherited=false)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true, Inherited=false)]
     public class AuthorAttribute : PropertyAttribute
     {
         /// <summary>

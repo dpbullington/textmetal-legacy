@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Copyright (c) 2006 Charlie Poole
+// Copyright (c) 2006 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -21,7 +21,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ***********************************************************************
 
-#if !PORTABLE
 using System;
 using System.IO;
 using System.ComponentModel;
@@ -37,6 +36,7 @@ namespace NUnit.Framework
         #region Equals and ReferenceEquals
 
         /// <summary>
+        /// DO NOT USE! Use DirectoryAssert.AreEqual(...) instead.
         /// The Equals method throws an InvalidOperationException. This is done 
         /// to make sure there is no mistake by calling this function.
         /// </summary>
@@ -45,19 +45,20 @@ namespace NUnit.Framework
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static new bool Equals(object a, object b)
         {
-            throw new InvalidOperationException("DirectoryAssert.Equals should not be used for Assertions");
+            throw new InvalidOperationException("DirectoryAssert.Equals should not be used for Assertions, use DirectoryAssert.AreEqual(...) instead.");
         }
 
         /// <summary>
-        /// override the default ReferenceEquals to throw an InvalidOperationException. This 
-        /// implementation makes sure there is no mistake in calling this function 
-        /// as part of Assert. 
+        /// DO NOT USE!
+        /// The ReferenceEquals method throws an InvalidOperationException. This is done 
+        /// to make sure there is no mistake by calling this function.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static new void ReferenceEquals(object a, object b)
         {
-            throw new InvalidOperationException("DirectoryAssert.ReferenceEquals should not be used for Assertions");
+            throw new InvalidOperationException("DirectoryAssert.ReferenceEquals should not be used for Assertions.");
         }
 
         #endregion
@@ -235,4 +236,3 @@ namespace NUnit.Framework
         #endregion
     }
 }
-#endif

@@ -1,0 +1,5 @@
+<Project>
+	<PropertyGroup>
+		<PackageId>$(MSBuildProjectName)</PackageId>
+	</PropertyGroup>
+</Project>

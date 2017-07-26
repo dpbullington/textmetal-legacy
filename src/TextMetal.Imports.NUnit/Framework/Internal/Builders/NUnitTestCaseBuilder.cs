@@ -1,5 +1,5 @@
 // ***********************************************************************
-// Copyright (c) 2008-2014 Charlie Poole
+// Copyright (c) 2008-2014 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -107,7 +107,7 @@ namespace NUnit.Framework.Internal.Builders
         ///
         /// Currently, NUnitTestMethods are required to be public,
         /// non-abstract methods, either static or instance,
-        /// returning void. They may take arguments but the _values must
+        /// returning void. They may take arguments but the values must
         /// be provided or the TestMethod is not considered runnable.
         ///
         /// Methods not meeting these criteria will be marked as
@@ -160,7 +160,7 @@ namespace NUnit.Framework.Internal.Builders
 
             ITypeInfo returnType = testMethod.Method.ReturnType;
 
-#if NET_4_0 || NET_4_5 || PORTABLE
+#if ASYNC
             if (AsyncInvocationRegion.IsAsyncOperation(testMethod.Method.MethodInfo))
             {
                 if (returnType.IsType(typeof(void)))
@@ -219,8 +219,7 @@ namespace NUnit.Framework.Internal.Builders
 
         private static bool MarkAsNotRunnable(TestMethod testMethod, string reason)
         {
-            testMethod.RunState = RunState.NotRunnable;
-            testMethod.Properties.Set(PropertyNames.SkipReason, reason);
+            testMethod.MakeInvalid(reason);
             return false;
         }
 

@@ -1,5 +1,5 @@
 // ***********************************************************************
-// Copyright (c) 2008-2015 Charlie Poole
+// Copyright (c) 2008-2015 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -105,7 +105,7 @@ namespace NUnit.Framework
         /// Construct one or more TestFixtures from a given Type,
         /// using available parameter data.
         /// </summary>
-        /// <param name="typeInfo">The TypeInfo for which fixures are to be constructed.</param>
+        /// <param name="typeInfo">The TypeInfo for which fixtures are to be constructed.</param>
         /// <returns>One or more TestFixtures as TestSuite</returns>
         public IEnumerable<TestSuite> BuildFrom(ITypeInfo typeInfo)
         {

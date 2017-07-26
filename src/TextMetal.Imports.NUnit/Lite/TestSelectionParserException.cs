@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Copyright (c) 2015 Charlie Poole
+// Copyright (c) 2015 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -8,10 +8,10 @@
 // distribute, sublicense, and/or sell copies of the Software, and to
 // permit persons to whom the Software is furnished to do so, subject to
 // the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -22,15 +22,17 @@
 // ***********************************************************************
 
 using System;
+#if !NETSTANDARD1_3 && !NETSTANDARD1_6
 using System.Runtime.Serialization;
+#endif
 
 namespace NUnit.Common
 {
     /// <summary>
-    /// TestSelectionParserException is thrown when an error 
+    /// TestSelectionParserException is thrown when an error
     /// is found while parsing the selection expression.
     /// </summary>
-#if !PORTABLE
+#if !NETSTANDARD1_3 && !NETSTANDARD1_6
     [Serializable]
 #endif
     public class TestSelectionParserException : Exception
@@ -47,7 +49,7 @@ namespace NUnit.Common
         /// <param name="innerException"></param>
         public TestSelectionParserException(string message, Exception innerException) : base(message, innerException) { }
 
-#if !PORTABLE
+#if !NETSTANDARD1_3 && !NETSTANDARD1_6
         /// <summary>
         /// Serialization constructor
         /// </summary>

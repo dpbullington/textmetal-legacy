@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Copyright (c) 2011 Charlie Poole
+// Copyright (c) 2011 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -45,7 +45,8 @@ namespace NUnitLite
         /// <param name="runSettings">A dictionary of settings used for this test run</param>
         public void WriteResultFile(ITestResult result, string outputPath, IDictionary<string, object> runSettings, TestFilter filter)
         {
-            using (StreamWriter writer = new StreamWriter(outputPath, false, Encoding.UTF8))
+            using (var stream = new FileStream(outputPath, FileMode.Create))
+            using (var writer = new StreamWriter(stream, Encoding.UTF8))
             {
                 WriteResultFile(result, writer, runSettings, filter);
             }
@@ -58,7 +59,8 @@ namespace NUnitLite
         /// <param name="outputPath">Path to the file to which the test info is written</param>
         public void WriteTestFile(ITest test, string outputPath)
         {
-            using (StreamWriter writer = new StreamWriter(outputPath, false, Encoding.UTF8))
+            using (var stream = new FileStream(outputPath, FileMode.Create))
+            using (var writer = new StreamWriter(stream, Encoding.UTF8))
             {
                 WriteTestFile(test, writer);
             }

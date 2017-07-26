@@ -1,5 +1,5 @@
 // ***********************************************************************
-// Copyright (c) 2008 Charlie Poole
+// Copyright (c) 2008 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -156,7 +156,7 @@ namespace NUnit.Framework.Constraints
             {
                 var invocationDescriptor = GetInvocationDescriptor(invocation);
 
-#if NET_4_0 || NET_4_5 || PORTABLE
+#if ASYNC
                 if (AsyncInvocationRegion.IsAsyncOperation(invocationDescriptor.Delegate))
                 {
                     using (var region = AsyncInvocationRegion.Create(invocationDescriptor.Delegate))
@@ -176,14 +176,17 @@ namespace NUnit.Framework.Constraints
                 else
 #endif
                 {
-                    try
+                    using (new TestExecutionContext.IsolatedContext())
                     {
-                        invocationDescriptor.Invoke();
-                        return null;
-                    }
-                    catch (Exception ex)
-                    {
-                        return ex;
+                        try
+                        {
+                            invocationDescriptor.Invoke();
+                            return null;
+                        }
+                        catch (Exception ex)
+                        {
+                            return ex;
+                        }
                     }
                 }
             }
@@ -201,7 +204,7 @@ namespace NUnit.Framework.Constraints
                         invocationDescriptor = new VoidInvocationDescriptor(testDelegate);
                     }
 
-#if NET_4_0 || NET_4_5 || PORTABLE
+#if ASYNC
                     else
                     {
                         var asyncTestDelegate = actual as AsyncTestDelegate;

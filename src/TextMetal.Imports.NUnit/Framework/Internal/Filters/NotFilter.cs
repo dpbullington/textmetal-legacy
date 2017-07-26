@@ -1,5 +1,5 @@
 // ***********************************************************************
-// Copyright (c) 2007-2015 Charlie Poole
+// Copyright (c) 2007-2015 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -29,7 +29,7 @@ namespace NUnit.Framework.Internal.Filters
     /// <summary>
     /// NotFilter negates the operation of another filter
     /// </summary>
-#if !PORTABLE
+#if !NETSTANDARD1_3 && !NETSTANDARD1_6
     [Serializable]
 #endif
     public class NotFilter : TestFilter
@@ -73,11 +73,11 @@ namespace NUnit.Framework.Internal.Filters
         }
 
         /// <summary>
-        /// Determine if a test matches the filter expicitly. That is, it must
+        /// Determine if a test matches the filter explicitly. That is, it must
         /// be a direct match of the test itself or one of it's children.
         /// </summary>
         /// <param name="test">The test to which the filter is applied</param>
-        /// <returns>True if the test matches the filter explicityly, otherwise false</returns>
+        /// <returns>True if the test matches the filter explicitly, otherwise false</returns>
         public override bool IsExplicitMatch(ITest test)
         {
             return false;

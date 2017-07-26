@@ -1,5 +1,5 @@
 // ***********************************************************************
-// Copyright (c) 2008 Charlie Poole
+// Copyright (c) 2008 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -48,7 +48,7 @@ namespace NUnit.Framework.Constraints
         {
             get
             {
-                return RightContext is CollectionOperator
+                return RightContext is CollectionOperator || RightContext is ExactCountOperator
                     ? base.LeftPrecedence + 10
                     : base.LeftPrecedence;
             }

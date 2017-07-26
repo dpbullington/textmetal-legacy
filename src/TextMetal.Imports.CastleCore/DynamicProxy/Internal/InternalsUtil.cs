@@ -14,18 +14,12 @@
 
 namespace Castle.DynamicProxy.Internal
 {
-	using System.Collections.Generic;
-	using System.Linq;
+	using System;
+	using System.ComponentModel;
 	using System.Reflection;
-	using System.Runtime.CompilerServices;
-
-	using Castle.Core.Internal;
 
 	public static class InternalsUtil
 	{
-		private static readonly IDictionary<Assembly, bool> internalsToDynProxy = new Dictionary<Assembly, bool>();
-		private static readonly Lock internalsToDynProxyLock = Lock.Create();
-
 		/// <summary>
 		///   Determines whether the specified method is internal.
 		/// </summary>
@@ -33,43 +27,22 @@ namespace Castle.DynamicProxy.Internal
 		/// <returns>
 		///   <c>true</c> if the specified method is internal; otherwise, <c>false</c>.
 		/// </returns>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		[Obsolete]
 		public static bool IsInternal(this MethodBase method)
 		{
-			return method.IsAssembly || (method.IsFamilyAndAssembly
-			                             && !method.IsFamilyOrAssembly);
+			return ProxyUtil.IsInternal(method);
 		}
 
 		/// <summary>
 		///   Determines whether this assembly has internals visible to dynamic proxy.
 		/// </summary>
 		/// <param name = "asm">The assembly to inspect.</param>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		[Obsolete]
 		public static bool IsInternalToDynamicProxy(this Assembly asm)
 		{
-			using (var locker = internalsToDynProxyLock.ForReadingUpgradeable())
-			{
-				if (internalsToDynProxy.ContainsKey(asm))
-				{
-					return internalsToDynProxy[asm];
-				}
-
-				locker.Upgrade();
-
-				if (internalsToDynProxy.ContainsKey(asm))
-				{
-					return internalsToDynProxy[asm];
-				}
-
-				var internalsVisibleTo = asm.GetCustomAttributes<InternalsVisibleToAttribute>();
-				var found = internalsVisibleTo.Any(VisibleToDynamicProxy);
-
-				internalsToDynProxy.Add(asm, found);
-				return found;
-			}
-		}
-
-		private static bool VisibleToDynamicProxy(InternalsVisibleToAttribute attribute)
-		{
-			return attribute.AssemblyName.Contains(ModuleScope.DEFAULT_ASSEMBLY_NAME);
+			return ProxyUtil.AreInternalsVisibleToDynamicProxy(asm);
 		}
 
 		/// <summary>
@@ -77,24 +50,12 @@ namespace Castle.DynamicProxy.Internal
 		/// </summary>
 		/// <param name = "method"></param>
 		/// <returns></returns>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		[Obsolete("Use " + nameof(ProxyUtil) + "." + nameof(ProxyUtil.IsAccessible) + " instead, " +
+		          "which performs a more accurate accessibility check.")]
 		public static bool IsAccessible(this MethodBase method)
 		{
-			// Accessibility supported by the full framework and CoreCLR
-			if (method.IsPublic || method.IsFamily || method.IsFamilyOrAssembly)
-			{
-				return true;
-			}
-
-			if (method.IsFamilyAndAssembly)
-			{
-				return true;
-			}
-
-			if (method.DeclaringType.GetTypeInfo().Assembly.IsInternalToDynamicProxy() && method.IsAssembly)
-			{
-				return true;
-			}
-			return false;
+			return ProxyUtil.IsAccessibleMethod(method);
 		}
 	}
 }

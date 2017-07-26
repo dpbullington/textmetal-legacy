@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Copyright (c) 2015 Charlie Poole
+// Copyright (c) 2015 Charlie Poole, Rob Prouse
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -109,7 +109,7 @@ namespace NUnit.Framework.Interfaces
         string GetDisplayName();
 
         /// <summary>
-        /// Get the display name for an oject of this type, constructed with specific arguments
+        /// Get the display name for an object of this type, constructed with specific arguments
         /// </summary>
         string GetDisplayName(object[] args);
 
