@@ -38,9 +38,9 @@
     <PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
     <PackageReference Include="System.IO.FileSystem.Watcher" Version="4.3.0" />
     <PackageReference Include="System.Security.Principal" Version="4.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

@@ -19,11 +19,6 @@ nunit-7a415ab9a923c48e04c22122ec0ac3b1f1fbe68a.zip
 https://github.com/nunit/nunit
 NO CHANGES TO SUPPORT netframework1.6
 
-
-FastJsonParser-a2a0b53b7016510e4f1f96c6e2b87d610bac8965.zip
-https://github.com/ysharplanguage/FastJsonParser
-TO BE INTEGRATED
-
 Newtonsoft.Json-4f0c963c4f79e57c240539bd0431d349122c01a0.zip
 https://github.com/JamesNK/Newtonsoft.Json
 TO BE INTEGRATED

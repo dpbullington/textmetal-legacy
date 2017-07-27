@@ -107,8 +107,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Middleware.Solder
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.NopCLI._net_", "TextMetal.NopCLI._net_\TextMetal.NopCLI._net_.csproj", "{919F8063-72B9-45AB-9209-204DA76A61D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextMetal.Imports.FastJsonParser", "TextMetal.Imports.FastJsonParser\TextMetal.Imports.FastJsonParser.csproj", "{32E7EB8A-52EC-4FF7-B9DD-E3F6B8359E01}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -344,12 +342,6 @@ Global
 		{919F8063-72B9-45AB-9209-204DA76A61D1}.Development|Any CPU.Build.0 = Debug|Any CPU
 		{919F8063-72B9-45AB-9209-204DA76A61D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{919F8063-72B9-45AB-9209-204DA76A61D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32E7EB8A-52EC-4FF7-B9DD-E3F6B8359E01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32E7EB8A-52EC-4FF7-B9DD-E3F6B8359E01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32E7EB8A-52EC-4FF7-B9DD-E3F6B8359E01}.Development|Any CPU.ActiveCfg = Debug|Any CPU
-		{32E7EB8A-52EC-4FF7-B9DD-E3F6B8359E01}.Development|Any CPU.Build.0 = Debug|Any CPU
-		{32E7EB8A-52EC-4FF7-B9DD-E3F6B8359E01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32E7EB8A-52EC-4FF7-B9DD-E3F6B8359E01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -405,6 +397,5 @@ Global
 		{FF18DD25-296E-4F59-A5EF-D8FC18667687} = {009E0012-E258-4542-94BA-6CCB5A47980A}
 		{164A8BF8-397A-4BCA-84F6-BA06EAF8BA75} = {009E0012-E258-4542-94BA-6CCB5A47980A}
 		{919F8063-72B9-45AB-9209-204DA76A61D1} = {B901A9C1-710A-430F-ADF5-B1A492ABEDFF}
-		{32E7EB8A-52EC-4FF7-B9DD-E3F6B8359E01} = {C768FC92-FDCA-48DF-94BF-1902245BDF96}
 	EndGlobalSection
 EndGlobal
