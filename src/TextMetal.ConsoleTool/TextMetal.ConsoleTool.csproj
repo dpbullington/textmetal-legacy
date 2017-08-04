@@ -39,6 +39,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TextMetal.Framework\TextMetal.Framework.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Executive\TextMetal.Middleware.Solder.Executive.csproj" />
+    <ProjectReference Include="..\TextMetal.Middleware.Solder._netcoreapp_\TextMetal.Middleware.Solder._netcoreapp_.csproj" />
   </ItemGroup>
 
   <ItemGroup>

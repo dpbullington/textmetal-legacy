@@ -10,6 +10,7 @@ using System.Linq;
 
 using TextMetal.Framework.Hosting.Tool;
 using TextMetal.Middleware.Datazoid.Primitives;
+using TextMetal.Middleware.Solder._netcoreapp_;
 using TextMetal.Middleware.Solder.Executive;
 using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
@@ -53,6 +54,7 @@ namespace TextMetal.ConsoleTool
 		[STAThread]
 		public static int Main(string[] args)
 		{
+			AssemblyDomain.UseRuntimeAdapter<NetCoreRuntimeAdapter>();
 			AssemblyDomain.Default.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
 			AssemblyDomain.Default.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientActivatorAutoWiringDependencyResolution<ToolHost>()));
 			AssemblyDomain.Default.DependencyManager.AddResolution<IAdoNetBufferingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetBufferingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetBufferingFascade>()));
