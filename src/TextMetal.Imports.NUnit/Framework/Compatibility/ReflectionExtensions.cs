@@ -405,7 +405,7 @@ namespace NUnit.Compatibility
         /// </summary>
         public static IEnumerable<T> GetAttributes<T>(this MemberInfo info, bool inherit) where T : class
         {
-            return GetAttributesImpl<T>(info.GetCustomAttributes(inherit));
+            return GetAttributesImpl<T>(info.GetCustomAttributes(inherit).Cast<Attribute>());
         }
 
         /// <summary>
@@ -413,7 +413,7 @@ namespace NUnit.Compatibility
         /// </summary>
         public static IEnumerable<T> GetAttributes<T>(this ParameterInfo info, bool inherit) where T : class
         {
-            return GetAttributesImpl<T>(info.GetCustomAttributes(inherit));
+            return GetAttributesImpl<T>(info.GetCustomAttributes(inherit).Cast<Attribute>());
         }
 
         /// <summary>

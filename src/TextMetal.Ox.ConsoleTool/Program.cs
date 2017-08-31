@@ -12,7 +12,6 @@ using TextMetal.Middleware.Oxymoron.Legacy.Hosting.Tool;
 using TextMetal.Middleware.Solder.Executive;
 using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
-using TextMetal.Middleware.Solder._netcoreapp_;
 
 namespace TextMetal.Ox.ConsoleTool
 {
@@ -48,8 +47,6 @@ namespace TextMetal.Ox.ConsoleTool
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			//AssemblyDomain.UseRuntimeAdapter(new NetCoreRuntimeAdapter());
-			AssemblyDomain.UseRuntimeAdapter<NetCoreRuntimeAdapter>();
 			AssemblyDomain.Default.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
 			AssemblyDomain.Default.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientDefaultConstructorDependencyResolution<ToolHost>()));
 			AssemblyDomain.Default.DependencyManager.AddResolution<IAdoNetStreamingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetStreamingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetStreamingFascade>()));

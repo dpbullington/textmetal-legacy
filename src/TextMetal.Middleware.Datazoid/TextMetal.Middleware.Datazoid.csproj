@@ -4,7 +4,7 @@
     <Description>TextMetal Middleware Datazoid Library</Description>
     <VersionPrefix>9.1.0</VersionPrefix>
     <Authors>©2002-2017 Daniel P. Bullington (dpbullington@gmail.com)</Authors>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <DebugType>portable</DebugType>
     <AssemblyName>TextMetal.Middleware.Datazoid</AssemblyName>
     <AssemblyOriginatorKeyFile>../TextMetal.snk</AssemblyOriginatorKeyFile>
@@ -17,7 +17,6 @@
     <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/textmetal/main</RepositoryUrl>
-    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>

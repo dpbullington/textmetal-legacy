@@ -11,7 +11,6 @@ using NUnit.Common;
 using NUnitLite;
 
 using TextMetal.Middleware.Solder.Injection;
-using TextMetal.Middleware.Solder._netcoreapp_;
 
 namespace TextMetal.Framework.IntegrationTests
 {
@@ -38,7 +37,6 @@ namespace TextMetal.Framework.IntegrationTests
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			AssemblyDomain.UseRuntimeAdapter<NetCoreRuntimeAdapter>();
 			return new AutoRun(typeof(Program).GetTypeInfo().Assembly).Execute(args, new ColorConsoleWriter(), Console.In);
 		}
 

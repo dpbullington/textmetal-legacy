@@ -4,7 +4,7 @@
     <Description>TextMetal Middleware Unit Tests Console App</Description>
     <VersionPrefix>9.1.0</VersionPrefix>
     <Authors>©2002-2017 Daniel P. Bullington (dpbullington@gmail.com)</Authors>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <DebugType>portable</DebugType>
     <AssemblyName>TextMetal.Middleware.UnitTests</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -18,7 +18,6 @@
     <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/textmetal/main</RepositoryUrl>
-    <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -39,7 +38,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj" />
-    <ProjectReference Include="..\TextMetal.Middleware.Solder._netcoreapp_\TextMetal.Middleware.Solder._netcoreapp_.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Context\TextMetal.Middleware.Solder.Context.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Executive\TextMetal.Middleware.Solder.Executive.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Extensions\TextMetal.Middleware.Solder.Extensions.csproj" />

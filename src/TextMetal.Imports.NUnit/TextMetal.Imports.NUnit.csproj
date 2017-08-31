@@ -4,7 +4,7 @@
     <Description>TextMetal Imports NUnit Library</Description>
     <VersionPrefix>9.1.0</VersionPrefix>
     <Authors>©2002-2017 Daniel P. Bullington (dpbullington@gmail.com)</Authors>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <DebugType>portable</DebugType>
     <AssemblyName>TextMetal.Imports.NUnit</AssemblyName>
     <AssemblyOriginatorKeyFile>../TextMetal.snk</AssemblyOriginatorKeyFile>
@@ -17,7 +17,6 @@
     <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/textmetal/main</RepositoryUrl>
-    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -35,11 +34,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Framework\Constraints\AndConstraint.cs" />
-    <Compile Include="Framework\Internal\CultureDetector.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Console" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
@@ -47,7 +41,7 @@
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.5' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <DefineConstants>$(DefineConstants);NETSTANDARD1_6;PORTABLE;NUNIT_FRAMEWORK;NUNITLITE;ASYNC</DefineConstants>
   </PropertyGroup>
 

@@ -4,7 +4,7 @@
     <Description>TextMetal Middleware Solder netcoreapp Library</Description>
     <VersionPrefix>9.1.0</VersionPrefix>
     <Authors>©2002-2017 Daniel P. Bullington (dpbullington@gmail.com)</Authors>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <DebugType>portable</DebugType>
     <AssemblyName>TextMetal.Middleware.Solder._netcoreapp_</AssemblyName>
     <AssemblyOriginatorKeyFile>../TextMetal.snk</AssemblyOriginatorKeyFile>
@@ -17,7 +17,6 @@
     <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/textmetal/main</RepositoryUrl>
-    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -30,12 +29,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Middleware.Solder.Abstractions\TextMetal.Middleware.Solder.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

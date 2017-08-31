@@ -12,7 +12,6 @@ using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 
-using TextMetal.Middleware.Solder.Abstractions;
 using TextMetal.Middleware.Solder.Primitives;
 using TextMetal.Middleware.Solder.Utilities;
 
@@ -21,19 +20,36 @@ using DependencyMagicMethod = System.Action<TextMetal.Middleware.Solder.Injectio
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
-	/// Serves as an artifical run-time boundary for assemblies
-	/// (similar to an "app domain" in .NET Framework parlaence).
+	/// Serves as a logical run-time boundary for assemblies.
 	/// </summary>
 	public sealed class AssemblyDomain : IDisposable
 	{
 		#region Constructors/Destructors
 
-		private AssemblyDomain(IRuntimeAdapter runtimeAdapter)
+		static AssemblyDomain()
 		{
-			if ((object)runtimeAdapter == null)
-				throw new ArgumentNullException(nameof(runtimeAdapter));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::{1} --> {2}", nameof(AssemblyDomain), nameof(AssemblyDomain), Environment.CurrentManagedThreadId));
 
-			this.runtimeAdapter = runtimeAdapter;
+			lock (defaultSyncObj)
+			{
+				if ((object)Default != null)
+					throw new DependencyException(string.Format("The default instance has already been initialized."));
+
+				Default = new AssemblyDomain();
+			}
+		}
+
+		private AssemblyDomain()
+			: this(AppDomain.CurrentDomain)
+		{
+		}
+
+		private AssemblyDomain(AppDomain appDomain)
+		{
+			if ((object)appDomain == null)
+				throw new ArgumentNullException(nameof(appDomain));
+
+			this.appDomain = appDomain;
 
 			this.Initialize();
 		}
@@ -45,12 +61,12 @@ namespace TextMetal.Middleware.Solder.Injection
 		private const string APP_CONFIG_FILE_NAME = "appconfig.json";
 		private static readonly object defaultSyncObj = new object();
 		private static AssemblyDomain @default;
+		private readonly AppDomain appDomain;
 		private readonly IDependencyManager dependencyManager = new DependencyManager();
+		private readonly IDictionary<AssemblyName, Assembly> knownAssemblies = new Dictionary<AssemblyName, Assembly>();
 		private readonly ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
-		private readonly IRuntimeAdapter runtimeAdapter;
 		private bool disposed;
 		private bool initialized;
-		private readonly IDictionary<AssemblyName, Assembly> knownAssemblies = new Dictionary<AssemblyName, Assembly>();
 
 		#endregion
 
@@ -68,6 +84,14 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
+		private AppDomain AppDomain
+		{
+			get
+			{
+				return this.appDomain;
+			}
+		}
+
 		/// <summary>
 		/// Gets the dependency manager instance associated with the current assembly domain.
 		/// </summary>
@@ -79,19 +103,19 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
+		private IDictionary<AssemblyName, Assembly> KnownAssemblies
+		{
+			get
+			{
+				return this.knownAssemblies;
+			}
+		}
+
 		private ReaderWriterLockSlim ReaderWriterLock
 		{
 			get
 			{
 				return this.readerWriterLock;
-			}
-		}
-
-		private IRuntimeAdapter RuntimeAdapter
-		{
-			get
-			{
-				return this.runtimeAdapter;
 			}
 		}
 
@@ -125,33 +149,9 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		private IDictionary<AssemblyName, Assembly> KnownAssemblies
-		{
-			get
-			{
-				return this.knownAssemblies;
-			}
-		}
-
 		#endregion
 
 		#region Methods/Operators
-
-		private static void __OnRuntimeTeardown(IRuntimeAdapter runtimeAdapter)
-		{
-			if ((object)runtimeAdapter == null)
-				throw new ArgumentNullException(nameof(runtimeAdapter));
-
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::{1} --> {2}", nameof(AssemblyDomain), nameof(__OnRuntimeTeardown), Environment.CurrentManagedThreadId));
-
-			lock (defaultSyncObj)
-			{
-				Default = null;
-
-				runtimeAdapter.RuntimeTeardown -= __OnRuntimeTeardown;
-				runtimeAdapter.Dispose();
-			}
-		}
 
 		private static IConfigurationRoot LoadAppConfigFile(string appConfigFilePath)
 		{
@@ -172,32 +172,26 @@ namespace TextMetal.Middleware.Solder.Injection
 			return configurationRoot;
 		}
 
-		public static void UseRuntimeAdapter(IRuntimeAdapter runtimeAdapter)
+		private void AppDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs e)
 		{
-			if ((object)runtimeAdapter == null)
-				throw new ArgumentNullException(nameof(runtimeAdapter));
+			if ((object)sender == null)
+				throw new ArgumentNullException(nameof(sender));
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::{1} --> {2}", nameof(AssemblyDomain), nameof(UseRuntimeAdapter), Environment.CurrentManagedThreadId));
+			if ((object)e == null)
+				throw new ArgumentNullException(nameof(e));
 
-			lock (defaultSyncObj)
-			{
-				if ((object)Default != null)
-					throw new DependencyException(string.Format("The default instance has already been initialized."));
-
-				Default = new AssemblyDomain(runtimeAdapter);
-
-				runtimeAdapter.RuntimeTeardown += __OnRuntimeTeardown;
-			}
+			this.OnAssemblyLoaded(e.LoadedAssembly);
 		}
 
-		public static void UseRuntimeAdapter<TRuntimeAdapter>()
-			where TRuntimeAdapter : class, IRuntimeAdapter, new()
+		private void AppDomain_DomainUnload(object sender, EventArgs e)
 		{
-			TRuntimeAdapter runtimeAdapter;
+			if ((object)sender == null)
+				throw new ArgumentNullException(nameof(sender));
 
-			runtimeAdapter = new TRuntimeAdapter();
+			if ((object)e == null)
+				throw new ArgumentNullException(nameof(e));
 
-			UseRuntimeAdapter(runtimeAdapter);
+			this.OnRuntimeTeardown();
 		}
 
 		public void Dispose()
@@ -220,14 +214,14 @@ namespace TextMetal.Middleware.Solder.Injection
 					if ((object)this.DependencyManager != null)
 						this.DependencyManager.Dispose();
 
-					if ((object)this.RuntimeAdapter != null)
+					if ((object)this.AppDomain != null)
 					{
-						// unhook events
-						this.RuntimeAdapter.AssemblyLoaded -= this.RuntimeAdapter_OnAssemblyLoaded;
-						this.RuntimeAdapter.RuntimeTeardown -= this.RuntimeAdapter_OnRuntimeTeardown;
+						// unhook appp domain events
+						this.AppDomain.AssemblyLoad -= this.AppDomain_AssemblyLoad;
+						this.AppDomain.DomainUnload -= this.AppDomain_DomainUnload;
 
 						// DO NOT DISPOSE HERE
-						//this.RuntimeAdapter.Dispose();
+						//this.AppDomain.Dispose();
 					}
 				}
 				finally
@@ -342,12 +336,12 @@ namespace TextMetal.Middleware.Solder.Injection
 						this.DependencyManager.AddResolution<IAssemblyInformationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAssemblyInformationFascade>(new InstanceDependencyResolution<IAssemblyInformationFascade>(assemblyInformationFascade)));
 					}
 
-					// hook the events
-					this.RuntimeAdapter.AssemblyLoaded += this.RuntimeAdapter_OnAssemblyLoaded;
-					this.RuntimeAdapter.RuntimeTeardown += this.RuntimeAdapter_OnRuntimeTeardown;
+					// hook app domain events
+					this.AppDomain.DomainUnload += this.AppDomain_DomainUnload;
+					this.AppDomain.AssemblyLoad += this.AppDomain_AssemblyLoad;
 
-					// probe known assemblies at build time
-					assemblies = this.RuntimeAdapter.GetLoadedAssemblies();
+					// probe known assemblies at run-time
+					assemblies = this.AppDomain.GetAssemblies();
 					this.ScanAssemblies(assemblies);
 
 					this.Initialized = true;
@@ -378,7 +372,7 @@ namespace TextMetal.Middleware.Solder.Injection
 				if (this.Disposed)
 					throw new ObjectDisposedException(typeof(AssemblyDomain).FullName);
 
-				assembly = this.RuntimeAdapter.LoadAssembly(assemblyName);
+				assembly = this.AppDomain.Load(assemblyName);
 
 				// probe explicit dynamically loaded assmblies
 				if ((object)assembly != null)
@@ -392,11 +386,11 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		private void RuntimeAdapter_OnAssemblyLoaded(Assembly assembly)
+		private void OnAssemblyLoaded(Assembly assembly)
 		{
 			if ((object)assembly == null)
 				throw new ArgumentNullException(nameof(assembly));
-			
+
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
@@ -415,11 +409,8 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		private void RuntimeAdapter_OnRuntimeTeardown(IRuntimeAdapter runtimeAdapter)
+		private void OnRuntimeTeardown()
 		{
-			if ((object)runtimeAdapter == null)
-				throw new ArgumentNullException(nameof(runtimeAdapter));
-
 			// simply dispose
 			this.Dispose();
 		}
