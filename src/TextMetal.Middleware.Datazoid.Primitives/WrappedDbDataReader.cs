@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Threading;
@@ -140,16 +141,10 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 
 		#region Methods/Operators
 
-		public virtual void Close()
+		public override void Close()
 		{
-			this.Dispose(true);
-			GC.SuppressFinalize((object)this);
-		}
-
-		public virtual void Dispose()
-		{
-			this.Dispose(true);
-			GC.SuppressFinalize((object)this);
+			this.InnerDbDataReader.Close();
+			GC.SuppressFinalize(this);
 		}
 
 		/// <summary> Releases the managed resources used by the <see cref="T:System.Data.Common.DbDataReader" /> and optionally releases the unmanaged resources. </summary>
@@ -158,8 +153,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		{
 			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::Dispose(...): enter", typeof(WrappedDbDataReader).Name));
 
-			if (disposing)
-				this.InnerDbDataReader.Dispose();
+			base.Dispose(disposing);
 
 			ThisTypeOnlyWhen_PROFILE_ThenPrint(string.Format("{0}::Dispose(...): leave", typeof(WrappedDbDataReader).Name));
 		}
@@ -211,11 +205,6 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 			return null;
 		}
 
-		//public override DbDataReader GetData(int i)
-		//{
-		//	return this.InnerDbDataReader.GetData(i);
-		//}
-
 		public override string GetDataTypeName(int i)
 		{
 			return this.InnerDbDataReader.GetDataTypeName(i);
@@ -224,15 +213,6 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		public override DateTime GetDateTime(int i)
 		{
 			return this.InnerDbDataReader.GetDateTime(i);
-		}
-
-		/// <summary> Returns a <see cref="T:System.Data.Common.DbDataReader" /> object for the requested column ordinal that can be overridden with a provider-specific implementation. </summary>
-		/// <returns> A <see cref="T:System.Data.Common.DbDataReader" /> object. </returns>
-		/// <param name="ordinal"> The zero-based column ordinal. </param>
-		protected override DbDataReader GetDbDataReader(int ordinal)
-		{
-			// CANNOT USE INNER INSTANCE HERE
-			return base.GetDbDataReader(ordinal);
 		}
 
 		public override decimal GetDecimal(int i)
@@ -378,10 +358,10 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 			return this.InnerDbDataReader.GetStream(ordinal);
 		}
 
-		//public override DataTable GetSchemaTable()
-		//{
-		//	return this.InnerDbDataReader.GetSchemaTable();
-		//}
+		public override DataTable GetSchemaTable()
+		{
+			return this.InnerDbDataReader.GetSchemaTable();
+		}
 
 		public override string GetString(int i)
 		{

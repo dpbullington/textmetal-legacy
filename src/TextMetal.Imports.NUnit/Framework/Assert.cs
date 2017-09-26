@@ -298,7 +298,7 @@ namespace NUnit.Framework
         /// <param name="args">Array of objects to be used in formatting the message</param>
         public static void Contains(object expected, ICollection actual, string message, params object[] args)
         {
-            Assert.That(actual, new CollectionContainsConstraint(expected) ,message, args);
+            Assert.That(actual, new SomeItemsConstraint(new EqualConstraint(expected)) ,message, args);
         }
 
         /// <summary>
@@ -308,7 +308,7 @@ namespace NUnit.Framework
         /// <param name="actual">The collection to be examined</param>
         public static void Contains(object expected, ICollection actual)
         {
-            Assert.That(actual, new CollectionContainsConstraint(expected) ,null, null);
+            Assert.That(actual, new SomeItemsConstraint(new EqualConstraint(expected)) ,null, null);
         }
 
         #endregion
@@ -341,9 +341,41 @@ namespace NUnit.Framework
                 throw new MultipleAssertException();
         }
 
-        #endregion
+#if ASYNC
+        /// <summary>
+        /// Wraps code containing a series of assertions, which should all
+        /// be executed, even if they fail. Failed results are saved and
+        /// reported at the end of the code block.
+        /// </summary>
+        /// <param name="testDelegate">A TestDelegate to be executed in Multiple Assertion mode.</param>
+        public static void Multiple(AsyncTestDelegate testDelegate)
+        {
+            TestExecutionContext context = TestExecutionContext.CurrentContext;
+            Guard.OperationValid(context != null, "Assert.Multiple called outside of a valid TestExecutionContext");
 
-        #region Helper Methods
+            context.MultipleAssertLevel++;
+
+            try
+            {
+                using (AsyncInvocationRegion region = AsyncInvocationRegion.Create(testDelegate))
+                {
+                    var result = testDelegate();
+                    region.WaitForPendingOperationsToComplete(result);
+                }
+            }
+            finally
+            {
+                context.MultipleAssertLevel--;
+            }
+
+            if (context.MultipleAssertLevel == 0 && context.CurrentResult.PendingFailures > 0)
+                throw new MultipleAssertException();
+        }
+#endif
+
+#endregion
+
+#region Helper Methods
 
         private static void ReportFailure(ConstraintResult result, string message)
         {
@@ -386,6 +418,6 @@ namespace NUnit.Framework
             TestExecutionContext.CurrentContext.IncrementAssertCount();
         }
 
-        #endregion
+#endregion
     }
 }

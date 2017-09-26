@@ -28,4 +28,8 @@
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
+  </ItemGroup>
+
 </Project>

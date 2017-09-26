@@ -7,8 +7,6 @@ using NMock.Monitoring;
 
 #endregion
 
-/* ^ */ using ICloneable = System.Object; /* dpbullington@gmail.com ^ */
-
 namespace NMock
 {
 	/// <summary>

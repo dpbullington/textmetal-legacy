@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 using NUnit.Framework;
@@ -136,9 +137,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullTlsContextFactoryMethodCreateTest()
 		{
+			Func<IDictionary<string, object>> mockTlsContextFactoryMethod;
 			ThreadLocalContextualStorageStrategy threadLocalContextualStorageStrategy;
 
-			threadLocalContextualStorageStrategy = new ThreadLocalContextualStorageStrategy(null);
+			mockTlsContextFactoryMethod = null;
+
+			threadLocalContextualStorageStrategy = new ThreadLocalContextualStorageStrategy(mockTlsContextFactoryMethod);
 		}
 
 		#endregion

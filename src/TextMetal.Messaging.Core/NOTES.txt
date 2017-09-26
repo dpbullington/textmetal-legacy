@@ -1,8 +1,0 @@
-﻿Endpoint := Address + Binding + Contract
-	Address := URI + Identity
-	Binding := Transport + Format(Encoding) + Protocol
-	Contract := Request / Response
-	Pipeline
-
-
-	Maps?

@@ -50,7 +50,7 @@ namespace TextMetal.Framework.Hosting.Tool
 
 		#region Properties/Indexers/Events
 
-		protected IReflectionFascade ReflectionFascade
+		private IReflectionFascade ReflectionFascade
 		{
 			get
 			{

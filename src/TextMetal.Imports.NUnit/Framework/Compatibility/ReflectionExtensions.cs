@@ -405,7 +405,7 @@ namespace NUnit.Compatibility
         /// </summary>
         public static IEnumerable<T> GetAttributes<T>(this MemberInfo info, bool inherit) where T : class
         {
-            return GetAttributesImpl<T>(info.GetCustomAttributes(inherit).Cast<Attribute>());
+            return GetAttributesImpl<T>(info.GetCustomAttributes(inherit).Cast<Attribute>()); // dpbullington@gmail.com
         }
 
         /// <summary>
@@ -413,8 +413,8 @@ namespace NUnit.Compatibility
         /// </summary>
         public static IEnumerable<T> GetAttributes<T>(this ParameterInfo info, bool inherit) where T : class
         {
-            return GetAttributesImpl<T>(info.GetCustomAttributes(inherit).Cast<Attribute>());
-        }
+            return GetAttributesImpl<T>(info.GetCustomAttributes(inherit).Cast<Attribute>()); // dpbullington@gmail.com
+		}
 
         /// <summary>
         /// Returns an array of custom attributes of the specified type applied to this assembly

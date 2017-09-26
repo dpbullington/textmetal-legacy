@@ -35,9 +35,7 @@ namespace NMock.Actions
 		static ResultSynthesizer()
 		{
 			defaultResults[typeof(string)] = new ReturnAction(String.Empty);
-/* ^ */
-#if !SILVERLIGHT && !NETCORE
-/* dpbullington@gmail.com ^ */
+#if !SILVERLIGHT
 			defaultResults[typeof(ArrayList)] = new ReturnCloneAction(new ArrayList());
 			defaultResults[typeof(SortedList)] = new ReturnCloneAction(new SortedList());
 			defaultResults[typeof(Hashtable)] = new ReturnCloneAction(new Hashtable());

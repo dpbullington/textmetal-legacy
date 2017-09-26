@@ -31,13 +31,16 @@
 
   <ItemGroup>
     <Compile Remove="Datazoid\**\*" />
+    <Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
     <None Update="appconfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj" />
+    <ProjectReference Include="..\TextMetal.Imports.NMock\TextMetal.Imports.NMock.csproj" />
+    <ProjectReference Include="..\TextMetal.Imports.NUnit\TextMetal.Imports.NUnit.csproj" />
+    <ProjectReference Include="..\TextMetal.Middleware.Datazoid.Models\TextMetal.Middleware.Datazoid.Models.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Context\TextMetal.Middleware.Solder.Context.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Executive\TextMetal.Middleware.Solder.Executive.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Extensions\TextMetal.Middleware.Solder.Extensions.csproj" />
@@ -46,7 +49,6 @@
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Primitives\TextMetal.Middleware.Solder.Primitives.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Serialization\TextMetal.Middleware.Solder.Serialization.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Utilities\TextMetal.Middleware.Solder.Utilities.csproj" />
-    <ProjectReference Include="..\TextMetal.Middleware.Datazoid\TextMetal.Middleware.Datazoid.csproj" />
   </ItemGroup>
 
 </Project>

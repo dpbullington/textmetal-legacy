@@ -50,22 +50,9 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			}
 		}
 
-		public string DataSourceTag
-		{
-			get
-			{
-				return ODBC_SQL_SERVER_DATA_SOURCE_TAG;
-			}
-		}
-
 		#endregion
 
 		#region Methods/Operators
-
-		public bool CreateNativeDatabaseFile(string databaseFilePath)
-		{
-			return false;
-		}
 
 		public override void FixupParameter(IUnitOfWork unitOfWork, ITacticParameter tacticParameter, string originalSqlType)
 		{

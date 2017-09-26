@@ -52,7 +52,7 @@ namespace TextMetal.Middleware.Solder.Executive
 			{
 				Console.WriteLine();
 				// HACK
-				Console.WriteLine(string.Format("USAGE: {0} ", this.GetType().GetTypeInfo().Assembly.ManifestModule.Name) + string.Join((string)" ", (IEnumerable<string>)requiredArgumentTokens));
+				Console.WriteLine(string.Format("USAGE: {0} ", this.AssemblyInformationFascade.ModuleName) + string.Join((string)" ", (IEnumerable<string>)requiredArgumentTokens));
 			}
 
 			Console.ForegroundColor = oldConsoleColor;
@@ -60,8 +60,8 @@ namespace TextMetal.Middleware.Solder.Executive
 
 		protected sealed override void DisplayBannerMessage()
 		{
-			Console.WriteLine(string.Format("{0} v{1} ({2}; {3})", this.GetType().GetTypeInfo().Assembly.ManifestModule.Name,
-				this.AssemblyInformationFascade.Win32FileVersion, this.AssemblyInformationFascade.AssemblyVersion, this.AssemblyInformationFascade.InformationalVersion));
+			Console.WriteLine(string.Format("{0} v{1} ({2}; {3})", this.AssemblyInformationFascade.ModuleName,
+				this.AssemblyInformationFascade.NativeFileVersion, this.AssemblyInformationFascade.AssemblyVersion, this.AssemblyInformationFascade.InformationalVersion));
 		}
 
 		protected sealed override void DisplayFailureMessage(Exception exception)

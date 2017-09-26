@@ -34,8 +34,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj" />
-    <ProjectReference Include="..\TextMetal.Middleware.Textual\TextMetal.Middleware.Textual.csproj" />
+    <Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Imports.Jint\TextMetal.Imports.Jint.csproj" />
+    <ProjectReference Include="..\TextMetal.Middleware.Solder.Executive\TextMetal.Middleware.Solder.Executive.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Primitives\TextMetal.Middleware.Solder.Primitives.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Utilities\TextMetal.Middleware.Solder.Utilities.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Serialization\TextMetal.Middleware.Solder.Serialization.csproj" />

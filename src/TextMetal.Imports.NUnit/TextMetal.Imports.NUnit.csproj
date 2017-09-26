@@ -26,11 +26,16 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <RootNamespace />
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Framework\Compatibility\System\Lazy.cs;Framework\Compatibility\System.Threading\SpinWait.cs;Framework\Internal\Commands\TimeoutCommand.cs" />
+    <Compile Remove="Framework\Compatibility\System\Lazy.cs;Framework\Internal\Commands\TimeoutCommand.cs" />
     <Compile Remove="Framework\Internal\Commands\TimeoutCommand.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>

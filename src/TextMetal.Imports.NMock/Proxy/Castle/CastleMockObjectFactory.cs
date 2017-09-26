@@ -39,22 +39,18 @@ namespace NMock.Proxy.Castle
 		/// <param name="usePersistentProxyBuilder">A value indicating if the ProxyBuilder should be persistent</param>
 		public CastleMockObjectFactory(bool usePersistentProxyBuilder)
 		{
-			/* ^ */
-#if !SILVERLIGHT && !NETCORE
-/* dpbullington@gmail.com ^ */
-// no PersistentProxyBuilder in Silverlight
-				if(usePersistentProxyBuilder)
-				{
-					ProxyBuilder = new PersistentProxyBuilder();
-				}
-				else
-				{
+#if !SILVERLIGHT && FALSE // dpbullington@gmail.com
+			// no PersistentProxyBuilder in Silverlight
+			if (usePersistentProxyBuilder)
+			{
+				ProxyBuilder = new PersistentProxyBuilder();
+			}
+			else
+			{
 #endif
 			ProxyBuilder = new DefaultProxyBuilder();
-			/* ^ */
-#if !SILVERLIGHT && !NETCORE
-/* dpbullington@gmail.com ^ */
-				}
+#if !SILVERLIGHT && FALSE // dpbullington@gmail.com
+			}
 #endif
 			//Generator = new ProxyGenerator(ProxyBuilder);
 		}

@@ -29,6 +29,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Utilities\TextMetal.Middleware.Solder.Utilities.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Injection\TextMetal.Middleware.Solder.Injection.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Serialization\TextMetal.Middleware.Solder.Serialization.csproj" />

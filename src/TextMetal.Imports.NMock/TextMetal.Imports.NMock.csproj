@@ -26,10 +26,11 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <RootNamespace />
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Proxy\LinFu\**\*;Proxy\Reflective\**\*" />
+    <Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,8 +54,8 @@
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+  <!--<PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
-  </PropertyGroup>
+  </PropertyGroup>-->
 
 </Project>

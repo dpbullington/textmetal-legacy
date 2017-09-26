@@ -30,8 +30,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Imports.NMock\TextMetal.Imports.NMock.csproj" />
+    <ProjectReference Include="..\TextMetal.Imports.NUnit\TextMetal.Imports.NUnit.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Solder.Primitives\TextMetal.Middleware.Solder.Primitives.csproj" />
-    <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj" />
     <ProjectReference Include="..\TextMetal.Framework\TextMetal.Framework.csproj" />
   </ItemGroup>
 

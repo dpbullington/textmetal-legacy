@@ -20,15 +20,6 @@ namespace TextMetal.Middleware.Solder.Injection
 	{
 		#region Constructors/Destructors
 
-		/// <summary>
-		/// Initializes a new instance of the TransientActivatorAutoWiringDependencyResolution class.
-		/// </summary>
-		/// <param name="activatorType"> The activator type of the resolution. </param>
-		public TransientActivatorAutoWiringDependencyResolution(Type activatorType)
-			: this(AssemblyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(string.Empty, false), activatorType)
-		{
-		}
-
 		public TransientActivatorAutoWiringDependencyResolution(IReflectionFascade reflectionFascade, Type activatorType)
 			: base(DependencyLifetime.Transient)
 		{

@@ -100,7 +100,7 @@ namespace NUnit.Framework.Internal.Execution
                                             RunChildren();
                                             return;
                                         // Just return: completion event will take care
-                                        // of TestFixtureTearDown when all tests are done.
+                                        // of OneTimeTearDown when all tests are done.
 
                                         case TestStatus.Skipped:
                                         case TestStatus.Inconclusive:
@@ -434,6 +434,16 @@ namespace NUnit.Framework.Internal.Execution
             {
                 get { return string.Format("{0} OneTimeTearDown", base.Name); }
             }
+
+#if PARALLEL
+            /// <summary>
+            /// The ExecutionStrategy for use in running this work item
+            /// </summary>
+            public override ParallelExecutionStrategy ExecutionStrategy
+            {
+                get { return _originalWorkItem.ExecutionStrategy; }
+            }
+#endif
 
             /// <summary>
             ///

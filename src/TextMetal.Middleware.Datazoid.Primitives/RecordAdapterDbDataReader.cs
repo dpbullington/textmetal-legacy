@@ -188,12 +188,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 
 		#region Methods/Operators
 
-		public virtual void Close()
-		{
-			this.TargetEnumerator.Dispose();
-		}
-
-		public virtual void Dispose()
+		public override void Close()
 		{
 			this.TargetEnumerator.Dispose();
 		}

@@ -18,14 +18,6 @@ namespace TextMetal.Middleware.Solder.Injection
 	{
 		#region Constructors/Destructors
 
-		/// <summary>
-		/// Initializes a new instance of the TransientActivatorAutoWiringDependencyResolution`1 class.
-		/// </summary>
-		public TransientActivatorAutoWiringDependencyResolution()
-			: this(AssemblyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(string.Empty, false))
-		{
-		}
-
 		public TransientActivatorAutoWiringDependencyResolution(IReflectionFascade reflectionFascade)
 			: base(DependencyLifetime.Transient)
 		{
@@ -56,6 +48,14 @@ namespace TextMetal.Middleware.Solder.Injection
 		#endregion
 
 		#region Methods/Operators
+
+		public static TransientActivatorAutoWiringDependencyResolution<TResolution> From(IDependencyManager dependencyManager)
+		{
+			if ((object)dependencyManager == null)
+				throw new ArgumentNullException(nameof(dependencyManager));
+
+			return new TransientActivatorAutoWiringDependencyResolution<TResolution>(dependencyManager.ResolveDependency<IReflectionFascade>(string.Empty, false));
+		}
 
 		protected override TResolution CoreResolve(IDependencyManager dependencyManager, string selectorKey)
 		{

@@ -4,15 +4,12 @@
 */
 
 using System;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 using TextMetal.Framework.Associative;
 using TextMetal.Middleware.Solder.Extensions;
-using TextMetal.Middleware.Textual.Delimited;
-using TextMetal.Middleware.Textual.Primitives;
 
 namespace TextMetal.Framework.Source.Primative
 {
@@ -25,6 +22,11 @@ namespace TextMetal.Framework.Source.Primative
 		/// </summary>
 		public TextSourceStrategy()
 		{
+		}
+
+		public void foo(string x)
+		{
+			throw new ArgumentNullException("x");
 		}
 
 		#endregion
@@ -40,7 +42,6 @@ namespace TextMetal.Framework.Source.Primative
 			const string PROP_TOKEN_QUOTE_VALUE = "QuoteValue";
 
 			IList<string> values;
-			DelimitedTextSpec delimitedTextSpec;
 			bool firstRecordIsHeader;
 			string recordDelimiter;
 			string fieldDelimiter;
@@ -52,16 +53,19 @@ namespace TextMetal.Framework.Source.Primative
 			ObjectConstruct objectConstruct01;
 			PropertyConstruct propertyConstruct01;
 
+			string line;
+			string[] headers = null;
+
 			ObjectConstruct tempOc;
 
 			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
+				throw new ArgumentNullException(nameof(sourceFilePath));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
 			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
+				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 
@@ -129,25 +133,6 @@ namespace TextMetal.Framework.Source.Primative
 				quoteValue = quoteValue.Replace("\\\"", "\"");
 			}
 
-			delimitedTextSpec = new DelimitedTextSpec();
-			delimitedTextSpec.FirstRecordIsHeader = firstRecordIsHeader;
-			delimitedTextSpec.RecordDelimiter = recordDelimiter;
-			delimitedTextSpec.FieldDelimiter = fieldDelimiter;
-			delimitedTextSpec.QuoteValue = quoteValue;
-
-			if ((object)headerNames != null)
-			{
-				delimitedTextSpec.TextHeaderSpecs.Clear();
-				foreach (string headerName in headerNames)
-				{
-					delimitedTextSpec.TextHeaderSpecs.Add(new TextHeaderSpec()
-													{
-														HeaderName = headerName,
-														FieldType = FieldType.String
-													});
-				}
-			}
-
 			tempOc = objectConstruct01 = new ObjectConstruct();
 			objectConstruct01.Name = "DelimitedTextSpec";
 			objectConstruct00.Items.Add(objectConstruct01);
@@ -182,46 +167,48 @@ namespace TextMetal.Framework.Source.Primative
 
 			using (StreamReader streamReader = File.OpenText(sourceFilePath))
 			{
-				using (DelimitedTextReader delimitedTextReader = new DelimitedTextReader(streamReader, delimitedTextSpec))
+				int i = 0;
+
+				arrayConstruct00 = new ArrayConstruct();
+				arrayConstruct00.Name = "Records";
+				objectConstruct00.Items.Add(arrayConstruct00);
+
+				while ((line = (streamReader.ReadLine() ?? string.Empty)).Trim() != string.Empty)
 				{
-					var __headerSpecs = delimitedTextReader.ReadHeaderSpecs();
+					string[] fields;
 
 					objectConstruct01 = new ObjectConstruct();
-					objectConstruct01.Name = "HeaderNames";
-					tempOc.Items.Add(objectConstruct01);
+					arrayConstruct00.Items.Add(objectConstruct01);
 
-					if ((object)__headerSpecs != null)
+					fields = line.Split(fieldDelimiter.ToCharArray());
+
+					if (firstRecordIsHeader && i == 0)
 					{
-						foreach (var headerSpec in __headerSpecs)
-						{
-							propertyConstruct01 = new PropertyConstruct()
-												{
-													Name = "HeaderName",
-													Value = headerSpec.HeaderName
-												};
-							objectConstruct01.Items.Add(propertyConstruct01);
-						}
+						headers = fields;
+						arrayConstruct00.Items.Remove(objectConstruct01);
+						i++;
+						continue;
 					}
 
-					var records = delimitedTextReader.ReadRecords();
-
-					arrayConstruct00 = new ArrayConstruct();
-					arrayConstruct00.Name = "Records";
-					objectConstruct00.Items.Add(arrayConstruct00);
-
-					foreach (var record in records)
+					if ((object)fields != null)
 					{
-						objectConstruct01 = new ObjectConstruct();
-						arrayConstruct00.Items.Add(objectConstruct01);
+						int j = 0;
 
-						foreach (var field in record)
+						foreach (string field in fields)
 						{
 							propertyConstruct01 = new PropertyConstruct();
-							propertyConstruct01.Name = field.Key;
-							propertyConstruct01.RawValue = field.Value;
+
+							if (firstRecordIsHeader && (object)headers != null)
+								propertyConstruct01.Name = string.Format("{0}", headers[j++]);
+							else
+								propertyConstruct01.Name = string.Format("TextFileField_{0:00000000}", j++);
+
+							propertyConstruct01.RawValue = field;
 							objectConstruct01.Items.Add(propertyConstruct01);
 						}
 					}
+
+					i++;
 				}
 			}
 

@@ -58,6 +58,22 @@ namespace TextMetal.Middleware.Solder.Utilities
 		}
 
 		/// <summary>
+		/// Gets the assembly module name.
+		/// </summary>
+		string ModuleName
+		{
+			get;
+		}
+
+		/// <summary>
+		/// Gets the assembly (native) file version.
+		/// </summary>
+		string NativeFileVersion
+		{
+			get;
+		}
+
+		/// <summary>
 		/// Gets the assembly product.
 		/// </summary>
 		string Product
@@ -77,14 +93,6 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// Gets the assembly trademark.
 		/// </summary>
 		string Trademark
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Gets the assembly Win32 file version.
-		/// </summary>
-		string Win32FileVersion
 		{
 			get;
 		}

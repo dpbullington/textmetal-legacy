@@ -1,24 +1,21 @@
 ------------------------------------------------------------------------------------------------------
 | OPEN SOURCE IMPORTS
-| last updated: 2017-07-25
+| last updated: 2017-08-31
 ------------------------------------------------------------------------------------------------------
 
 Core-29e5eb2b9b195a3744be42e7a26abea4fc3abb56.zip
 https://github.com/castleproject/Core
-NO CHANGES TO SUPPORT netframework1.6
 
-jint-4c13c86bb07b9867747f396dc022ce9277b1df16.zip
+jint-4223c300518ddb207a26dada3d7066cdd43293c5.zip
 https://github.com/sebastienros/jint
-NO CHANGES TO SUPPORT netframework1.6
 
 nmock3[trunk]-87315.zip
 https://nmock3.codeplex.com/SourceControl/latest
-REQUIRED CHANGES TO SUPPORT netframework1.6
 
-nunit-7a415ab9a923c48e04c22122ec0ac3b1f1fbe68a.zip
+nunit-3256c91397fe1471522931afb4c69b6417bb7b9b.zip
 https://github.com/nunit/nunit
-NO CHANGES TO SUPPORT netframework1.6
 
-Newtonsoft.Json-4f0c963c4f79e57c240539bd0431d349122c01a0.zip
+Newtonsoft.Json-dotnetcore2-325768f14164a585bd0a618907cb07e1ef70e51e.zip
 https://github.com/JamesNK/Newtonsoft.Json
+https://github.com/JamesNK/Newtonsoft.Json/tree/dotnetcore2
 TO BE INTEGRATED

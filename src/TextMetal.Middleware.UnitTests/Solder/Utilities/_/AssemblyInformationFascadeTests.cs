@@ -68,7 +68,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			Assert.AreEqual(ASSEMBLY_COPYRIGHT, assemblyInformationFascade.Copyright);
 			Assert.AreEqual(ASSEMBLY_COMPANY, assemblyInformationFascade.Company);
 			Assert.AreEqual(ASSEMBLY_CONFIGURATION, assemblyInformationFascade.Configuration);
-			Assert.AreEqual(ASSEMBLY_FILE_VERSION, assemblyInformationFascade.Win32FileVersion);
+			Assert.AreEqual(ASSEMBLY_FILE_VERSION, assemblyInformationFascade.NativeFileVersion);
 			Assert.AreEqual(ASSEMBLY_INFORMATIONAL_VERSION, assemblyInformationFascade.InformationalVersion);
 			Assert.AreEqual(ASSEMBLY_TRADEMARK, assemblyInformationFascade.Trademark);
 			Assert.AreEqual(mockAssembly.GetName().Version.ToString(), assemblyInformationFascade.AssemblyVersion);

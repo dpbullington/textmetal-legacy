@@ -6,8 +6,6 @@ using NMock.Monitoring;
 
 #endregion
 
-/* ^ */ using ICloneable = System.Object; /* dpbullington@gmail.com ^ */
-
 namespace NMock.Actions
 {
 #if !SILVERLIGHT
@@ -44,10 +42,7 @@ namespace NMock.Actions
 
 		void IAction.Invoke(Invocation invocation)
 		{
-			/* ^ */
-			//invocation.Result = prototype.Clone();
-			throw new NotSupportedException("NETCORE");
-			/* dpbullington@gmail.com ^ */
+			invocation.Result = prototype.Clone();
 		}
 
 		#endregion

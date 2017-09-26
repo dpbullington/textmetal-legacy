@@ -10,6 +10,7 @@ using NMock;
 using NUnit.Framework;
 
 using TextMetal.Middleware.Solder.Injection;
+using TextMetal.Middleware.Solder.Utilities;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Solder.Injection._
@@ -32,6 +33,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		{
 			TransientActivatorAutoWiringDependencyResolution<MockDependantObject> transientActivatorAutoWiringDependencyResolution;
 			IDependencyManager mockDependencyManager;
+			IReflectionFascade mockReflectionFascade;
 			MockDependantObject result;
 			MockFactory mockFactory;
 			string _unusedString = null;
@@ -40,10 +42,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
 			Expect.On(mockDependencyManager).One.Method(m => m.ResolveDependency(_unusedType, _unusedString, _unusedBoolean)).With(typeof(MockDependantObject), string.Empty, true).Will(Return.Value(new MockDependantObject("both")));
 
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>();
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>(mockReflectionFascade);
 
 			Assert.AreEqual(DependencyLifetime.Transient, transientActivatorAutoWiringDependencyResolution.DependencyLifetime);
 
@@ -68,6 +71,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		{
 			TransientActivatorAutoWiringDependencyResolution<MockDependantObject> transientActivatorAutoWiringDependencyResolution;
 			IDependencyManager mockDependencyManager;
+			IReflectionFascade mockReflectionFascade;
 			MockDependantObject result;
 			MockFactory mockFactory;
 			string _unusedString = null;
@@ -76,11 +80,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
 			Expect.On(mockDependencyManager).One.Method(m => m.ResolveDependency(_unusedType, _unusedString, _unusedBoolean)).With(typeof(MockDependantObject), "named_dep_obj", true).Will(Return.Value(new MockDependantObject("left")));
 			Expect.On(mockDependencyManager).One.Method(m => m.ResolveDependency(_unusedType, _unusedString, _unusedBoolean)).With(typeof(MockDependantObject), string.Empty, true).Will(Return.Value(new MockDependantObject("right")));
 
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>();
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>(mockReflectionFascade);
 
 			Assert.AreEqual(DependencyLifetime.Transient, transientActivatorAutoWiringDependencyResolution.DependencyLifetime);
 
@@ -105,6 +110,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		{
 			TransientActivatorAutoWiringDependencyResolution<MockDependantObject> transientActivatorAutoWiringDependencyResolution;
 			IDependencyManager mockDependencyManager;
+			IReflectionFascade mockReflectionFascade;
 			object result;
 			MockFactory mockFactory;
 			string _unusedString = null;
@@ -113,11 +119,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
 			Expect.On(mockDependencyManager).One.Method(m => m.ResolveDependency(_unusedType, _unusedString, _unusedBoolean)).With(typeof(MockDependantObject), "named_dep_obj", true).Will(Return.Value(new MockDependantObject("left")));
 			Expect.On(mockDependencyManager).One.Method(m => m.ResolveDependency(_unusedType, _unusedString, _unusedBoolean)).With(typeof(MockDependantObject), string.Empty, true).Will(Return.Value(new MockDependantObject("right")));
 
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>();
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>(mockReflectionFascade);
 
 			Assert.AreEqual(DependencyLifetime.Transient, transientActivatorAutoWiringDependencyResolution.DependencyLifetime);
 
@@ -143,13 +150,15 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		{
 			TransientActivatorAutoWiringDependencyResolution<MockDependantObject> transientActivatorAutoWiringDependencyResolution;
 			IDependencyManager mockDependencyManager;
+			IReflectionFascade mockReflectionFascade;
 			MockDependantObject result;
 			MockFactory mockFactory;
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = null;
+			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>();
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>(mockReflectionFascade);
 
 			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, string.Empty);
 		}
@@ -160,13 +169,15 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		{
 			TransientActivatorAutoWiringDependencyResolution<MockDependantObject> transientActivatorAutoWiringDependencyResolution;
 			IDependencyManager mockDependencyManager;
+			IReflectionFascade mockReflectionFascade;
 			object result;
 			MockFactory mockFactory;
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = null;
+			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>();
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>(mockReflectionFascade);
 
 			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, typeof(MockDependantObject), string.Empty);
 		}
@@ -177,13 +188,15 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		{
 			TransientActivatorAutoWiringDependencyResolution<MockDependantObject> transientActivatorAutoWiringDependencyResolution;
 			IDependencyManager mockDependencyManager;
+			IReflectionFascade mockReflectionFascade;
 			MockDependantObject result;
 			MockFactory mockFactory;
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>();
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>(mockReflectionFascade);
 
 			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, null);
 		}
@@ -194,15 +207,31 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		{
 			TransientActivatorAutoWiringDependencyResolution<MockDependantObject> transientActivatorAutoWiringDependencyResolution;
 			IDependencyManager mockDependencyManager;
+			IReflectionFascade mockReflectionFascade;
 			object result;
 			MockFactory mockFactory;
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>();
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>(mockReflectionFascade);
 
 			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, typeof(MockDependantObject), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullReflectionFascadeCreateTest()
+		{
+			TransientActivatorAutoWiringDependencyResolution<MockDependantObject> transientActivatorAutoWiringDependencyResolution;
+			IReflectionFascade mockReflectionFascade;
+			MockFactory mockFactory;
+
+			mockFactory = new MockFactory();
+			mockReflectionFascade = null;
+
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>(mockReflectionFascade);
 		}
 
 		[Test]
@@ -211,13 +240,15 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		{
 			TransientActivatorAutoWiringDependencyResolution<MockDependantObject> transientActivatorAutoWiringDependencyResolution;
 			IDependencyManager mockDependencyManager;
+			IReflectionFascade mockReflectionFascade;
 			object result;
 			MockFactory mockFactory;
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>();
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>(mockReflectionFascade);
 
 			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, null, string.Empty);
 		}

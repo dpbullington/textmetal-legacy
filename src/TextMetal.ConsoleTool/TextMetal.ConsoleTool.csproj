@@ -30,6 +30,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appconfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -37,7 +41,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TextMetal.Framework\TextMetal.Framework.csproj" />
-    <ProjectReference Include="..\TextMetal.Middleware.Solder.Executive\TextMetal.Middleware.Solder.Executive.csproj" />
   </ItemGroup>
 
   <ItemGroup>

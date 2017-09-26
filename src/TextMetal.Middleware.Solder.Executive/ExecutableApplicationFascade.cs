@@ -51,7 +51,7 @@ namespace TextMetal.Middleware.Solder.Executive
 		private readonly IAppConfigFascade appConfigFascade;
 		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly IReflectionFascade reflectionFascade;
-		private IAssemblyInformationFascade assemblyInformationFascade;
+		private readonly IAssemblyInformationFascade assemblyInformationFascade;
 		private bool disposed;
 
 		#endregion
@@ -280,7 +280,7 @@ namespace TextMetal.Middleware.Solder.Executive
 
 			Environment.FailFast(string.Empty, e);
 
-			return Int32.MinValue;
+			return -1;
 		}
 
 		private int Startup(string[] args)
@@ -431,8 +431,6 @@ namespace TextMetal.Middleware.Solder.Executive
 			{
 				return this.ShowNestedExceptionsAndThrowBrickAtProcess(new Exception("Main", ex));
 			}
-
-			return -1;
 		}
 
 		#endregion

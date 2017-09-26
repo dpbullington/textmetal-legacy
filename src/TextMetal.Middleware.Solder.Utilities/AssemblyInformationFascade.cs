@@ -79,7 +79,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			afva = reflectionFascade.GetOneAttribute<AssemblyFileVersionAttribute>(assembly);
 
 			if ((object)afva != null)
-				this.win32FileVersion = afva.Version;
+				this.nativeFileVersion = afva.Version;
 
 			aiva = reflectionFascade.GetOneAttribute<AssemblyInformationalVersionAttribute>(assembly);
 
@@ -90,6 +90,8 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 			if ((object)aTrA != null)
 				this.trademark = aTrA.Trademark;
+
+			this.moduleName = assembly.ManifestModule.Name;
 		}
 
 		#endregion
@@ -102,10 +104,11 @@ namespace TextMetal.Middleware.Solder.Utilities
 		private readonly string copyright;
 		private readonly string description;
 		private readonly string informationalVersion;
+		private readonly string moduleName;
+		private readonly string nativeFileVersion;
 		private readonly string product;
 		private readonly string title;
 		private readonly string trademark;
-		private readonly string win32FileVersion;
 
 		#endregion
 
@@ -178,6 +181,28 @@ namespace TextMetal.Middleware.Solder.Utilities
 		}
 
 		/// <summary>
+		/// Gets the assembly module name.
+		/// </summary>
+		public string ModuleName
+		{
+			get
+			{
+				return this.moduleName;
+			}
+		}
+
+		/// <summary>
+		/// Gets the assembly (native) file version.
+		/// </summary>
+		public string NativeFileVersion
+		{
+			get
+			{
+				return this.nativeFileVersion;
+			}
+		}
+
+		/// <summary>
 		/// Gets the assembly product.
 		/// </summary>
 		public string Product
@@ -207,17 +232,6 @@ namespace TextMetal.Middleware.Solder.Utilities
 			get
 			{
 				return this.trademark;
-			}
-		}
-
-		/// <summary>
-		/// Gets the assembly Win32 file version.
-		/// </summary>
-		public string Win32FileVersion
-		{
-			get
-			{
-				return this.win32FileVersion;
 			}
 		}
 

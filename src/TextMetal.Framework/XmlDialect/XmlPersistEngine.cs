@@ -178,15 +178,15 @@ namespace TextMetal.Framework.XmlDialect
 		/// <returns> An XML object graph. </returns>
 		public IXmlObject DeserializeFromXml(Stream stream)
 		{
-			XmlReader xmlReader;
+			XmlTextReader xmlTextReader;
 			IXmlObject document;
 
 			if ((object)stream == null)
 				throw new ArgumentNullException(nameof(stream));
 
 			// DO NOT USE A USING BLOCK HERE (CALLER OWNS STREAM) !!!
-			xmlReader = XmlReader.Create(stream);
-			document = this.DeserializeFromXml(xmlReader);
+			xmlTextReader = new XmlTextReader(stream);
+			document = this.DeserializeFromXml(xmlTextReader);
 			return document;
 		}
 
@@ -662,15 +662,15 @@ namespace TextMetal.Framework.XmlDialect
 		/// <returns> An XML object graph. </returns>
 		public IXmlObject DeserializeFromXml(TextReader textReader)
 		{
-			XmlReader xmlReader;
+			XmlTextReader xmlTextReader;
 			IXmlObject document;
 
 			if ((object)textReader == null)
 				throw new ArgumentNullException(nameof(textReader));
 
 			// DO NOT USE A USING BLOCK HERE (CALLER OWNS TEXTWRITER) !!!
-			xmlReader = XmlReader.Create(textReader);
-			document = this.DeserializeFromXml(xmlReader);
+			xmlTextReader = new XmlTextReader(textReader);
+			document = this.DeserializeFromXml(xmlTextReader);
 			return document;
 		}
 
@@ -947,7 +947,7 @@ namespace TextMetal.Framework.XmlDialect
 		/// <param name="stream"> The stream to save. </param>
 		public void SerializeToXml(IXmlObject document, Stream stream)
 		{
-			XmlWriter xmlWriter;
+			XmlTextWriter xmlTextWriter;
 
 			if ((object)document == null)
 				throw new ArgumentNullException(nameof(document));
@@ -956,10 +956,13 @@ namespace TextMetal.Framework.XmlDialect
 				throw new ArgumentNullException(nameof(stream));
 
 			// DO NOT USE A USING BLOCK HERE (CALLER OWNS STREAM) !!!
-			xmlWriter = XmlWriter.Create(stream, new XmlWriterSettings() { Encoding = Encoding.UTF8 });
+			xmlTextWriter = new XmlTextWriter(stream, Encoding.UTF8);
+			xmlTextWriter.Formatting = Formatting.Indented;
+			xmlTextWriter.Indentation = 1;
+			xmlTextWriter.IndentChar = '\t';
 
-			this.SerializeToXml(document, xmlWriter);
-			xmlWriter.Flush();
+			this.SerializeToXml(document, xmlTextWriter);
+			xmlTextWriter.Flush();
 		}
 
 		/// <summary>
@@ -969,11 +972,23 @@ namespace TextMetal.Framework.XmlDialect
 		/// <param name="xmlWriter"> The XML writer to save. </param>
 		public void SerializeToXml(IXmlObject document, XmlWriter xmlWriter)
 		{
+			XmlTextWriter xmlTextWriter;
+
 			if ((object)document == null)
 				throw new ArgumentNullException(nameof(document));
 
 			if ((object)xmlWriter == null)
 				throw new ArgumentNullException(nameof(xmlWriter));
+
+			xmlTextWriter = xmlWriter as XmlTextWriter;
+
+			if ((object)xmlTextWriter != null &&
+				xmlTextWriter.Formatting == Formatting.None)
+			{
+				xmlTextWriter.Formatting = Formatting.Indented;
+				xmlTextWriter.Indentation = 1;
+				xmlTextWriter.IndentChar = '\t';
+			}
 
 			this.SerializeToXml(xmlWriter, document, null);
 		}
@@ -1192,7 +1207,7 @@ namespace TextMetal.Framework.XmlDialect
 
 		public void SerializeToXml(IXmlObject document, TextWriter textWriter)
 		{
-			XmlWriter xmlWriter;
+			XmlTextWriter xmlTextWriter;
 
 			if ((object)document == null)
 				throw new ArgumentNullException(nameof(document));
@@ -1201,10 +1216,13 @@ namespace TextMetal.Framework.XmlDialect
 				throw new ArgumentNullException(nameof(textWriter));
 
 			// DO NOT USE A USING BLOCK HERE (CALLER OWNS TEXTWRITER) !!!
-			xmlWriter = XmlWriter.Create(textWriter);
+			xmlTextWriter = new XmlTextWriter(textWriter);
+			xmlTextWriter.Formatting = Formatting.Indented;
+			xmlTextWriter.Indentation = 1;
+			xmlTextWriter.IndentChar = '\t';
 
-			this.SerializeToXml(document, xmlWriter);
-			xmlWriter.Flush();
+			this.SerializeToXml(document, xmlTextWriter);
+			xmlTextWriter.Flush();
 		}
 
 		/// <summary>

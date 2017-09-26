@@ -29,6 +29,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TextMetal.Middleware.Datazoid.Models\TextMetal.Middleware.Datazoid.Models.csproj" />
     <ProjectReference Include="..\TextMetal.Middleware.Datazoid.Extensions\TextMetal.Middleware.Datazoid.Extensions.csproj" />
   </ItemGroup>

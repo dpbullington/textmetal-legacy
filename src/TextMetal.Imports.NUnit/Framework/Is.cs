@@ -431,62 +431,6 @@ namespace NUnit.Framework
 
         #endregion
 
-        #region StringContaining
-
-        /// <summary>
-        /// Returns a constraint that succeeds if the actual
-        /// value contains the substring supplied as an argument.
-        /// </summary>
-        [Obsolete("Deprecated, use Does.Contain")]
-        public static SubstringConstraint StringContaining(string expected)
-        {
-            return new SubstringConstraint(expected);
-        }
-
-        #endregion
-
-        #region StringStarting
-
-        /// <summary>
-        /// Returns a constraint that succeeds if the actual
-        /// value starts with the substring supplied as an argument.
-        /// </summary>
-        [Obsolete("Deprecated, use Does.StartWith")]
-        public static StartsWithConstraint StringStarting(string expected)
-        {
-            return new StartsWithConstraint(expected);
-        }
-
-        #endregion
-
-        #region StringEnding
-
-        /// <summary>
-        /// Returns a constraint that succeeds if the actual
-        /// value ends with the substring supplied as an argument.
-        /// </summary>
-        [Obsolete("Deprecated, use Does.EndWith")]
-        public static EndsWithConstraint StringEnding(string expected)
-        {
-            return new EndsWithConstraint(expected);
-        }
-
-        #endregion
-
-        #region StringMatching
-
-        /// <summary>
-        /// Returns a constraint that succeeds if the actual
-        /// value matches the regular expression supplied as an argument.
-        /// </summary>
-        [Obsolete("Deprecated, use Does.Match")]
-        public static RegexConstraint StringMatching(string pattern)
-        {
-            return new RegexConstraint(pattern);
-        }
-
-        #endregion
-
         #region SamePath
 
         /// <summary>
@@ -532,11 +476,10 @@ namespace NUnit.Framework
         /// Returns a constraint that tests whether the actual value falls
         /// inclusively within a specified range.
         /// </summary>
-        /// <remarks>from must be less than or equal to true</remarks>
-        /// <param name="from">Inclusive beginning of the range. Must be less than or equal to to.</param>
-        /// <param name="to">Inclusive end of the range. Must be greater than or equal to from.</param>
+        /// <param name="from">Inclusive beginning of the range.</param>
+        /// <param name="to">Inclusive end of the range.</param>
         /// <returns></returns>
-        public static RangeConstraint InRange(IComparable from, IComparable to)
+        public static RangeConstraint InRange(object from, object to)
         {
             return new RangeConstraint(from, to);
         }

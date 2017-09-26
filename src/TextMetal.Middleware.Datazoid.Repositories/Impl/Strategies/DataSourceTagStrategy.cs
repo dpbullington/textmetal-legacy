@@ -112,7 +112,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 				OnlyWhen._PROFILE_ThenPrint(string.Format("The return procedure model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ParameterMappingAttribute).FullName));
 		}
 
-		public bool CreateNativeDatabaseFile(string databaseFilePath)
+		public virtual bool CreateNativeDatabaseFile(string databaseFilePath)
 		{
 			// do nothing
 			return false;

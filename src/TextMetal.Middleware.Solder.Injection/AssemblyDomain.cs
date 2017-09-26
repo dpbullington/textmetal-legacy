@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -26,25 +27,12 @@ namespace TextMetal.Middleware.Solder.Injection
 	{
 		#region Constructors/Destructors
 
-		static AssemblyDomain()
-		{
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::{1} --> {2}", nameof(AssemblyDomain), nameof(AssemblyDomain), Environment.CurrentManagedThreadId));
-
-			lock (defaultSyncObj)
-			{
-				if ((object)Default != null)
-					throw new DependencyException(string.Format("The default instance has already been initialized."));
-
-				Default = new AssemblyDomain();
-			}
-		}
-
 		private AssemblyDomain()
 			: this(AppDomain.CurrentDomain)
 		{
 		}
 
-		private AssemblyDomain(AppDomain appDomain)
+		public AssemblyDomain(AppDomain appDomain)
 		{
 			if ((object)appDomain == null)
 				throw new ArgumentNullException(nameof(appDomain));
@@ -76,11 +64,13 @@ namespace TextMetal.Middleware.Solder.Injection
 		{
 			get
 			{
-				return @default;
-			}
-			private set
-			{
-				@default = value;
+				var instance = AssemblyDomainLazySingleton.instance;
+
+				// the only way this is null is if this property is invoked AGAIN while the lay singleton is being contructed
+				if((object)instance == null)
+					Environment.FailFast(string.Format("Not re-entrant: '{0}.{1}'", nameof(AssemblyDomain), nameof(Default)));
+
+				return instance;
 			}
 		}
 
@@ -183,15 +173,9 @@ namespace TextMetal.Middleware.Solder.Injection
 			this.OnAssemblyLoaded(e.LoadedAssembly);
 		}
 
-		private void AppDomain_DomainUnload(object sender, EventArgs e)
+		private void AppDomain_ProcessExit(object sender, EventArgs e)
 		{
-			if ((object)sender == null)
-				throw new ArgumentNullException(nameof(sender));
-
-			if ((object)e == null)
-				throw new ArgumentNullException(nameof(e));
-
-			this.OnRuntimeTeardown();
+			this.OnProcessExit();
 		}
 
 		public void Dispose()
@@ -218,7 +202,7 @@ namespace TextMetal.Middleware.Solder.Injection
 					{
 						// unhook appp domain events
 						this.AppDomain.AssemblyLoad -= this.AppDomain_AssemblyLoad;
-						this.AppDomain.DomainUnload -= this.AppDomain_DomainUnload;
+						this.AppDomain.ProcessExit -= this.AppDomain_ProcessExit;
 
 						// DO NOT DISPOSE HERE
 						//this.AppDomain.Dispose();
@@ -290,6 +274,30 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
+		private static void AddTrustedDependencies(IDependencyManager dependencyManager)
+		{
+			IDataTypeFascade dataTypeFascade;
+			IReflectionFascade reflectionFascade;
+			IConfigurationRoot configurationRoot;
+			IAppConfigFascade appConfigFascade;
+			IAssemblyInformationFascade assemblyInformationFascade;
+
+			if ((object)dependencyManager == null)
+				throw new ArgumentNullException(nameof(dependencyManager));
+
+			dataTypeFascade = new DataTypeFascade();
+			reflectionFascade = new ReflectionFascade(dataTypeFascade);
+			configurationRoot = LoadAppConfigFile(APP_CONFIG_FILE_NAME);
+			appConfigFascade = new AppConfigFascade(configurationRoot, dataTypeFascade);
+			assemblyInformationFascade = new AssemblyInformationFascade(reflectionFascade, Assembly.GetEntryAssembly());
+
+			dependencyManager.AddResolution<IConfigurationRoot>(string.Empty, false, new SingletonWrapperDependencyResolution<IConfigurationRoot>(new InstanceDependencyResolution<IConfigurationRoot>(configurationRoot)));
+			dependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new InstanceDependencyResolution<IDataTypeFascade>(dataTypeFascade)));
+			dependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new InstanceDependencyResolution<IReflectionFascade>(reflectionFascade)));
+			dependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new InstanceDependencyResolution<IAppConfigFascade>(appConfigFascade)));
+			dependencyManager.AddResolution<IAssemblyInformationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAssemblyInformationFascade>(new InstanceDependencyResolution<IAssemblyInformationFascade>(assemblyInformationFascade)));
+		}
+
 		/// <summary>
 		/// Private thread-safe method which bootstraps an assembly/dependency domain.
 		/// </summary>
@@ -316,28 +324,10 @@ namespace TextMetal.Middleware.Solder.Injection
 					OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::{1} --> {2}", nameof(AssemblyDomain), nameof(this.Initialize), Environment.CurrentManagedThreadId));
 
 					// add trusted dependencies
-					{
-						IDataTypeFascade dataTypeFascade;
-						IReflectionFascade reflectionFascade;
-						IConfigurationRoot configurationRoot;
-						IAppConfigFascade appConfigFascade;
-						IAssemblyInformationFascade assemblyInformationFascade;
-
-						dataTypeFascade = new DataTypeFascade();
-						reflectionFascade = new ReflectionFascade(dataTypeFascade);
-						configurationRoot = LoadAppConfigFile(APP_CONFIG_FILE_NAME);
-						appConfigFascade = new AppConfigFascade(configurationRoot, dataTypeFascade);
-						assemblyInformationFascade = new AssemblyInformationFascade(reflectionFascade, Assembly.GetEntryAssembly());
-
-						this.DependencyManager.AddResolution<IConfigurationRoot>(string.Empty, false, new SingletonWrapperDependencyResolution<IConfigurationRoot>(new InstanceDependencyResolution<IConfigurationRoot>(configurationRoot)));
-						this.DependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new InstanceDependencyResolution<IDataTypeFascade>(dataTypeFascade)));
-						this.DependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new InstanceDependencyResolution<IReflectionFascade>(reflectionFascade)));
-						this.DependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new InstanceDependencyResolution<IAppConfigFascade>(appConfigFascade)));
-						this.DependencyManager.AddResolution<IAssemblyInformationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAssemblyInformationFascade>(new InstanceDependencyResolution<IAssemblyInformationFascade>(assemblyInformationFascade)));
-					}
+					AddTrustedDependencies(this.DependencyManager);
 
 					// hook app domain events
-					this.AppDomain.DomainUnload += this.AppDomain_DomainUnload;
+					this.AppDomain.ProcessExit += this.AppDomain_ProcessExit;
 					this.AppDomain.AssemblyLoad += this.AppDomain_AssemblyLoad;
 
 					// probe known assemblies at run-time
@@ -409,7 +399,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		private void OnRuntimeTeardown()
+		private void OnProcessExit()
 		{
 			// simply dispose
 			this.Dispose();
@@ -465,6 +455,33 @@ namespace TextMetal.Middleware.Solder.Injection
 					this.FireDependencyMagicMethods(assemblyType);
 				}
 			}
+		}
+
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		/// <summary>
+		/// http://www.yoda.arachsys.com/csharp/singleton.html
+		/// </summary>
+		private class AssemblyDomainLazySingleton
+		{
+			#region Constructors/Destructors
+
+			/// <summary>
+			/// Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
+			/// </summary>
+			static AssemblyDomainLazySingleton()
+			{
+			}
+
+			#endregion
+
+			#region Fields/Constants
+
+			internal static readonly AssemblyDomain instance = new AssemblyDomain();
+
+			#endregion
 		}
 
 		#endregion

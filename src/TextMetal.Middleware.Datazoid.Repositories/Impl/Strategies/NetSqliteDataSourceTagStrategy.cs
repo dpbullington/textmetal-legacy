@@ -49,19 +49,11 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			}
 		}
 
-		public string DataSourceTag
-		{
-			get
-			{
-				return NET_SQLITE_DATA_SOURCE_TAG;
-			}
-		}
-
 		#endregion
 
 		#region Methods/Operators
 
-		public bool CreateNativeDatabaseFile(string databaseFilePath)
+		public override bool CreateNativeDatabaseFile(string databaseFilePath)
 		{
 			Type type;
 			MethodInfo methodInfo;

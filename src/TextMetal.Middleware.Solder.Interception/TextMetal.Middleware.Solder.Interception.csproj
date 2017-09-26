@@ -29,7 +29,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj" />
+    <Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Imports.CastleCore\TextMetal.Imports.CastleCore.csproj" />
   </ItemGroup>
 
 </Project>

@@ -26,7 +26,12 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <RootNamespace />
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
@@ -34,9 +39,5 @@
     <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
   </ItemGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <DefineConstants>$(DefineConstants);NETSTANDARD1_3</DefineConstants>
-  </PropertyGroup>
 
 </Project>
