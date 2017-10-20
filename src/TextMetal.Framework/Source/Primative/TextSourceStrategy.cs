@@ -26,7 +26,7 @@ namespace TextMetal.Framework.Source.Primative
 
 		public void foo(string x)
 		{
-			throw new ArgumentNullException("x");
+			throw new ArgumentNullException(nameof(x));
 		}
 
 		#endregion
@@ -177,18 +177,17 @@ namespace TextMetal.Framework.Source.Primative
 				{
 					string[] fields;
 
-					objectConstruct01 = new ObjectConstruct();
-					arrayConstruct00.Items.Add(objectConstruct01);
-
 					fields = line.Split(fieldDelimiter.ToCharArray());
 
 					if (firstRecordIsHeader && i == 0)
 					{
 						headers = fields;
-						arrayConstruct00.Items.Remove(objectConstruct01);
 						i++;
 						continue;
 					}
+
+					objectConstruct01 = new ObjectConstruct();
+					arrayConstruct00.Items.Add(objectConstruct01);
 
 					if ((object)fields != null)
 					{
@@ -201,7 +200,7 @@ namespace TextMetal.Framework.Source.Primative
 							if (firstRecordIsHeader && (object)headers != null)
 								propertyConstruct01.Name = string.Format("{0}", headers[j++]);
 							else
-								propertyConstruct01.Name = string.Format("TextFileField_{0:00000000}", j++);
+								propertyConstruct01.Name = string.Format("Field{0}", (j++) + 1);
 
 							propertyConstruct01.RawValue = field;
 							objectConstruct01.Items.Add(propertyConstruct01);

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Xml.Schema;
 
 using TextMetal.Framework.Associative;
+using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
@@ -40,10 +41,10 @@ namespace TextMetal.Framework.Source.Primative
 			PropertyConstruct propertyConstruct00, propertyConstruct01;
 
 			if ((object)parentAssociativeXmlObject == null)
-				throw new ArgumentNullException("parentAssociativeXmlObject");
+				throw new ArgumentNullException(nameof(parentAssociativeXmlObject));
 
 			if ((object)currentXmlSchemaObjectCollection == null)
-				throw new ArgumentNullException("currentXmlSchemaObjectCollection");
+				throw new ArgumentNullException(nameof(currentXmlSchemaObjectCollection));
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "XmlSchemaElements";
@@ -58,8 +59,8 @@ namespace TextMetal.Framework.Source.Primative
 
 				if ((object)xmlSchemaElement != null)
 				{
-					if (DataTypeFascade.Instance.IsNullOrWhiteSpace(xmlSchemaElement.Name) &&
-						!DataTypeFascade.Instance.IsNullOrWhiteSpace(xmlSchemaElement.RefName.Name))
+					if (SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(xmlSchemaElement.Name) &&
+						!SolderFascadeAccessor.DataTypeFascade.IsNullOrWhiteSpace(xmlSchemaElement.RefName.Name))
 					{
 						propertyConstruct00 = new PropertyConstruct();
 						propertyConstruct00.Name = "XmlSchemaElementIsRef";
@@ -147,6 +148,7 @@ namespace TextMetal.Framework.Source.Primative
 
 		private static void ValidationCallback(object sender, ValidationEventArgs args)
 		{
+			Console.WriteLine(args.Message);
 		}
 
 		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
@@ -156,13 +158,13 @@ namespace TextMetal.Framework.Source.Primative
 			ObjectConstruct objectConstruct00;
 
 			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
+				throw new ArgumentNullException(nameof(sourceFilePath));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
-			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
+			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(sourceFilePath))
+				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 

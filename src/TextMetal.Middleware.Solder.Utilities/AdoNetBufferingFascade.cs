@@ -10,14 +10,11 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Reflection;
-using System.Xml;
 
-using TextMetal.Middleware.Solder.Extensions;
-using TextMetal.Middleware.Solder.Injection;
-using TextMetal.Middleware.Solder.Primitives;
-using TextMetal.Middleware.Solder.Utilities;
+using __Record = System.Collections.Generic.IDictionary<string, object>;
+using __Record__ = System.Collections.Generic.Dictionary<string, object>;
 
-namespace TextMetal.Middleware.Datazoid.Primitives
+namespace TextMetal.Middleware.Solder.Utilities
 {
 	public class AdoNetBufferingFascade : IAdoNetBufferingFascade
 	{
@@ -26,18 +23,12 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		/// <summary>
 		/// Initializes a new instance of the AdoNetBufferingFascade class.
 		/// </summary>
-		/// <param name="reflectionFascade"> The reflection fascade instance to use. </param>
 		/// <param name="dataTypeFascade"> The data type fascade instance to use. </param>
-		[DependencyInjection]
-		public AdoNetBufferingFascade([DependencyInjection] IReflectionFascade reflectionFascade, [DependencyInjection] IDataTypeFascade dataTypeFascade)
+		public AdoNetBufferingFascade(IDataTypeFascade dataTypeFascade)
 		{
-			if ((object)reflectionFascade == null)
-				throw new ArgumentNullException(nameof(reflectionFascade));
-
 			if ((object)dataTypeFascade == null)
 				throw new ArgumentNullException(nameof(dataTypeFascade));
 
-			this.reflectionFascade = reflectionFascade;
 			this.dataTypeFascade = dataTypeFascade;
 		}
 
@@ -46,7 +37,6 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		#region Fields/Constants
 
 		private readonly IDataTypeFascade dataTypeFascade;
-		private readonly IReflectionFascade reflectionFascade;
 
 		#endregion
 
@@ -57,14 +47,6 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 			get
 			{
 				return this.dataTypeFascade;
-			}
-		}
-
-		protected IReflectionFascade ReflectionFascade
-		{
-			get
-			{
-				return this.reflectionFascade;
 			}
 		}
 
@@ -89,7 +71,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 				dbParameter.Value = parameterValue;
 				dbParameter.Direction = parameterDirection;
 				dbParameter.DbType = parameterDbType;
-				this.ReflectionFascade.SetLogicalPropertyValue(dbParameter, "IsNullable", parameterNullable, true, false);
+				dbParameter.IsNullable = parameterNullable;
 				dbParameter.Precision = parameterPrecision;
 				dbParameter.Scale = parameterScale;
 				dbParameter.SourceColumn = sourceColumn;
@@ -98,12 +80,12 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 			}
 		}
 
-		public IEnumerable<IDictionary<string, object>> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> resultsetCallback = null)
+		public IEnumerable<__Record> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> resultsetCallback = null)
 		{
 			DbTransaction dbTransaction;
 			const bool OPEN = true;
 
-			IList<IRecord> records;
+			IList<__Record> records;
 
 			// force no preparation
 			const bool COMMAND_PREPARE = false;
@@ -162,14 +144,13 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 					if (COMMAND_PREPARE)
 						dbCommand.Prepare();
 
-					records = new List<IRecord>();
+					records = new List<__Record>();
 
 					commandBehavior = schemaOnly ? CommandBehavior.SchemaOnly : CommandBehavior.Default;
 
-					// wrap reader with proxy
-					using (DbDataReader dbDataReader = new WrappedDbDataReader.__(dbCommand.ExecuteReader(commandBehavior)))
+					using (DbDataReader dbDataReader = (dbCommand.ExecuteReader(commandBehavior)))
 					{
-						Record record;
+						__Record__ record;
 						string key;
 						object value;
 
@@ -182,7 +163,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 
 								while (dbDataReader.Read())
 								{
-									record = new Record();
+									record = new __Record__();
 
 									for (int columnIndex = 0; columnIndex < dbDataReader.FieldCount; columnIndex++)
 									{
@@ -216,8 +197,8 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 
 										propertyInfos = dbColumn.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-										record = new Record();
-										record.Context = dbColumn;
+										record = new __Record__();
+										record.Add(string.Empty, dbColumn);
 
 										if ((object)propertyInfos != null)
 										{
@@ -230,7 +211,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 
 												key = propertyInfo.Name;
 												value = propertyInfo.GetValue(dbColumn);
-												value = value.ChangeType<object>();
+												value = this.DataTypeFascade.ChangeType<object>(value);
 
 												record.Add(key, value);
 											}
@@ -246,71 +227,37 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 			}
 		}
 
-		/// <summary>
-		/// Returns a DbType mapping for a Type.
-		/// An InvalidOperationException is thrown for unmappable types.
-		/// </summary>
-		/// <param name="clrType"> The CLR type to map to a DbType. </param>
-		/// <returns> The mapped DbType. </returns>
-		public DbType InferDbTypeForClrType(Type clrType)
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		public static class LegacyInstanceAccessor
 		{
-			if ((object)clrType == null)
-				throw new ArgumentNullException(nameof(clrType));
+			#region Fields/Constants
 
-			var _clrTypeInfo = clrType.GetTypeInfo();
+			private static readonly Lazy<IAdoNetBufferingFascade> adoNetStreamingFascadeFactory = new Lazy<IAdoNetBufferingFascade>(() => new AdoNetBufferingFascade(new DataTypeFascade()));
 
-			if (clrType.IsByRef /* || type.IsPointer || type.IsArray */)
-				return this.InferDbTypeForClrType(clrType.GetElementType());
-			else if (_clrTypeInfo.IsGenericType &&
-					!_clrTypeInfo.IsGenericTypeDefinition &&
-					clrType.GetGenericTypeDefinition() == typeof(Nullable<>))
-				return this.InferDbTypeForClrType(Nullable.GetUnderlyingType(clrType));
-			else if (_clrTypeInfo.IsEnum)
-				return this.InferDbTypeForClrType(Enum.GetUnderlyingType(clrType));
-			else if (clrType == typeof(Boolean))
-				return DbType.Boolean;
-			else if (clrType == typeof(Byte))
-				return DbType.Byte;
-			else if (clrType == typeof(DateTime))
-				return DbType.DateTime;
-			else if (clrType == typeof(DateTimeOffset))
-				return DbType.DateTimeOffset;
-			else if (clrType == typeof(Decimal))
-				return DbType.Decimal;
-			else if (clrType == typeof(Double))
-				return DbType.Double;
-			else if (clrType == typeof(Guid))
-				return DbType.Guid;
-			else if (clrType == typeof(Int16))
-				return DbType.Int16;
-			else if (clrType == typeof(Int32))
-				return DbType.Int32;
-			else if (clrType == typeof(Int64))
-				return DbType.Int64;
-			else if (clrType == typeof(SByte))
-				return DbType.SByte;
-			else if (clrType == typeof(Single))
-				return DbType.Single;
-			else if (clrType == typeof(TimeSpan))
-				return DbType.Time;
-			else if (clrType == typeof(UInt16))
-				return DbType.UInt16;
-			else if (clrType == typeof(UInt32))
-				return DbType.UInt32;
-			else if (clrType == typeof(UInt64))
-				return DbType.UInt64;
-			else if (clrType == typeof(Byte[]))
-				return DbType.Binary;
-			else if (clrType == typeof(Boolean[]))
-				return DbType.Byte;
-			else if (clrType == typeof(String))
-				return DbType.String;
-			else if (clrType == typeof(XmlDocument))
-				return DbType.Xml;
-			else if (clrType == typeof(Object))
-				return DbType.Object;
-			else
-				throw new InvalidOperationException(string.Format("Cannot infer parameter type from unsupported CLR type '{0}'.", clrType.FullName));
+			#endregion
+
+			#region Properties/Indexers/Events
+
+			private static Lazy<IAdoNetBufferingFascade> AdoNetBufferingFascadeFactory
+			{
+				get
+				{
+					return adoNetStreamingFascadeFactory;
+				}
+			}
+
+			public static IAdoNetBufferingFascade AdoNetBufferingLegacyInstance
+			{
+				get
+				{
+					return AdoNetBufferingFascadeFactory.Value;
+				}
+			}
+
+			#endregion
 		}
 
 		#endregion

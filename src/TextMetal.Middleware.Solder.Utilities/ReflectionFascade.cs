@@ -287,7 +287,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 			while ((object)propertyType != null)
 			{
-				var _propertyTypeInfo = propertyType.GetTypeInfo();
+				TypeInfo _propertyTypeInfo = propertyType.GetTypeInfo();
 
 				property = propertyType.GetProperty(propertyName, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
 
@@ -366,7 +366,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)conversionType == null)
 				throw new ArgumentNullException(nameof(conversionType));
 
-			var _conversionTypeInfo = conversionType.GetTypeInfo();
+			TypeInfo _conversionTypeInfo = conversionType.GetTypeInfo();
 
 			openNullableType = typeof(Nullable<>);
 
@@ -393,7 +393,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)conversionType == null)
 				throw new ArgumentNullException(nameof(conversionType));
 
-			var _conversionTypeInfo = conversionType.GetTypeInfo();
+			TypeInfo _conversionTypeInfo = conversionType.GetTypeInfo();
 
 			openNullableType = typeof(Nullable<>);
 

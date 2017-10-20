@@ -4,17 +4,31 @@
 #
 
 cls
+$psvt_git_commit_id = $PSVersionTable.GitCommitId
+
+if ($psvt_git_commit_id -eq $null)
+{ echo "An error occurred during the operation (GIT commit ID)."; return; }
+
+echo "Using PowerShell: $psvt_git_commit_id" 
+
 $this_dir_path = [System.Environment]::CurrentDirectory
 
-$removeItemSpecs = @("artifacts", "obj", "bin", "debug", "release",
-	"clientbin", "output", "pkg", "_ReSharper.*", ".partial", "*.suo", "*.user", "*.cache", "*.resharper",
-	"*.visualstate.xml", "*.pidb", "*.userprefs", "*.DotSettings", "thumbs.db", "desktop.ini", ".DS_Store", "TestResult.xml")
+$git_ignore_dir_name = ".gitignore"
+$git_ignore_file_path = "$this_dir_path\$git_ignore_dir_name"
 
-$removeItems = Get-ChildItem $this_dir_path -Recurse -Include $removeItemSpecs -Force
+$lines = Get-Content $git_ignore_file_path
 
-foreach ($removeItem in $removeItems)
+foreach ($line in $lines)
 {
-	"Deleting item: " + $removeItem.FullName
+	if ([System.String]::IsNullOrWhiteSpace($line) -or $line.StartsWith("#") -or $line.Contains("[\!]git*"))
+	{ continue; }
 
-	try { Remove-Item $removeItem.FullName -Recurse -Force } catch { }
+	$remove_items = Get-ChildItem $this_dir_path -Recurse -Include $line -Force
+
+	foreach ($remove_item in $remove_items)
+	{
+		echo ("Deleting Git ignored($line) item: " + $remove_item.FullName)
+
+		try { Remove-Item $remove_item.FullName -Recurse -Force } catch { }
+	}
 }

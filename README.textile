@@ -6,33 +6,10 @@ Meta-programming is all about making software simpler and reusable through the u
 
 TextMetal is a framework for accelerating the delivery, increasing the quality, and reducing the time to market of small to enterprise scale software systems.
 
-h2. Middleware for MVPs
-
-TextMetal exposes a powerful set of middleware for rapidly building minimal viable products (MVPs) using the .NET technology stack. These are fully tested, production quality libraries designed to constrain software architectural choice while encouraging domain-specific creativity.
-
-h3. Solder middleware
-
-Solder is a framework written in C# that provides the 'glue' or 'solder' that wires together applications and libraries.
-
-h3. Datazoid middleware
-
-Datazoid is a .NET object persistence framework right out of the Hall of Nifty Things to Know.
-
-h3. Textual middleware
-
-(Too lazy to write a description at this moment in time.)
-
-h3. Oxymoron middleware
-
-(Too lazy to write a description at this moment in time.)
-
 h2. License
 
 See doc/LICENSE.txt.
 
 h2. Project sponsors
 
-Microsoft - BizSpark subscription
 JetBrains - Resharper Ultimate subscription
-Xamarin - Xamarin Platform subscription
-GitHub - Free public repositories

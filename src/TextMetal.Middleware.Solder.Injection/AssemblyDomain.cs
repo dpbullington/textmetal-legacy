@@ -4,7 +4,6 @@
 */
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -47,11 +46,10 @@ namespace TextMetal.Middleware.Solder.Injection
 		#region Fields/Constants
 
 		private const string APP_CONFIG_FILE_NAME = "appconfig.json";
-		private static readonly object defaultSyncObj = new object();
 		private static AssemblyDomain @default;
 		private readonly AppDomain appDomain;
 		private readonly IDependencyManager dependencyManager = new DependencyManager();
-		private readonly IDictionary<AssemblyName, Assembly> knownAssemblies = new Dictionary<AssemblyName, Assembly>();
+		private readonly IDictionary<AssemblyName, Assembly> knownAssemblies = new Dictionary<AssemblyName, Assembly>(___.ByValueEquality.AssemblyName);
 		private readonly ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 		private bool disposed;
 		private bool initialized;
@@ -64,10 +62,10 @@ namespace TextMetal.Middleware.Solder.Injection
 		{
 			get
 			{
-				var instance = AssemblyDomainLazySingleton.instance;
+				AssemblyDomain instance = AssemblyDomainLazySingleton.instance;
 
 				// the only way this is null is if this property is invoked AGAIN while the lay singleton is being contructed
-				if((object)instance == null)
+				if ((object)instance == null)
 					Environment.FailFast(string.Format("Not re-entrant: '{0}.{1}'", nameof(AssemblyDomain), nameof(Default)));
 
 				return instance;
@@ -142,6 +140,30 @@ namespace TextMetal.Middleware.Solder.Injection
 		#endregion
 
 		#region Methods/Operators
+
+		private static void AddTrustedDependencies(IDependencyManager dependencyManager)
+		{
+			IDataTypeFascade dataTypeFascade;
+			IReflectionFascade reflectionFascade;
+			IConfigurationRoot configurationRoot;
+			IAppConfigFascade appConfigFascade;
+			IAssemblyInformationFascade assemblyInformationFascade;
+
+			if ((object)dependencyManager == null)
+				throw new ArgumentNullException(nameof(dependencyManager));
+
+			dataTypeFascade = new DataTypeFascade();
+			reflectionFascade = new ReflectionFascade(dataTypeFascade);
+			configurationRoot = LoadAppConfigFile(APP_CONFIG_FILE_NAME);
+			appConfigFascade = new AppConfigFascade(configurationRoot, dataTypeFascade);
+			assemblyInformationFascade = new AssemblyInformationFascade(reflectionFascade, Assembly.GetEntryAssembly());
+
+			dependencyManager.AddResolution<IConfigurationRoot>(string.Empty, false, new SingletonWrapperDependencyResolution<IConfigurationRoot>(new InstanceDependencyResolution<IConfigurationRoot>(configurationRoot)));
+			dependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new InstanceDependencyResolution<IDataTypeFascade>(dataTypeFascade)));
+			dependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new InstanceDependencyResolution<IReflectionFascade>(reflectionFascade)));
+			dependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new InstanceDependencyResolution<IAppConfigFascade>(appConfigFascade)));
+			dependencyManager.AddResolution<IAssemblyInformationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAssemblyInformationFascade>(new InstanceDependencyResolution<IAssemblyInformationFascade>(assemblyInformationFascade)));
+		}
 
 		private static IConfigurationRoot LoadAppConfigFile(string appConfigFilePath)
 		{
@@ -272,30 +294,6 @@ namespace TextMetal.Middleware.Solder.Injection
 					dependencyMagicMethod(this.DependencyManager);
 				}
 			}
-		}
-
-		private static void AddTrustedDependencies(IDependencyManager dependencyManager)
-		{
-			IDataTypeFascade dataTypeFascade;
-			IReflectionFascade reflectionFascade;
-			IConfigurationRoot configurationRoot;
-			IAppConfigFascade appConfigFascade;
-			IAssemblyInformationFascade assemblyInformationFascade;
-
-			if ((object)dependencyManager == null)
-				throw new ArgumentNullException(nameof(dependencyManager));
-
-			dataTypeFascade = new DataTypeFascade();
-			reflectionFascade = new ReflectionFascade(dataTypeFascade);
-			configurationRoot = LoadAppConfigFile(APP_CONFIG_FILE_NAME);
-			appConfigFascade = new AppConfigFascade(configurationRoot, dataTypeFascade);
-			assemblyInformationFascade = new AssemblyInformationFascade(reflectionFascade, Assembly.GetEntryAssembly());
-
-			dependencyManager.AddResolution<IConfigurationRoot>(string.Empty, false, new SingletonWrapperDependencyResolution<IConfigurationRoot>(new InstanceDependencyResolution<IConfigurationRoot>(configurationRoot)));
-			dependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new InstanceDependencyResolution<IDataTypeFascade>(dataTypeFascade)));
-			dependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new InstanceDependencyResolution<IReflectionFascade>(reflectionFascade)));
-			dependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new InstanceDependencyResolution<IAppConfigFascade>(appConfigFascade)));
-			dependencyManager.AddResolution<IAssemblyInformationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAssemblyInformationFascade>(new InstanceDependencyResolution<IAssemblyInformationFascade>(assemblyInformationFascade)));
 		}
 
 		/// <summary>
@@ -460,6 +458,193 @@ namespace TextMetal.Middleware.Solder.Injection
 		#endregion
 
 		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		/// <summary>
+		/// From: Microsoft.VisualStudio.Composition
+		///  https://github.com/Microsoft/vs-mef/tree/master/src/Microsoft.VisualStudio.Composition
+		/// 
+		/// Copyright (c) Microsoft Corporation, All rights reserved.
+		/// License: MIT License
+		/// Commit: 44cf565e2f9799bcf7f33f8af76115134c074324
+		/// </summary>
+		private static class ___
+		{
+			#region Classes/Structs/Interfaces/Enums/Delegates
+
+			internal static partial class ByValueEquality
+			{
+				#region Properties/Indexers/Events
+
+				internal static IEqualityComparer<byte[]> Buffer
+				{
+					get
+					{
+						return BufferComparer.Default;
+					}
+				}
+
+				#endregion
+
+				#region Classes/Structs/Interfaces/Enums/Delegates
+
+				private class BufferComparer : IEqualityComparer<byte[]>
+				{
+					#region Constructors/Destructors
+
+					private BufferComparer()
+					{
+					}
+
+					#endregion
+
+					#region Fields/Constants
+
+					internal static readonly BufferComparer Default = new BufferComparer();
+
+					#endregion
+
+					#region Methods/Operators
+
+					public bool Equals(byte[] x, byte[] y)
+					{
+						if (x == y)
+						{
+							return true;
+						}
+
+						if (x == null ^ y == null)
+						{
+							return false;
+						}
+
+						if (x.Length != y.Length)
+						{
+							return false;
+						}
+
+						for (int i = 0; i < x.Length; i++)
+						{
+							if (x[i] != y[i])
+							{
+								return false;
+							}
+						}
+
+						return true;
+					}
+
+					public int GetHashCode(byte[] obj)
+					{
+						throw new NotImplementedException();
+					}
+
+					#endregion
+				}
+
+				#endregion
+			}
+
+			internal static partial class ByValueEquality
+			{
+				#region Properties/Indexers/Events
+
+				internal static IEqualityComparer<AssemblyName> AssemblyName
+				{
+					get
+					{
+						return AssemblyNameComparer.Default;
+					}
+				}
+
+				internal static IEqualityComparer<AssemblyName> AssemblyNameNoFastCheck
+				{
+					get
+					{
+						return AssemblyNameComparer.NoFastCheck;
+					}
+				}
+
+				#endregion
+
+				#region Classes/Structs/Interfaces/Enums/Delegates
+
+				private class AssemblyNameComparer : IEqualityComparer<AssemblyName>
+				{
+					#region Constructors/Destructors
+
+					internal AssemblyNameComparer(bool fastCheck = true)
+					{
+						this.fastCheck = fastCheck;
+					}
+
+					#endregion
+
+					#region Fields/Constants
+
+					internal static readonly AssemblyNameComparer Default = new AssemblyNameComparer();
+					internal static readonly AssemblyNameComparer NoFastCheck = new AssemblyNameComparer(fastCheck: false);
+					private bool fastCheck;
+
+					#endregion
+
+					#region Methods/Operators
+
+					public bool Equals(AssemblyName x, AssemblyName y)
+					{
+						if (x == null ^ y == null)
+						{
+							return false;
+						}
+
+						if (x == null)
+						{
+							return true;
+						}
+
+#if NET45 // If fast check is enabled, we can compare the code bases
+                if (this.fastCheck && x.CodeBase == y.CodeBase)
+                {
+                    return true;
+                }
+#endif
+
+						// There are some cases where two AssemblyNames who are otherwise equivalent
+						// have a null PublicKey but a correct PublicKeyToken, and vice versa. We should
+						// compare the PublicKeys first, but then fall back to GetPublicKeyToken(), which
+						// will generate a public key token for the AssemblyName that has a public key and
+						// return the public key token for the other AssemblyName.
+						byte[] xPublicKey = x.GetPublicKey();
+						byte[] yPublicKey = y.GetPublicKey();
+
+						// Testing on FullName is horrifically slow.
+						// So test directly on its components instead.
+						if (xPublicKey != null && yPublicKey != null)
+						{
+							return x.Name == y.Name
+									&& x.Version.Equals(y.Version)
+									&& string.Equals(x.CultureName, y.CultureName)
+									&& Buffer.Equals(xPublicKey, yPublicKey);
+						}
+
+						return x.Name == y.Name
+								&& x.Version.Equals(y.Version)
+								&& string.Equals(x.CultureName, y.CultureName)
+								&& Buffer.Equals(x.GetPublicKeyToken(), y.GetPublicKeyToken());
+					}
+
+					public int GetHashCode(AssemblyName obj)
+					{
+						return obj.Name.GetHashCode();
+					}
+
+					#endregion
+				}
+
+				#endregion
+			}
+
+			#endregion
+		}
 
 		/// <summary>
 		/// http://www.yoda.arachsys.com/csharp/singleton.html

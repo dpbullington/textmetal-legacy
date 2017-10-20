@@ -4,8 +4,10 @@
 */
 
 using System;
+using System.Data;
 using System.Globalization;
 using System.Reflection;
+using System.Xml;
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
@@ -46,7 +48,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)conversionType == null)
 				throw new ArgumentNullException(nameof(conversionType));
 
-			var _conversionTypeInfo = conversionType.GetTypeInfo();
+			TypeInfo _conversionTypeInfo = conversionType.GetTypeInfo();
 
 			if ((object)value == null || value == DBNull.Value)
 				return this.DefaultValue(conversionType);
@@ -72,9 +74,76 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)targetType == null)
 				throw new ArgumentNullException(nameof(targetType));
 
-			var _targetTypeInfo = targetType.GetTypeInfo();
+			TypeInfo _targetTypeInfo = targetType.GetTypeInfo();
 
 			return _targetTypeInfo.IsValueType ? Activator.CreateInstance(targetType) : null;
+		}
+
+		/// <summary>
+		/// Returns a DbType mapping for a Type.
+		/// An InvalidOperationException is thrown for unmappable types.
+		/// </summary>
+		/// <param name="clrType"> The CLR type to map to a DbType. </param>
+		/// <returns> The mapped DbType. </returns>
+		public DbType InferDbTypeForClrType(Type clrType)
+		{
+			if ((object)clrType == null)
+				throw new ArgumentNullException(nameof(clrType));
+
+			TypeInfo _clrTypeInfo = clrType.GetTypeInfo();
+
+			if (clrType.IsByRef /* || type.IsPointer || type.IsArray */)
+				return this.InferDbTypeForClrType(clrType.GetElementType());
+			else if (_clrTypeInfo.IsGenericType &&
+					!_clrTypeInfo.IsGenericTypeDefinition &&
+					clrType.GetGenericTypeDefinition() == typeof(Nullable<>))
+				return this.InferDbTypeForClrType(Nullable.GetUnderlyingType(clrType));
+			else if (_clrTypeInfo.IsEnum)
+				return this.InferDbTypeForClrType(Enum.GetUnderlyingType(clrType));
+			else if (clrType == typeof(Boolean))
+				return DbType.Boolean;
+			else if (clrType == typeof(Byte))
+				return DbType.Byte;
+			else if (clrType == typeof(DateTime))
+				return DbType.DateTime;
+			else if (clrType == typeof(DateTimeOffset))
+				return DbType.DateTimeOffset;
+			else if (clrType == typeof(Decimal))
+				return DbType.Decimal;
+			else if (clrType == typeof(Double))
+				return DbType.Double;
+			else if (clrType == typeof(Guid))
+				return DbType.Guid;
+			else if (clrType == typeof(Int16))
+				return DbType.Int16;
+			else if (clrType == typeof(Int32))
+				return DbType.Int32;
+			else if (clrType == typeof(Int64))
+				return DbType.Int64;
+			else if (clrType == typeof(SByte))
+				return DbType.SByte;
+			else if (clrType == typeof(Single))
+				return DbType.Single;
+			else if (clrType == typeof(TimeSpan))
+				return DbType.Time;
+			else if (clrType == typeof(UInt16))
+				return DbType.UInt16;
+			else if (clrType == typeof(UInt32))
+				return DbType.UInt32;
+			else if (clrType == typeof(UInt64))
+				return DbType.UInt64;
+			else if (clrType == typeof(Byte[]))
+				return DbType.Binary;
+			else if (clrType == typeof(Boolean[]))
+				return DbType.Byte;
+			else if (clrType == typeof(String))
+				return DbType.String;
+			else if (clrType == typeof(XmlDocument))
+				return DbType.Xml;
+			else if (clrType == typeof(Object))
+				return DbType.Object;
+			else
+				throw new InvalidOperationException(string.Format("Cannot infer parameter type from unsupported CLR type '{0}'.", clrType.FullName));
 		}
 
 		/// <summary>
@@ -219,7 +288,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)valueType == null)
 				throw new ArgumentNullException(nameof(valueType));
 
-			var _valueTypeInfo = valueType.GetTypeInfo();
+			TypeInfo _valueTypeInfo = valueType.GetTypeInfo();
 
 			openNullableType = typeof(Nullable<>);
 			result = null;

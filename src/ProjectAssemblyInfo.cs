@@ -5,4 +5,4 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("TextMetal Middleware Datazoid Models Library")]
+[assembly: AssemblyTitle("${SolutionName} ${ModuleDescriptor} ${Optional Rin-time Moniker}")]

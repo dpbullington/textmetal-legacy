@@ -10,8 +10,6 @@ using NUnit.Common;
 
 using NUnitLite;
 
-using TextMetal.Middleware.Solder.Injection;
-
 namespace TextMetal.Framework.IntegrationTests
 {
 	/// <summary>

@@ -1,5 +1,46 @@
 <Project>
 	<PropertyGroup>
-		<PackageId>$(MSBuildProjectName)</PackageId>
+		<DebugType>portable</DebugType>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\TextMetal.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
+
+	<PropertyGroup>
+		<GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+		<GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+		<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Product>TextMetal</Product>
+		<Description>$(MSBuildProjectName) Library</Description>
+		<VersionPrefix>10.0.0</VersionPrefix>
+		<VersionSuffix>preview</VersionSuffix>
+		<Authors>Daniel P. Bullington (dpbullington@gmail.com)</Authors>
+		<Copyright>©2002-2017 Daniel P. Bullington (dpbullington@gmail.com)</Copyright>
+		<PackageId>$(MSBuildProjectName)</PackageId>
+		<PackageTags>TextMetal</PackageTags>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageIconUrl>https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png</PackageIconUrl>
+		<PackageProjectUrl>http://www.textmetal.com</PackageProjectUrl>
+		<PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/textmetal/main</RepositoryUrl>
+		<NeutralLanguage>en-US</NeutralLanguage>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\TextMetal.snk" Link="TextMetal.snk" />
+	</ItemGroup>
 </Project>

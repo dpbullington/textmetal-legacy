@@ -116,7 +116,7 @@ namespace TextMetal.Framework.Hosting.Tool
 			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(sourceStrategyAqtn))
 				throw new ArgumentOutOfRangeException(nameof(sourceStrategyAqtn));
 
-			toolVersion = new AssemblyInformationFascade(this.ReflectionFascade, typeof(IXmlPersistEngine).GetTypeInfo().Assembly).AssemblyVersion;
+			toolVersion = new AssemblyInformationFascade(this.ReflectionFascade, typeof(ToolHost).GetTypeInfo().Assembly).AssemblyVersion;
 			templateFilePath = Path.GetFullPath(templateFilePath);
 			baseDirectoryPath = Path.GetFullPath(baseDirectoryPath);
 
@@ -145,6 +145,15 @@ namespace TextMetal.Framework.Hosting.Tool
 
 				using (IOutputMechanism outputMechanism = new FileOutputMechanism(baseDirectoryPath, "#textmetal.log", Encoding.UTF8, xpe)) // relative to base directory
 				{
+					outputMechanism.LogTextWriter.WriteLine("[DIAGNOSTIC INFOMRATION]", startUtc);
+
+					outputMechanism.LogTextWriter.WriteLine("argv: '{0}'", string.Join(" ", argv));
+					outputMechanism.LogTextWriter.WriteLine("toolVersion: '{0}'", toolVersion);
+					outputMechanism.LogTextWriter.WriteLine("baseDirectoryPath: \"{0}\"", baseDirectoryPath);
+					outputMechanism.LogTextWriter.WriteLine("sourceFilePath: \"{0}\"", sourceFilePath);
+					outputMechanism.LogTextWriter.WriteLine("templateFilePath: \"{0}\"", templateFilePath);
+					outputMechanism.LogTextWriter.WriteLine("sourceStrategyType: '{0}'", sourceStrategyType.FullName);
+
 					outputMechanism.WriteObject(template, "#template.xml");
 					outputMechanism.WriteObject(source, "#source.xml");
 

@@ -9,13 +9,14 @@ using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 using TextMetal.Framework.Associative;
 using TextMetal.Framework.Tokenization;
-using TextMetal.Middleware.Datazoid.Extensions;
 using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Serialization;
+using TextMetal.Middleware.Solder.Utilities;
+
+using __Record = System.Collections.Generic.IDictionary<string, object>;
 
 namespace TextMetal.Framework.Source.Primative
 {
@@ -42,7 +43,7 @@ namespace TextMetal.Framework.Source.Primative
 			Tokenizer tokenizer;
 
 			IEnumerable<IDictionary<string, object>> records;
-			string commandText;
+			string commandText_;
 			int count = 0;
 
 			if ((object)sqlQueries == null)
@@ -68,9 +69,57 @@ namespace TextMetal.Framework.Source.Primative
 				arrayConstruct.Name = sqlQuery.Key;
 				parentAssociativeXmlObject.Items.Add(arrayConstruct);
 
-				commandText = tokenizer.ExpandTokens(sqlQuery.Text, new DynamicWildcardTokenReplacementStrategy(new object[] { parentAssociativeXmlObject }));
+				commandText_ = tokenizer.ExpandTokens(sqlQuery.Text, new DynamicWildcardTokenReplacementStrategy(new object[] { parentAssociativeXmlObject }));
 
-				records = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(getSchemaOnly, connectionType, connectionString, false, IsolationLevel.Unspecified, sqlQuery.Type, commandText, null);
+				// one hell of a polyfill ;)
+				Func<CommandType, string, IEnumerable<DbParameter>, Action<int>, IEnumerable<__Record>> executeRecordsCallback =
+					(CommandType commandType, string commandText, IEnumerable<DbParameter> dbParameters, Action<int> resultsetCallback) =>
+					{
+						const bool _schemaOnly = false;
+						Type _connectionType = connectionType;
+						string _connectionString = connectionString;
+						const bool _transactional = false;
+						const IsolationLevel _isolationLevel = IsolationLevel.Unspecified;
+
+						return AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(_schemaOnly, _connectionType, _connectionString, _transactional, _isolationLevel, commandType, commandText, dbParameters, resultsetCallback);
+					};
+
+				Func<CommandType, string, IEnumerable<DbParameter>, Action<int>, IEnumerable<__Record>> executeSchemaRecordsCallback =
+					(CommandType commandType, string commandText, IEnumerable<DbParameter> dbParameters, Action<int> resultsetCallback) =>
+					{
+						const bool _schemaOnly = true;
+						Type _connectionType = connectionType;
+						string _connectionString = connectionString;
+						const bool _transactional = false;
+						const IsolationLevel _isolationLevel = IsolationLevel.Unspecified;
+
+						return AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(_schemaOnly, _connectionType, _connectionString, _transactional, _isolationLevel, commandType, commandText, dbParameters, resultsetCallback);
+					};
+
+				Func<string, ParameterDirection, DbType, int, byte, byte, bool, string, object, DbParameter> createParameterCallback =
+					(string sourceColumn, ParameterDirection parameterDirection, DbType parameterDbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue) =>
+					{
+						Type _connectionType = connectionType;
+
+						return AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(_connectionType, sourceColumn, parameterDirection, parameterDbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
+					};
+
+				var unitOfWork = new
+				{
+					ExecuteRecords = executeRecordsCallback,
+					ExecuteSchemaRecords = executeSchemaRecordsCallback,
+					CreateParameter = createParameterCallback
+				};
+
+				// using (null)
+				{
+					if (getSchemaOnly)
+						records = unitOfWork.ExecuteRecords(sqlQuery.Type, commandText_, new DbParameter[] { }, null);
+					else
+						records = unitOfWork.ExecuteSchemaRecords(sqlQuery.Type, commandText_, new DbParameter[] { }, null);
+
+					records = records.ToArray(); // force eager load
+				}
 
 				propertyConstructA = new PropertyConstruct();
 				propertyConstructA.Name = "RowCount";

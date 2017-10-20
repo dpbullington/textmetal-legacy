@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Data;
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
@@ -36,6 +37,14 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <param name="targetType"> The target type. </param>
 		/// <returns> The default value for the target type. </returns>
 		object DefaultValue(Type targetType);
+
+		/// <summary>
+		/// Returns a DbType mapping for a Type.
+		/// An InvalidOperationException is thrown for unmappable types.
+		/// </summary>
+		/// <param name="clrType"> The CLR type to map to a DbType. </param>
+		/// <returns> The mapped DbType. </returns>
+		DbType InferDbTypeForClrType(Type clrType);
 
 		/// <summary>
 		/// Determines if a string value is null or zero length.

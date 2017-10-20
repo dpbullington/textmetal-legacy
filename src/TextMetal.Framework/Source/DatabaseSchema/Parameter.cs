@@ -7,12 +7,11 @@ using System;
 using System.Data;
 using System.Xml.Serialization;
 
-using TextMetal.Middleware.Datazoid.Primitives;
 using TextMetal.Middleware.Solder.Extensions;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	public class Parameter : IAdoNetParameter
+	public class Parameter
 	{
 		#region Constructors/Destructors
 

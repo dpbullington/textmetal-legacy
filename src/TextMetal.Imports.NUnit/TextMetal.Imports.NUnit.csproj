@@ -1,42 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <Description>TextMetal Imports NUnit Library</Description>
-    <VersionPrefix>9.1.0</VersionPrefix>
-    <Authors>©2002-2017 Daniel P. Bullington (dpbullington@gmail.com)</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <DebugType>portable</DebugType>
-    <AssemblyName>TextMetal.Imports.NUnit</AssemblyName>
-    <AssemblyOriginatorKeyFile>../TextMetal.snk</AssemblyOriginatorKeyFile>
-    <SignAssembly>true</SignAssembly>
-    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
-    <PackageId>TextMetal.Imports.NUnit</PackageId>
-    <PackageTags>TextMetal</PackageTags>
-    <PackageIconUrl>https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png</PackageIconUrl>
-    <PackageProjectUrl>http://www.textmetal.com</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/textmetal/main</RepositoryUrl>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-    <RootNamespace />
   </PropertyGroup>
 
-  <ItemGroup>
+  <Import Project="..\common.props" />
+
+  <!--<ItemGroup>
     <Compile Remove="Framework\Compatibility\System\Lazy.cs;Framework\Internal\Commands\TimeoutCommand.cs" />
     <Compile Remove="Framework\Internal\Commands\TimeoutCommand.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\SolutionAssemblyInfo.cs" Link="Properties\SolutionAssemblyInfo.cs" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <PackageReference Include="System.Console" Version="4.3.0" />

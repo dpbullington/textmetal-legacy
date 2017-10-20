@@ -31,7 +31,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			return DBNull.Value;
+			return string.Empty;
 		}
 
 		#endregion

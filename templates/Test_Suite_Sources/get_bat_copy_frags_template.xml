@@ -10,13 +10,13 @@
 			<ForEach.Body>
 <![CDATA[
 
-copy ".\src\${Field0001}\bin\%BUILD_FLAVOR_DIR%\${Field0001}.dll" "%PACKAGE_DIR%\."
+copy ".\src\${Field1}\bin\%BUILD_FLAVOR_DIR%\${Field1}.dll" "%PACKAGE_DIR%\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy ".\src\${Field0001}\bin\%BUILD_FLAVOR_DIR%\${Field0001}.xml" "%PACKAGE_DIR%\."
+copy ".\src\${Field1}\bin\%BUILD_FLAVOR_DIR%\${Field1}.xml" "%PACKAGE_DIR%\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy ".\src\${Field0001}\bin\%BUILD_FLAVOR_DIR%\${Field0001}.pdb" "%PACKAGE_DIR%\."
+copy ".\src\${Field1}\bin\%BUILD_FLAVOR_DIR%\${Field1}.pdb" "%PACKAGE_DIR%\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 ]]>
@@ -29,13 +29,13 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 			<ForEach.Body>
 <![CDATA[
 
-copy "..\..\src\${Field0001}\bin\%BUILD_FLAVOR_DIR%\${Field0001}.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+copy "..\..\src\${Field1}\bin\%BUILD_FLAVOR_DIR%\${Field1}.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\${Field0001}\bin\%BUILD_FLAVOR_DIR%\${Field0001}.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+copy "..\..\src\${Field1}\bin\%BUILD_FLAVOR_DIR%\${Field1}.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\${Field0001}\bin\%BUILD_FLAVOR_DIR%\${Field0001}.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
+copy "..\..\src\${Field1}\bin\%BUILD_FLAVOR_DIR%\${Field1}.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 ]]>
@@ -47,11 +47,11 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 		<ForEach in="Records" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
 			<ForEach.Body>
 <![CDATA[<div class="secass-data-label">
-	<%= this.Html.LabelFor(m => m.${Field0001}, "${Field0001}") %>
+	<%= this.Html.LabelFor(m => m.${Field1}, "${Field1}") %>
 </div>
 <div class="secass-data-field">
-	<%= this.Html.TextBoxFor(m => m.${Field0001}, new { @class = "secass-input-text" }) %>
-	<%= this.Html.ValidationMessageFor(m => m.${Field0001}) %>
+	<%= this.Html.TextBoxFor(m => m.${Field1}, new { @class = "secass-input-text" }) %>
+	<%= this.Html.ValidationMessageFor(m => m.${Field1}) %>
 </div>
 
 ]]>

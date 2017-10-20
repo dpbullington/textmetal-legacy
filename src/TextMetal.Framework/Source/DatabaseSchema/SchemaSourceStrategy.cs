@@ -12,8 +12,10 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 
 using TextMetal.Framework.Naming;
-using TextMetal.Middleware.Datazoid.Extensions;
 using TextMetal.Middleware.Solder.Extensions;
+using TextMetal.Middleware.Solder.Utilities;
+
+using __Record = System.Collections.Generic.IDictionary<string, object>;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
@@ -256,12 +258,53 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 			effectiveStandardCanonicalNaming = disableNameMangling ? StandardCanonicalNaming.InstanceDisableNameMangling : StandardCanonicalNaming.Instance;
 
+			// one hell of a polyfill ;)
+			Func<CommandType, string, IEnumerable<DbParameter>, Action<int> , IEnumerable<__Record>> executeRecordsCallback =
+				(CommandType commandType, string commandText, IEnumerable<DbParameter> dbParameters, Action<int> resultsetCallback) =>
+				{
+					const bool _schemaOnly = false;
+					Type _connectionType = connectionType;
+					string _connectionString = connectionString;
+					const bool _transactional = false;
+					const IsolationLevel _isolationLevel = IsolationLevel.Unspecified;
+
+					return AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(_schemaOnly, _connectionType, _connectionString, _transactional, _isolationLevel, commandType, commandText, dbParameters, resultsetCallback);
+				};
+
+			Func<CommandType, string, IEnumerable<DbParameter>, Action<int>, IEnumerable<__Record>> executeSchemaRecordsCallback =
+				(CommandType commandType, string commandText, IEnumerable<DbParameter> dbParameters, Action<int> resultsetCallback) =>
+				{
+					const bool _schemaOnly = true;
+					Type _connectionType = connectionType;
+					string _connectionString = connectionString;
+					const bool _transactional = false;
+					const IsolationLevel _isolationLevel = IsolationLevel.Unspecified;
+
+					return AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(_schemaOnly, _connectionType, _connectionString, _transactional, _isolationLevel, commandType, commandText, dbParameters, resultsetCallback);
+				};
+
+			Func<string, ParameterDirection, DbType, int, byte, byte, bool, string, object, DbParameter> createParameterCallback =
+				(string sourceColumn, ParameterDirection parameterDirection, DbType parameterDbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue) =>
+				{
+					Type _connectionType = connectionType;
+
+					return AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(_connectionType, sourceColumn, parameterDirection, parameterDbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
+				};
+
+			var unitOfWork = new
+							{
+								ExecuteRecords = executeRecordsCallback,
+								ExecuteSchemaRecords = executeSchemaRecordsCallback,
+								CreateParameter = createParameterCallback
+			};
+
+			// using (null)
 			{
 				server = new Server();
 				server.ConnectionString = connectionString;
 				server.ConnectionType = connectionType.FullName;
 
-				var dictEnumServer = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetServerParameters(connectionType, dataSourceTag));
+				var dictEnumServer = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetServerParameters(connectionType, dataSourceTag), null);
 				{
 					var dictDataServer = (IDictionary<string, object>)null;
 
@@ -283,7 +326,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 								return null;
 						}
 
-						var dictEnumDatabase = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Databases"), this.CoreGetDatabaseParameters(connectionType, dataSourceTag, server));
+						var dictEnumDatabase = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Databases"), this.CoreGetDatabaseParameters(connectionType, dataSourceTag, server), null);
 						{
 							if ((object)dictEnumDatabase != null)
 							{
@@ -324,9 +367,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 									server.Databases.Add(database);
 
-									DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null);
+									unitOfWork.ExecuteRecords(CommandType.Text, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null, null);
 
-									var dictEnumDdlTrigger = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(connectionType, dataSourceTag, server, database));
+									var dictEnumDdlTrigger = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(connectionType, dataSourceTag, server, database), null);
 									{
 										if ((object)dictEnumDdlTrigger != null)
 										{
@@ -357,7 +400,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 										}
 									}
 
-									var dictEnumSchema = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(connectionType, dataSourceTag, server, database));
+									var dictEnumSchema = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(connectionType, dataSourceTag, server, database), null);
 									{
 										if ((object)dictEnumSchema != null)
 										{
@@ -388,7 +431,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 												database.Schemas.Add(schema);
 
-												var dictEnumTable = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema));
+												var dictEnumTable = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema), null);
 												{
 													foreach (var dictDataTable in Enumerable.ToList(dictEnumTable))
 													{
@@ -439,7 +482,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 														schema._Tables.Add(table);
 
-														var dictEnumColumn = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "TableColumns"), this.CoreGetColumnParameters(connectionType, dataSourceTag, server, database, schema, table));
+														var dictEnumColumn = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "TableColumns"), this.CoreGetColumnParameters(connectionType, dataSourceTag, server, database, schema, table), null);
 														{
 															if ((object)dictEnumColumn != null)
 															{
@@ -476,7 +519,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 
 																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
-																	column.ColumnDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(clrType);
+																	column.ColumnDbType = SolderFascadeAccessor.DataTypeFascade.InferDbTypeForClrType(clrType);
 																	column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 																	column.ColumnClrType = clrType ?? typeof(object);
@@ -498,11 +541,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																		column.ColumnIsPrimaryKey)
 																	{
 																		table.PrimaryKey.PrimaryKeyColumns.Add(new PrimaryKeyColumn()
-																												{
-																													ColumnOrdinal = column.ColumnOrdinal,
-																													ColumnName = column.ColumnName,
-																													PrimaryKeyColumnOrdinal = column.ColumnPrimaryKeyOrdinal
-																												});
+																		{
+																			ColumnOrdinal = column.ColumnOrdinal,
+																			ColumnName = column.ColumnName,
+																			PrimaryKeyColumnOrdinal = column.ColumnPrimaryKeyOrdinal
+																		});
 																	}
 																}
 															}
@@ -514,7 +557,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															table.Columns.ForEach(c => c.ColumnIsPrimaryKey = true);
 														}
 
-														var dictEnumDmlTrigger = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(connectionType, dataSourceTag, server, database, schema, table));
+														var dictEnumDmlTrigger = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(connectionType, dataSourceTag, server, database, schema, table), null);
 														{
 															if ((object)dictEnumDmlTrigger != null)
 															{
@@ -545,7 +588,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															}
 														}
 
-														var dictEnumForeignKey = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(connectionType, dataSourceTag, server, database, schema, table));
+														var dictEnumForeignKey = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(connectionType, dataSourceTag, server, database, schema, table), null);
 														{
 															if ((object)dictEnumForeignKey != null)
 															{
@@ -597,7 +640,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	table.ForeignKeys.Add(foreignKey);
 
-																	var dictEnumForeignKeyColumn = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(connectionType, dataSourceTag, server, database, schema, table, foreignKey));
+																	var dictEnumForeignKeyColumn = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(connectionType, dataSourceTag, server, database, schema, table, foreignKey), null);
 																	{
 																		if ((object)dictEnumForeignKeyColumn != null)
 																		{
@@ -621,7 +664,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															}
 														}
 
-														var dictEnumUniqueKey = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(connectionType, dataSourceTag, server, database, schema, table));
+														var dictEnumUniqueKey = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(connectionType, dataSourceTag, server, database, schema, table), null);
 														{
 															if ((object)dictEnumUniqueKey != null)
 															{
@@ -646,7 +689,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	table.UniqueKeys.Add(uniqueKey);
 
-																	var dictEnumUniqueKeyColumn = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(connectionType, dataSourceTag, server, database, schema, table, uniqueKey));
+																	var dictEnumUniqueKeyColumn = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(connectionType, dataSourceTag, server, database, schema, table, uniqueKey), null);
 																	{
 																		if ((object)dictEnumUniqueKeyColumn != null)
 																		{
@@ -671,7 +714,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 													}
 												}
 
-												var dictEnumView = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Views"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema));
+												var dictEnumView = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Views"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema), null);
 												{
 													foreach (var dictDataView in Enumerable.ToList(dictEnumView))
 													{
@@ -702,7 +745,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 														schema.Views.Add(view);
 
-														var dictEnumColumn = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ViewColumns"), this.CoreGetColumnParameters(connectionType, dataSourceTag, server, database, schema, view));
+														var dictEnumColumn = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ViewColumns"), this.CoreGetColumnParameters(connectionType, dataSourceTag, server, database, schema, view), null);
 														{
 															if ((object)dictEnumColumn != null)
 															{
@@ -733,7 +776,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 
 																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
-																	column.ColumnDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(clrType);
+																	column.ColumnDbType = SolderFascadeAccessor.DataTypeFascade.InferDbTypeForClrType(clrType);
 																	column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 																	column.ColumnClrType = clrType ?? typeof(object);
@@ -752,7 +795,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 													}
 												}
 
-												var dictEnumProcedure = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(connectionType, dataSourceTag, server, database, schema));
+												var dictEnumProcedure = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(connectionType, dataSourceTag, server, database, schema), null);
 												{
 													if ((object)dictEnumProcedure != null)
 													{
@@ -781,7 +824,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 															schema.Procedures.Add(procedure);
 
-															var dictEnumParameter = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureParameters"), this.CoreGetParameterParameters(connectionType, dataSourceTag, server, database, schema, procedure));
+															var dictEnumParameter = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureParameters"), this.CoreGetParameterParameters(connectionType, dataSourceTag, server, database, schema, procedure), null);
 															{
 																if ((object)dictEnumParameter != null)
 																{
@@ -820,7 +863,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																		parameter.ParameterDirection = !parameter.ParameterIsOutput ? ParameterDirection.Input : (!parameter.ParameterIsReadOnly ? ParameterDirection.InputOutput : ParameterDirection.Output);
 
 																		clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
-																		parameter.ParameterDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(clrType);
+																		parameter.ParameterDbType = SolderFascadeAccessor.DataTypeFascade.InferDbTypeForClrType(clrType);
 																		parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
 
 																		parameter.ParameterClrType = clrType;
@@ -871,7 +914,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	parameter.ParameterDirection = ParameterDirection.ReturnValue;
 
 																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
-																	parameter.ParameterDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(clrType);
+																	parameter.ParameterDbType = SolderFascadeAccessor.DataTypeFascade.InferDbTypeForClrType(clrType);
 																	parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
 
 																	parameter.ParameterClrType = clrType;
@@ -921,7 +964,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(columnParameter.ParameterName));
 
 																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, columnParameter.ParameterSqlType, columnParameter.ParameterPrecision);
-																	column.ColumnDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(clrType);
+																	column.ColumnDbType = SolderFascadeAccessor.DataTypeFascade.InferDbTypeForClrType(clrType);
 																	column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 																	column.ColumnClrType = clrType ?? typeof(object);
@@ -943,13 +986,13 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																// REFERENCE:
 																// http://connect.microsoft.com/VisualStudio/feedback/details/314650/sqm1014-sqlmetal-ignores-stored-procedures-that-use-temp-tables
 																DbParameter[] parameters;
-																parameters = Enumerable.ToArray<DbParameter>(procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)));
+																parameters = Enumerable.ToArray<DbParameter>(procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => unitOfWork.CreateParameter(null, p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)));
 
 																try
 																{
 																	int resultsetIndex = Int32.MinValue;
 
-																	var dictEnumResultsets = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(true, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.StoredProcedure, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters, (ri) => resultsetIndex = ri);
+																	var dictEnumResultsets = unitOfWork.ExecuteSchemaRecords(CommandType.StoredProcedure, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters, (ri) => resultsetIndex = ri);
 																	{
 																		if ((object)dictEnumResultsets != null)
 																		{
@@ -997,7 +1040,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																					column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 
 																					clrType = SolderFascadeAccessor.DataTypeFascade.ChangeType<Type>(dictDataMetadata[SchemaTableColumn.DataType]);
-																					column.ColumnDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(clrType);
+																					column.ColumnDbType = SolderFascadeAccessor.DataTypeFascade.InferDbTypeForClrType(clrType);
 																					column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 																					column.ColumnClrType = clrType ?? typeof(object);
@@ -1043,55 +1086,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		#endregion
 
 		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		private static class SchemaTableColumn
-		{
-			#region Properties/Indexers/Events
-
-			public static string AllowDBNull
-			{
-				get;
-				set;
-			}
-
-			public static string ColumnName
-			{
-				get;
-				set;
-			}
-
-			public static string ColumnOrdinal
-			{
-				get;
-				set;
-			}
-
-			public static string ColumnSize
-			{
-				get;
-				set;
-			}
-
-			public static string DataType
-			{
-				get;
-				set;
-			}
-
-			public static string NumericPrecision
-			{
-				get;
-				set;
-			}
-
-			public static string NumericScale
-			{
-				get;
-				set;
-			}
-
-			#endregion
-		}
 
 		#endregion
 	}

@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using TextMetal.Middleware.Datazoid.Primitives;
 using TextMetal.Middleware.Solder.Executive;
 using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;

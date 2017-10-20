@@ -54,7 +54,7 @@ namespace TextMetal.Framework.InputOutput
 			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(sourceName))
 				throw new ArgumentOutOfRangeException(nameof(sourceName));
 
-			return DBNull.Value;
+			return string.Empty;
 		}
 
 		protected override ITemplateXmlObject CoreLoadTemplate(string templateName)
