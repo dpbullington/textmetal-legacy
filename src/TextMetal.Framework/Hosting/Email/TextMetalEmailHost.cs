@@ -16,11 +16,11 @@ using TextMetal.Framework.XmlDialect;
 
 namespace TextMetal.Framework.Hosting.Email
 {
-	public sealed class EmailHost : IEmailHost
+	public sealed class TextMetalEmailHost : ITextMetalEmailHost
 	{
 		#region Constructors/Destructors
 
-		public EmailHost()
+		public TextMetalEmailHost()
 		{
 		}
 

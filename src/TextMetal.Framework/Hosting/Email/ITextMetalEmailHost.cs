@@ -7,7 +7,7 @@ using System;
 
 namespace TextMetal.Framework.Hosting.Email
 {
-	public interface IEmailHost : ITextMetalHost
+	public interface ITextMetalEmailHost : ITextMetalHost
 	{
 		#region Methods/Operators
 

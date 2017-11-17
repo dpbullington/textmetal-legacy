@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace TextMetal.Framework.Hosting.Tool
 {
-	public interface IToolHost : ITextMetalHost
+	public interface ITextMetalToolHost : ITextMetalHost
 	{
 		#region Methods/Operators
 

@@ -24,15 +24,15 @@ namespace TextMetal.Framework.Hosting.Tool
 	/// <summary>
 	/// This class contains code to bootstrap TextMetal proper. This code is a specific implementation for TextMetal 'tool' hosting, concerned with leveraging file paths. Other host implementations will vary (see web host sample for instance). This code can be used by any interactive or batch application (console, windows, WPF, service, etc.).
 	/// </summary>
-	public sealed class ToolHost : IToolHost
+	public sealed class TextMetalToolHost : ITextMetalToolHost
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the ToolHost class.
+		/// Initializes a new instance of the TextMetalToolHost class.
 		/// </summary>
 		[DependencyInjection]
-		public ToolHost([DependencyInjection] IReflectionFascade reflectionFascade)
+		public TextMetalToolHost([DependencyInjection] IReflectionFascade reflectionFascade)
 		{
 			if ((object)reflectionFascade == null)
 				throw new ArgumentNullException(nameof(reflectionFascade));
@@ -116,7 +116,7 @@ namespace TextMetal.Framework.Hosting.Tool
 			if (SolderFascadeAccessor.DataTypeFascade.IsWhiteSpace(sourceStrategyAqtn))
 				throw new ArgumentOutOfRangeException(nameof(sourceStrategyAqtn));
 
-			toolVersion = new AssemblyInformationFascade(this.ReflectionFascade, typeof(ToolHost).GetTypeInfo().Assembly).AssemblyVersion;
+			toolVersion = new AssemblyInformationFascade(this.ReflectionFascade, typeof(TextMetalToolHost).GetTypeInfo().Assembly).AssemblyVersion;
 			templateFilePath = Path.GetFullPath(templateFilePath);
 			baseDirectoryPath = Path.GetFullPath(baseDirectoryPath);
 

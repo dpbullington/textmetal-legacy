@@ -55,7 +55,7 @@ namespace TextMetal.Framework.Hosting.Tool
 				throw new ArgumentNullException(nameof(dependencyManager));
 
 			dependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(TransientActivatorAutoWiringDependencyResolution<TextMetalConsoleApplication>.From(dependencyManager)));
-			dependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(TransientActivatorAutoWiringDependencyResolution<ToolHost>.From(dependencyManager)));
+			dependencyManager.AddResolution<ITextMetalToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<ITextMetalToolHost>(TransientActivatorAutoWiringDependencyResolution<TextMetalToolHost>.From(dependencyManager)));
 			dependencyManager.AddResolution<IAdoNetBufferingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetBufferingFascade>(TransientActivatorAutoWiringDependencyResolution<AdoNetBufferingFascade>.From(dependencyManager)));
 		}
 
@@ -146,8 +146,8 @@ namespace TextMetal.Framework.Hosting.Tool
 				}
 			}
 
-			using (IToolHost toolHost = AssemblyDomain.Default.DependencyManager.ResolveDependency<IToolHost>(string.Empty, true))
-				toolHost.Host((object)args != null ? args.Length : -1, args, argz, templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAqtn, strictMatching, properties);
+			using (ITextMetalToolHost textMetalToolHost = AssemblyDomain.Default.DependencyManager.ResolveDependency<ITextMetalToolHost>(string.Empty, true))
+				textMetalToolHost.Host((object)args != null ? args.Length : -1, args, argz, templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAqtn, strictMatching, properties);
 
 			return 0;
 		}
