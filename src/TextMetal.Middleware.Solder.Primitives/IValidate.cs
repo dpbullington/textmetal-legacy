@@ -18,6 +18,13 @@ namespace TextMetal.Middleware.Solder.Primitives
 		/// <returns> A enumerable of zero or more messages. </returns>
 		IEnumerable<Message> Validate();
 
+		/// <summary>
+		/// Validates this instance.
+		/// </summary>
+		/// <param name="context"> A contextual label supplied by the caller. </param>
+		/// <returns> A enumerable of zero or more messages. </returns>
+		IEnumerable<Message> Validate(object context);
+
 		#endregion
 	}
 }

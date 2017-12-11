@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 
-using __Record = System.Collections.Generic.IDictionary<string, object>;
+using __IRow = System.Collections.Generic.IDictionary<string, object>;
+using __Row = System.Collections.Generic.Dictionary<string, object>;
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
@@ -18,7 +19,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		DbParameter CreateParameter(Type connectionType, string sourceColumn, ParameterDirection parameterDirection, DbType parameterDbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue);
 
-		IEnumerable<__Record> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> resultsetCallback = null);
+		IEnumerable<__IRow> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<long> resultCallback = null);
 
 		#endregion
 	}

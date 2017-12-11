@@ -11,8 +11,8 @@ using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 
-using __Record = System.Collections.Generic.IDictionary<string, object>;
-using __Record__ = System.Collections.Generic.Dictionary<string, object>;
+using __IRow = System.Collections.Generic.IDictionary<string, object>;
+using __Row = System.Collections.Generic.Dictionary<string, object>;
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
@@ -80,12 +80,12 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 		}
 
-		public IEnumerable<__Record> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> resultsetCallback = null)
+		public IEnumerable<__IRow> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<long> resultCallback = null)
 		{
 			DbTransaction dbTransaction;
 			const bool OPEN = true;
 
-			IList<__Record> records;
+			IList<__Row> rows;
 
 			// force no preparation
 			const bool COMMAND_PREPARE = false;
@@ -94,7 +94,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			object COMMAND_TIMEOUT = null; /*int?*/
 
 			CommandBehavior commandBehavior;
-			int resultsetIndex = 0;
+			long resultIndex = 0;
 
 			ReadOnlyCollection<DbColumn> dbColumns;
 			DbColumn dbColumn;
@@ -144,13 +144,13 @@ namespace TextMetal.Middleware.Solder.Utilities
 					if (COMMAND_PREPARE)
 						dbCommand.Prepare();
 
-					records = new List<__Record>();
+					rows = new List<__Row>();
 
 					commandBehavior = schemaOnly ? CommandBehavior.SchemaOnly : CommandBehavior.Default;
 
 					using (DbDataReader dbDataReader = (dbCommand.ExecuteReader(commandBehavior)))
 					{
-						__Record__ record;
+						__Row row;
 						string key;
 						object value;
 
@@ -158,26 +158,26 @@ namespace TextMetal.Middleware.Solder.Utilities
 						{
 							do
 							{
-								if ((object)resultsetCallback != null)
-									resultsetCallback(resultsetIndex++);
+								if ((object)resultCallback != null)
+									resultCallback(resultIndex++);
 
 								while (dbDataReader.Read())
 								{
-									record = new __Record__();
+									row = new __Row();
 
-									for (int columnIndex = 0; columnIndex < dbDataReader.FieldCount; columnIndex++)
+									for (int fieldIndex = 0; fieldIndex < dbDataReader.FieldCount; fieldIndex++)
 									{
-										key = dbDataReader.GetName(columnIndex);
-										value = dbDataReader.GetValue(columnIndex);
+										key = dbDataReader.GetName(fieldIndex);
+										value = dbDataReader.GetValue(fieldIndex);
 										value = this.DataTypeFascade.ChangeType<object>(value);
 
-										if (record.ContainsKey(key) || (key ?? string.Empty).Length == 0)
-											key = string.Format("Column_{0:0000}", columnIndex);
+										if (row.ContainsKey(key) || (key ?? string.Empty).Length == 0)
+											key = string.Format("Field_{0:0000}", fieldIndex);
 
-										record.Add(key, value);
+										row.Add(key, value);
 									}
 
-									records.Add(record);
+									rows.Add(row);
 								}
 							}
 							while (dbDataReader.NextResult());
@@ -191,20 +191,20 @@ namespace TextMetal.Middleware.Solder.Utilities
 							{
 								if ((object)dbColumns != null)
 								{
-									for (int index = 0; index < dbColumns.Count; index++)
+									for (long recordIndex = 0; recordIndex < dbColumns.Count; recordIndex++)
 									{
-										dbColumn = dbColumns[index];
+										dbColumn = dbColumns[(int)recordIndex];
 
 										propertyInfos = dbColumn.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-										record = new __Record__();
-										record.Add(string.Empty, dbColumn);
+										row = new __Row();
+										row.Add(string.Empty, dbColumn);
 
 										if ((object)propertyInfos != null)
 										{
-											for (int i = 0; i < propertyInfos.Length; i++)
+											for (int fieldIndex = 0; fieldIndex < propertyInfos.Length; fieldIndex++)
 											{
-												propertyInfo = propertyInfos[i];
+												propertyInfo = propertyInfos[fieldIndex];
 
 												if (propertyInfo.GetIndexParameters().Any())
 													continue;
@@ -213,7 +213,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 												value = propertyInfo.GetValue(dbColumn);
 												value = this.DataTypeFascade.ChangeType<object>(value);
 
-												record.Add(key, value);
+												row.Add(key, value);
 											}
 										}
 									}
@@ -222,42 +222,9 @@ namespace TextMetal.Middleware.Solder.Utilities
 						}
 					}
 
-					return records;
+					return rows;
 				}
 			}
-		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		public static class LegacyInstanceAccessor
-		{
-			#region Fields/Constants
-
-			private static readonly Lazy<IAdoNetBufferingFascade> adoNetStreamingFascadeFactory = new Lazy<IAdoNetBufferingFascade>(() => new AdoNetBufferingFascade(new DataTypeFascade()));
-
-			#endregion
-
-			#region Properties/Indexers/Events
-
-			private static Lazy<IAdoNetBufferingFascade> AdoNetBufferingFascadeFactory
-			{
-				get
-				{
-					return adoNetStreamingFascadeFactory;
-				}
-			}
-
-			public static IAdoNetBufferingFascade AdoNetBufferingLegacyInstance
-			{
-				get
-				{
-					return AdoNetBufferingFascadeFactory.Value;
-				}
-			}
-
-			#endregion
 		}
 
 		#endregion

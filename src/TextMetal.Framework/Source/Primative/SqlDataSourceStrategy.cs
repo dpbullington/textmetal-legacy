@@ -72,8 +72,8 @@ namespace TextMetal.Framework.Source.Primative
 				commandText_ = tokenizer.ExpandTokens(sqlQuery.Text, new DynamicWildcardTokenReplacementStrategy(new object[] { parentAssociativeXmlObject }));
 
 				// one hell of a polyfill ;)
-				Func<CommandType, string, IEnumerable<DbParameter>, Action<int>, IEnumerable<__Record>> executeRecordsCallback =
-					(CommandType commandType, string commandText, IEnumerable<DbParameter> dbParameters, Action<int> resultsetCallback) =>
+				Func<CommandType, string, IEnumerable<DbParameter>, Action<long>, IEnumerable<__Record>> executeRecordsCallback =
+					(CommandType commandType, string commandText, IEnumerable<DbParameter> dbParameters, Action<long> resultCallback) =>
 					{
 						const bool _schemaOnly = false;
 						Type _connectionType = connectionType;
@@ -81,11 +81,11 @@ namespace TextMetal.Framework.Source.Primative
 						const bool _transactional = false;
 						const IsolationLevel _isolationLevel = IsolationLevel.Unspecified;
 
-						return AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(_schemaOnly, _connectionType, _connectionString, _transactional, _isolationLevel, commandType, commandText, dbParameters, resultsetCallback);
+						return SolderFascadeAccessor.AdoNetBufferingFascade.ExecuteRecords(_schemaOnly, _connectionType, _connectionString, _transactional, _isolationLevel, commandType, commandText, dbParameters, resultCallback);
 					};
 
-				Func<CommandType, string, IEnumerable<DbParameter>, Action<int>, IEnumerable<__Record>> executeSchemaRecordsCallback =
-					(CommandType commandType, string commandText, IEnumerable<DbParameter> dbParameters, Action<int> resultsetCallback) =>
+				Func<CommandType, string, IEnumerable<DbParameter>, Action<long>, IEnumerable<__Record>> executeSchemaRecordsCallback =
+					(CommandType commandType, string commandText, IEnumerable<DbParameter> dbParameters, Action<long> resultCallback) =>
 					{
 						const bool _schemaOnly = true;
 						Type _connectionType = connectionType;
@@ -93,7 +93,7 @@ namespace TextMetal.Framework.Source.Primative
 						const bool _transactional = false;
 						const IsolationLevel _isolationLevel = IsolationLevel.Unspecified;
 
-						return AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(_schemaOnly, _connectionType, _connectionString, _transactional, _isolationLevel, commandType, commandText, dbParameters, resultsetCallback);
+						return SolderFascadeAccessor.AdoNetBufferingFascade.ExecuteRecords(_schemaOnly, _connectionType, _connectionString, _transactional, _isolationLevel, commandType, commandText, dbParameters, resultCallback);
 					};
 
 				Func<string, ParameterDirection, DbType, int, byte, byte, bool, string, object, DbParameter> createParameterCallback =
@@ -101,7 +101,7 @@ namespace TextMetal.Framework.Source.Primative
 					{
 						Type _connectionType = connectionType;
 
-						return AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(_connectionType, sourceColumn, parameterDirection, parameterDbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
+						return SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(_connectionType, sourceColumn, parameterDirection, parameterDbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
 					};
 
 				var unitOfWork = new

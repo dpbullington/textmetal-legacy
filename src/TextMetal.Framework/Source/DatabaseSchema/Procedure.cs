@@ -26,7 +26,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		#region Fields/Constants
 
 		private readonly List<Parameter> parameters = new List<Parameter>();
-		private readonly List<ProcedureResultset> resultsets = new List<ProcedureResultset>();
+		private readonly List<ProcedureResult> results = new List<ProcedureResult>();
 		private string procedureExecuteSchemaExceptionText;
 		private bool procedureExecuteSchemaThrewException;
 		private string procedureName;
@@ -50,14 +50,14 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		{
 			get
 			{
-				ProcedureResultset procedureResultset;
+				ProcedureResult procedureResult;
 
-				procedureResultset = this.Resultsets.SingleOrDefault(rs => rs.ResultsetIndex == 0);
+				procedureResult = this.Results.SingleOrDefault(rs => rs.ResultIndex == 0);
 
-				if ((object)procedureResultset == null)
+				if ((object)procedureResult == null)
 					return null;
 
-				return procedureResultset.Columns;
+				return procedureResult.Columns;
 			}
 		}
 
@@ -84,13 +84,13 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 		}
 
-		[XmlArray(ElementName = "Resultsets")]
-		[XmlArrayItem(ElementName = "Resultset")]
-		public List<ProcedureResultset> Resultsets
+		[XmlArray(ElementName = "Results")]
+		[XmlArrayItem(ElementName = "Result")]
+		public List<ProcedureResult> Results
 		{
 			get
 			{
-				return this.resultsets;
+				return this.results;
 			}
 		}
 

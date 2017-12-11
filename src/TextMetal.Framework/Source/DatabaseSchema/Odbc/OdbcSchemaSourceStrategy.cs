@@ -105,10 +105,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ReflectionFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ReflectionFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+							//SolderFascadeAccessor.AdoNetBufferingFascade.ReflectionFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.ReflectionFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 
@@ -139,10 +139,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", view.ViewName)
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", view.ViewName)
 						};
 			}
 
@@ -161,7 +161,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName)
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName)
 						};
 			}
 
@@ -180,8 +180,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName)
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName)
 						};
 			}
 
@@ -212,10 +212,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 
@@ -260,11 +260,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", foreignKey.ForeignKeyName)
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", foreignKey.ForeignKeyName)
 						};
 			}
 
@@ -295,10 +295,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 
@@ -329,10 +329,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", procedure.ProcedureName)
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", procedure.ProcedureName)
 						};
 			}
 
@@ -371,9 +371,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
 						};
 			}
 
@@ -395,8 +395,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 						};
 			}
 
@@ -432,9 +432,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
 						};
 			}
 
@@ -468,11 +468,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", uniqueKey.UniqueKeyName)
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", uniqueKey.UniqueKeyName)
 						};
 			}
 
@@ -503,10 +503,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(connectionType, null, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 

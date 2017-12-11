@@ -27,7 +27,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Primitives._
 		[Test]
 		public void ShouldOnlyWhenTest()
 		{
-			OnlyWhen._PROFILE_ThenPrint(string.Empty);
+			OnlyWhen._DEBUG_ThenPrint(string.Empty);
 		}
 
 		#endregion

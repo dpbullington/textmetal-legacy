@@ -259,8 +259,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			effectiveStandardCanonicalNaming = disableNameMangling ? StandardCanonicalNaming.InstanceDisableNameMangling : StandardCanonicalNaming.Instance;
 
 			// one hell of a polyfill ;)
-			Func<CommandType, string, IEnumerable<DbParameter>, Action<int> , IEnumerable<__Record>> executeRecordsCallback =
-				(CommandType commandType, string commandText, IEnumerable<DbParameter> dbParameters, Action<int> resultsetCallback) =>
+			Func<CommandType, string, IEnumerable<DbParameter>, Action<long> , IEnumerable<__Record>> executeRecordsCallback =
+				(CommandType commandType, string commandText, IEnumerable<DbParameter> dbParameters, Action<long> resultCallback) =>
 				{
 					const bool _schemaOnly = false;
 					Type _connectionType = connectionType;
@@ -268,11 +268,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 					const bool _transactional = false;
 					const IsolationLevel _isolationLevel = IsolationLevel.Unspecified;
 
-					return AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(_schemaOnly, _connectionType, _connectionString, _transactional, _isolationLevel, commandType, commandText, dbParameters, resultsetCallback);
+					return SolderFascadeAccessor.AdoNetBufferingFascade.ExecuteRecords(_schemaOnly, _connectionType, _connectionString, _transactional, _isolationLevel, commandType, commandText, dbParameters, resultCallback);
 				};
 
-			Func<CommandType, string, IEnumerable<DbParameter>, Action<int>, IEnumerable<__Record>> executeSchemaRecordsCallback =
-				(CommandType commandType, string commandText, IEnumerable<DbParameter> dbParameters, Action<int> resultsetCallback) =>
+			Func<CommandType, string, IEnumerable<DbParameter>, Action<long>, IEnumerable<__Record>> executeSchemaRecordsCallback =
+				(CommandType commandType, string commandText, IEnumerable<DbParameter> dbParameters, Action<long> resultCallback) =>
 				{
 					const bool _schemaOnly = true;
 					Type _connectionType = connectionType;
@@ -280,7 +280,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 					const bool _transactional = false;
 					const IsolationLevel _isolationLevel = IsolationLevel.Unspecified;
 
-					return AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(_schemaOnly, _connectionType, _connectionString, _transactional, _isolationLevel, commandType, commandText, dbParameters, resultsetCallback);
+					return SolderFascadeAccessor.AdoNetBufferingFascade.ExecuteRecords(_schemaOnly, _connectionType, _connectionString, _transactional, _isolationLevel, commandType, commandText, dbParameters, resultCallback);
 				};
 
 			Func<string, ParameterDirection, DbType, int, byte, byte, bool, string, object, DbParameter> createParameterCallback =
@@ -288,7 +288,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 				{
 					Type _connectionType = connectionType;
 
-					return AdoNetBufferingFascade.LegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(_connectionType, sourceColumn, parameterDirection, parameterDbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
+					return SolderFascadeAccessor.AdoNetBufferingFascade.CreateParameter(_connectionType, sourceColumn, parameterDirection, parameterDbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
 				};
 
 			var unitOfWork = new
@@ -990,20 +990,20 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																try
 																{
-																	int resultsetIndex = Int32.MinValue;
+																	long resultIndex = long.MinValue;
 
-																	var dictEnumResultsets = unitOfWork.ExecuteSchemaRecords(CommandType.StoredProcedure, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters, (ri) => resultsetIndex = ri);
+																	var dictEnumResults = unitOfWork.ExecuteSchemaRecords(CommandType.StoredProcedure, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters, (ri) => resultIndex = ri);
 																	{
-																		if ((object)dictEnumResultsets != null)
+																		if ((object)dictEnumResults != null)
 																		{
-																			foreach (var dictDataResultset in dictEnumResultsets)
+																			foreach (var dictDataResult in dictEnumResults)
 																			{
-																				ProcedureResultset procedureResultset;
+																				ProcedureResult procedureResult;
 
-																				procedureResultset = new ProcedureResultset();
-																				procedureResultset.ResultsetIndex = resultsetIndex;
+																				procedureResult = new ProcedureResult();
+																				procedureResult.ResultIndex = (int)resultIndex;
 
-																				foreach (var dictDataMetadata in Column.FixupDuplicateColumns(dictEnumResultsets))
+																				foreach (var dictDataMetadata in Column.FixupDuplicateColumns(dictEnumResults))
 																				{
 																					ProcedureColumn column;
 
@@ -1052,10 +1052,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																					column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
 																					column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
 
-																					procedureResultset.Columns.Add(column);
+																					procedureResult.Columns.Add(column);
 																				}
 
-																				procedure.Resultsets.Add(procedureResultset);
+																				procedure.Results.Add(procedureResult);
 																			}
 																		}
 																	}

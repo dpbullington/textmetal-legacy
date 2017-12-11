@@ -17,23 +17,39 @@ namespace TextMetal.Middleware.Solder.Primitives
 		{
 		}
 
+		public DisposableList(IEnumerable<TDisposable> disposables)
+		{
+			if ((object)disposables == null)
+				throw new ArgumentNullException(nameof(disposables));
+
+			this.AddRange(disposables);
+		}
+
 		#endregion
 
 		#region Methods/Operators
+
+		public virtual void Close()
+		{
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing)
 			{
 				foreach (TDisposable disposable in this)
-					disposable.Dispose();
+				{
+					if ((object)disposable != null)
+						disposable.Dispose();
+				}
 			}
 		}
 
 		public void Dispose()
 		{
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
+			this.Close();
 		}
 
 		#endregion

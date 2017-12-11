@@ -574,25 +574,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetNullAttributesWithInvalidTargetTest()
-		{
-			ReflectionFascade reflectionFascade;
-			MockMultipleTestAttibute[] tas;
-
-			MockFactory mockFactory;
-			IDataTypeFascade mockDataTypeFascade;
-
-			mockFactory = new MockFactory();
-			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
-
-			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
-
-			tas = reflectionFascade.GetAllAttributes<MockMultipleTestAttibute>(int.MaxValue);
-
-			Assert.IsNull(tas);
-		}
-
-		[Test]
 		public void ShouldGetNullAttributeTest()
 		{
 			ReflectionFascade reflectionFascade;

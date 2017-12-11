@@ -5,28 +5,51 @@
 
 using System;
 
-using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Solder.Extensions
 {
-	//[Obsolete("Stop using this")]
 	public static class SolderFascadeAccessor
 	{
 		#region Fields/Constants
 
-		private static readonly IDataTypeFascade dataTypeFascade = AssemblyDomain.Default.DependencyManager.ResolveDependency<IDataTypeFascade>(String.Empty, false);
-		private static readonly IReflectionFascade reflectionFascade = AssemblyDomain.Default.DependencyManager.ResolveDependency<IReflectionFascade>(String.Empty, false);
+		private static readonly Lazy<IAdoNetBufferingFascade> adoNetStreamingFascadeFactory = new Lazy<IAdoNetBufferingFascade>(() => new AdoNetBufferingFascade(DataTypeFascade));
+		private static readonly Lazy<IDataTypeFascade> dataTypeFascadeFactory = new Lazy<IDataTypeFascade>(() => new DataTypeFascade());
+		private static readonly Lazy<IReflectionFascade> reflectionFascadeFactory = new Lazy<IReflectionFascade>(() => new ReflectionFascade(DataTypeFascade));
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
+		public static IAdoNetBufferingFascade AdoNetBufferingFascade
+		{
+			get
+			{
+				return AdoNetBufferingFascadeFactory.Value;
+			}
+		}
+
+		private static Lazy<IAdoNetBufferingFascade> AdoNetBufferingFascadeFactory
+		{
+			get
+			{
+				return adoNetStreamingFascadeFactory;
+			}
+		}
+
 		public static IDataTypeFascade DataTypeFascade
 		{
 			get
 			{
-				return dataTypeFascade;
+				return DataTypeFascadeFactory.Value;
+			}
+		}
+
+		private static Lazy<IDataTypeFascade> DataTypeFascadeFactory
+		{
+			get
+			{
+				return dataTypeFascadeFactory;
 			}
 		}
 
@@ -34,7 +57,15 @@ namespace TextMetal.Middleware.Solder.Extensions
 		{
 			get
 			{
-				return reflectionFascade;
+				return ReflectionFascadeFactory.Value;
+			}
+		}
+
+		private static Lazy<IReflectionFascade> ReflectionFascadeFactory
+		{
+			get
+			{
+				return reflectionFascadeFactory;
 			}
 		}
 

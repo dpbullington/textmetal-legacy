@@ -552,7 +552,7 @@ namespace TextMetal.Framework.XmlDialect
 				}
 				else if (xmlReader.NodeType == XmlNodeType.Element) // actual elements
 				{
-					OnlyWhen._PROFILE_ThenPrint(string.Format("{2} <{0}{1}>", xmlReader.LocalName, xmlReader.IsEmptyElement ? " /" : string.Empty, xmlReader.IsEmptyElement ? "empty" : "begin"));
+					OnlyWhen._DEBUG_ThenPrint(string.Format("{2} <{0}{1}>", xmlReader.LocalName, xmlReader.IsEmptyElement ? " /" : string.Empty, xmlReader.IsEmptyElement ? "empty" : "begin"));
 
 					// stash away previous element
 					//previousElementXmlName = elementXmlName;
@@ -623,7 +623,7 @@ namespace TextMetal.Framework.XmlDialect
 				}
 				else if (xmlReader.NodeType == XmlNodeType.EndElement) // closing element
 				{
-					OnlyWhen._PROFILE_ThenPrint(string.Format("end <{0}>", xmlReader.LocalName));
+					OnlyWhen._DEBUG_ThenPrint(string.Format("end <{0}>", xmlReader.LocalName));
 
 					// create the element XML name
 					elementXmlName = new XmlName()

@@ -10,14 +10,14 @@ using System.Xml.Serialization;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	public class ProcedureResultset
+	public class ProcedureResult
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the ProcedureResultset class.
+		/// Initializes a new instance of the ProcedureResult class.
 		/// </summary>
-		public ProcedureResultset()
+		public ProcedureResult()
 		{
 		}
 
@@ -26,7 +26,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		#region Fields/Constants
 
 		private readonly List<ProcedureColumn> columns = new List<ProcedureColumn>();
-		private int resultsetIndex;
+		private int resultIndex;
 
 		#endregion
 
@@ -52,15 +52,15 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		}
 
 		[XmlAttribute]
-		public int ResultsetIndex
+		public int ResultIndex
 		{
 			get
 			{
-				return this.resultsetIndex;
+				return this.resultIndex;
 			}
 			set
 			{
-				this.resultsetIndex = value;
+				this.resultIndex = value;
 			}
 		}
 

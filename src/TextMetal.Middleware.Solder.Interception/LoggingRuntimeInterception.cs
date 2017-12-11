@@ -21,7 +21,7 @@ namespace TextMetal.Middleware.Solder.Interception
 
 		protected override void OnAfterInvoke(bool proceedWithInvocation, IRuntimeInvocation runtimeInvocation, ref Exception thrownException)
 		{
-			var oldConsoleColor = Console.ForegroundColor;
+			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.WriteLine("after invoke: {0}", runtimeInvocation.TargetMethod.ToString());
 			Console.ForegroundColor = oldConsoleColor;
@@ -29,7 +29,7 @@ namespace TextMetal.Middleware.Solder.Interception
 
 		protected override void OnBeforeInvoke(IRuntimeInvocation runtimeInvocation, out bool proceedWithInvocation)
 		{
-			var oldConsoleColor = Console.ForegroundColor;
+			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Blue;
 			Console.WriteLine("before invoke: {0}", runtimeInvocation.TargetMethod.ToString());
 			Console.ForegroundColor = oldConsoleColor;
@@ -38,7 +38,7 @@ namespace TextMetal.Middleware.Solder.Interception
 
 		protected override void OnMagicalSpellInvoke(IRuntimeInvocation runtimeInvocation)
 		{
-			var oldConsoleColor = Console.ForegroundColor;
+			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Green;
 			Console.WriteLine("magic invoke: {0}", runtimeInvocation.TargetMethod.ToString());
 			Console.ForegroundColor = oldConsoleColor;

@@ -6,7 +6,6 @@
 using System;
 using System.Data;
 using System.Globalization;
-using System.Reflection;
 using System.Xml;
 
 namespace TextMetal.Middleware.Solder.Utilities
@@ -14,7 +13,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 	/// <summary>
 	/// Provides static helper and/or extension methods for core data type functionality such as validation and parsing.
 	/// </summary>
-	public sealed partial class DataTypeFascade : IDataTypeFascade
+	public sealed class DataTypeFascade : IDataTypeFascade
 	{
 		#region Constructors/Destructors
 
@@ -48,16 +47,14 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)conversionType == null)
 				throw new ArgumentNullException(nameof(conversionType));
 
-			TypeInfo _conversionTypeInfo = conversionType.GetTypeInfo();
-
 			if ((object)value == null || value == DBNull.Value)
 				return this.DefaultValue(conversionType);
 
 			if (conversionType.IsAssignableFrom(value.GetType()))
 				return value;
 
-			if (_conversionTypeInfo.IsGenericType &&
-				!_conversionTypeInfo.IsGenericTypeDefinition &&
+			if (conversionType.IsGenericType &&
+				!conversionType.IsGenericTypeDefinition &&
 				conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
 				conversionType = Nullable.GetUnderlyingType(conversionType);
 
@@ -74,9 +71,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)targetType == null)
 				throw new ArgumentNullException(nameof(targetType));
 
-			TypeInfo _targetTypeInfo = targetType.GetTypeInfo();
-
-			return _targetTypeInfo.IsValueType ? Activator.CreateInstance(targetType) : null;
+			return targetType.IsValueType ? Activator.CreateInstance(targetType) : null;
 		}
 
 		/// <summary>
@@ -90,15 +85,13 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)clrType == null)
 				throw new ArgumentNullException(nameof(clrType));
 
-			TypeInfo _clrTypeInfo = clrType.GetTypeInfo();
-
 			if (clrType.IsByRef /* || type.IsPointer || type.IsArray */)
 				return this.InferDbTypeForClrType(clrType.GetElementType());
-			else if (_clrTypeInfo.IsGenericType &&
-					!_clrTypeInfo.IsGenericTypeDefinition &&
+			else if (clrType.IsGenericType &&
+					!clrType.IsGenericTypeDefinition &&
 					clrType.GetGenericTypeDefinition() == typeof(Nullable<>))
 				return this.InferDbTypeForClrType(Nullable.GetUnderlyingType(clrType));
-			else if (_clrTypeInfo.IsEnum)
+			else if (clrType.IsEnum)
 				return this.InferDbTypeForClrType(Enum.GetUnderlyingType(clrType));
 			else if (clrType == typeof(Boolean))
 				return DbType.Boolean;
@@ -288,13 +281,11 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)valueType == null)
 				throw new ArgumentNullException(nameof(valueType));
 
-			TypeInfo _valueTypeInfo = valueType.GetTypeInfo();
-
 			openNullableType = typeof(Nullable<>);
 			result = null;
 
-			if (_valueTypeInfo.IsGenericType &&
-				!_valueTypeInfo.IsGenericTypeDefinition &&
+			if (valueType.IsGenericType &&
+				!valueType.IsGenericTypeDefinition &&
 				valueType.GetGenericTypeDefinition().Equals(openNullableType))
 			{
 				if ((object)value == null)
@@ -304,6 +295,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 			else if (valueType == typeof(DBNull))
 			{
+				// all values become DBNull
 				retval = true;
 				result = DBNull.Value;
 			}
@@ -358,12 +350,8 @@ namespace TextMetal.Middleware.Solder.Utilities
 			else if (valueType == typeof(Guid))
 			{
 				Guid zresult;
-
-				if (retval = IsValidGuid(value))
-				{
-					zresult = ParseGuid(value);
-					result = zresult;
-				}
+				retval = Guid.TryParse(value, out zresult);
+				result = zresult;
 			}
 			else if (valueType == typeof(Int16))
 			{
@@ -421,20 +409,22 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 			else if (valueType == typeof(Version))
 			{
-				Version vresult;
-				retval = Version.TryParse(value, out vresult);
-				result = vresult;
+				Version zresult;
+				retval = Version.TryParse(value, out zresult);
+				result = zresult;
 			}
-			else if (_valueTypeInfo.IsEnum) // special case
+			else if (valueType.IsEnum) // special case
 			{
-				object zresult;
+				object zresult = null;
+				retval = false;
 
-				// Enum.GetUnderlyingType() not used here
-				if (retval = IsValidEnum(valueType, value))
+				if (Enum.IsDefined(valueType, value))
 				{
-					zresult = ParseEnum(valueType, value);
-					result = zresult;
+					zresult = Enum.Parse(valueType, value);
+					retval = true;
 				}
+
+				result = zresult;
 			}
 			else
 				throw new ArgumentOutOfRangeException(nameof(valueType), string.Format("The value type '{0}' is not supported.", valueType.FullName));

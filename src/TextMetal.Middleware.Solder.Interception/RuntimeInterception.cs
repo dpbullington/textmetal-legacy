@@ -86,21 +86,27 @@ namespace TextMetal.Middleware.Solder.Interception
 			return proxyInstance;
 		}
 
-		/// <summary>
-		/// Disposes of the inner resources, if present. Once disposed, the instance cannot be reused.
-		/// </summary>
-		public virtual void Dispose()
+		public virtual void Close()
 		{
 			if (this.Disposed)
 				return;
 
-			try
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+
+			this.Disposed = true;
+		}
+
+		public void Dispose()
+		{
+			this.Close();
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
 			{
-			}
-			finally
-			{
-				this.Disposed = true;
-				GC.SuppressFinalize(this);
+				// do nothing
 			}
 		}
 

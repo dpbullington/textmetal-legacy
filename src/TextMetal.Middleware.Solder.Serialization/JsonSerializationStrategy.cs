@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace TextMetal.Middleware.Solder.Serialization
 {
-	public class JsonSerializationStrategy : IBinarySerializationStrategy, ITextSerializationStrategy
+	public class JsonSerializationStrategy : IJsonSerializationStrategy, ITextSerializationStrategy
 	{
 		#region Constructors/Destructors
 
@@ -39,35 +39,6 @@ namespace TextMetal.Middleware.Solder.Serialization
 		#endregion
 
 		#region Methods/Operators
-
-		/// <summary>
-		/// Deserializes an object from the specified byte array value.
-		/// </summary>
-		/// <param name="value"> The byte array value to deserialize. </param>
-		/// <param name="targetType"> The target run-time type of the root of the deserialized object graph. </param>
-		/// <returns> An object of the target type or null. </returns>
-		public object GetObjectFromBytes(byte[] value, Type targetType)
-		{
-			throw new NotImplementedException();
-		}
-
-		/// <summary>
-		/// Deserializes an object from the specified byte array value. This is the generic overload.
-		/// </summary>
-		/// <typeparam name="TObject"> The target run-time type of the root of the deserialized object graph. </typeparam>
-		/// <param name="value"> The byte array value to deserialize. </param>
-		/// <returns> An object of the target type or null. </returns>
-		public TObject GetObjectFromBytes<TObject>(byte[] value)
-		{
-			TObject obj;
-			Type targetType;
-
-			targetType = typeof(TObject);
-
-			obj = (TObject)this.GetObjectFromBytes(value, targetType);
-
-			return obj;
-		}
 
 		/// <summary>
 		/// Deserializes an object from the specified input file.
@@ -119,7 +90,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 		/// <returns> An object of the target type or null. </returns>
 		public object GetObjectFromReader(TextReader textReader, Type targetType)
 		{
-			JsonSerializer serializer;
+			JsonSerializer jsonSerializer;
 			object obj;
 
 			if ((object)textReader == null)
@@ -128,15 +99,15 @@ namespace TextMetal.Middleware.Solder.Serialization
 			if ((object)targetType == null)
 				throw new ArgumentNullException(nameof(targetType));
 
-			serializer = JsonSerializer.Create(new JsonSerializerSettings()
-												{
-													Formatting = Formatting.Indented,
-													TypeNameHandling = TypeNameHandling.None,
-													ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-												});
+			jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings()
+													{
+														Formatting = Formatting.Indented,
+														TypeNameHandling = TypeNameHandling.None,
+														ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+													});
 
 			using (JsonReader jsonReader = new JsonTextReader(textReader))
-				obj = (object)serializer.Deserialize(jsonReader, targetType);
+				obj = (object)jsonSerializer.Deserialize(jsonReader, targetType);
 
 			return obj;
 		}
@@ -161,33 +132,26 @@ namespace TextMetal.Middleware.Solder.Serialization
 			return obj;
 		}
 
-		/// <summary>
-		/// Deserializes an object from the specified binary reader.
-		/// </summary>
-		/// <param name="binaryReader"> The binary reader to deserialize. </param>
-		/// <param name="targetType"> The target run-time type of the root of the deserialized object graph. </param>
-		/// <returns> An object of the target type or null. </returns>
-		public object GetObjectFromReader(BinaryReader binaryReader, Type targetType)
+		object IJsonSerializationStrategy.GetObjectFromReader(JsonReader jsonReader, Type targetType)
 		{
-			throw new NotImplementedException();
-		}
+			JsonSerializer jsonSerializer;
+			object obj;
 
-		/// <summary>
-		/// Deserializes an object from the specified binary reader. This is the generic overload.
-		/// </summary>
-		/// <typeparam name="TObject"> The target run-time type of the root of the deserialized object graph. </typeparam>
-		/// <param name="binaryReader"> The binary reader to deserialize. </param>
-		/// <returns> An object of the target type or null. </returns>
-		public TObject GetObjectFromReader<TObject>(BinaryReader binaryReader)
-		{
-			TObject obj;
-			Type targetType;
+			if ((object)jsonReader == null)
+				throw new ArgumentNullException(nameof(jsonReader));
 
-			targetType = typeof(TObject);
+			if ((object)targetType == null)
+				throw new ArgumentNullException(nameof(targetType));
 
-			obj = (TObject)this.GetObjectFromReader(binaryReader, targetType);
+			jsonSerializer = new JsonSerializer();
+			obj = jsonSerializer.Deserialize(jsonReader);
 
 			return obj;
+		}
+
+		TObject IJsonSerializationStrategy.GetObjectFromReader<TObject>(JsonReader jsonReader)
+		{
+			return default(TObject);
 		}
 
 		/// <summary>
@@ -198,7 +162,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 		/// <returns> An object of the target type or null. </returns>
 		public object GetObjectFromStream(Stream stream, Type targetType)
 		{
-			JsonSerializer serializer;
+			JsonSerializer jsonSerializer;
 			object obj;
 
 			if ((object)stream == null)
@@ -207,17 +171,17 @@ namespace TextMetal.Middleware.Solder.Serialization
 			if ((object)targetType == null)
 				throw new ArgumentNullException(nameof(targetType));
 
-			serializer = JsonSerializer.Create(new JsonSerializerSettings()
-												{
-													Formatting = Formatting.Indented,
-													TypeNameHandling = TypeNameHandling.None,
-													ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-												});
+			jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings()
+													{
+														Formatting = Formatting.Indented,
+														TypeNameHandling = TypeNameHandling.None,
+														ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+													});
 
 			using (StreamReader streamReader = new StreamReader(stream))
 			{
 				using (JsonReader jsonReader = new JsonTextReader(streamReader))
-					obj = (object)serializer.Deserialize(jsonReader, targetType);
+					obj = (object)jsonSerializer.Deserialize(jsonReader, targetType);
 			}
 
 			return obj;
@@ -279,34 +243,6 @@ namespace TextMetal.Middleware.Solder.Serialization
 			obj = (TObject)this.GetObjectFromString(value, targetType);
 
 			return obj;
-		}
-
-		/// <summary>
-		/// Serializes an object to a byte array value.
-		/// </summary>
-		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
-		/// <param name="obj"> The object graph to serialize. </param>
-		/// <returns> A byte array representation of the object graph. </returns>
-		public byte[] SetObjectToBytes(Type targetType, object obj)
-		{
-			throw new NotImplementedException();
-		}
-
-		/// <summary>
-		/// Serializes an object to a byte array value. This is the generic overload.
-		/// </summary>
-		/// <param name="obj"> The object graph to serialize. </param>
-		/// <returns> A byte array representation of the object graph. </returns>
-		public byte[] SetObjectToBytes<TObject>(TObject obj)
-		{
-			byte[] bytes;
-			Type targetType;
-
-			targetType = typeof(TObject);
-
-			bytes = this.SetObjectToBytes(targetType, obj);
-
-			return bytes;
 		}
 
 		/// <summary>
@@ -380,7 +316,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 		/// <param name="obj"> The object graph to serialize. </param>
 		public void SetObjectToStream(Stream stream, Type targetType, object obj)
 		{
-			JsonSerializer serializer;
+			JsonSerializer jsonSerializer;
 
 			if ((object)stream == null)
 				throw new ArgumentNullException(nameof(stream));
@@ -391,17 +327,17 @@ namespace TextMetal.Middleware.Solder.Serialization
 			if ((object)obj == null)
 				throw new ArgumentNullException(nameof(obj));
 
-			serializer = JsonSerializer.Create(new JsonSerializerSettings()
-												{
-													Formatting = Formatting.Indented,
-													TypeNameHandling = TypeNameHandling.None,
-													ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-												});
+			jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings()
+													{
+														Formatting = Formatting.Indented,
+														TypeNameHandling = TypeNameHandling.None,
+														ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+													});
 
 			using (StreamWriter streamWriter = new StreamWriter(stream))
 			{
 				using (JsonWriter jsonWriter = new JsonTextWriter(streamWriter))
-					serializer.Serialize(jsonWriter, obj, targetType);
+					jsonSerializer.Serialize(jsonWriter, obj, targetType);
 			}
 		}
 
@@ -450,7 +386,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 		/// <param name="obj"> The object graph to serialize. </param>
 		public void SetObjectToWriter(TextWriter textWriter, Type targetType, object obj)
 		{
-			JsonSerializer serializer;
+			JsonSerializer jsonSerializer;
 
 			if ((object)textWriter == null)
 				throw new ArgumentNullException(nameof(textWriter));
@@ -461,15 +397,15 @@ namespace TextMetal.Middleware.Solder.Serialization
 			if ((object)obj == null)
 				throw new ArgumentNullException(nameof(obj));
 
-			serializer = JsonSerializer.Create(new JsonSerializerSettings()
-												{
-													Formatting = Formatting.Indented,
-													TypeNameHandling = TypeNameHandling.None,
-													ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-												});
+			jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings()
+													{
+														Formatting = Formatting.Indented,
+														TypeNameHandling = TypeNameHandling.None,
+														ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+													});
 
 			using (JsonWriter jsonWriter = new JsonTextWriter(textWriter))
-				serializer.Serialize(jsonWriter, obj, targetType);
+				jsonSerializer.Serialize(jsonWriter, obj, targetType);
 		}
 
 		/// <summary>
@@ -492,29 +428,12 @@ namespace TextMetal.Middleware.Solder.Serialization
 			this.SetObjectToWriter(textWriter, targetType, (object)obj);
 		}
 
-		/// <summary>
-		/// Serializes an object to the specified binary writer. This is the generic overload.
-		/// </summary>
-		/// <param name="binaryWriter"> The binary writer to serialize. </param>
-		/// <param name="obj"> The object graph to serialize. </param>
-		public void SetObjectToWriter<TObject>(BinaryWriter binaryWriter, TObject obj)
+		void IJsonSerializationStrategy.SetObjectToWriter(JsonWriter jsonWriter, Type targetType, object obj)
 		{
-			Type targetType;
-
-			targetType = typeof(TObject);
-
-			this.SetObjectToWriter(binaryWriter, targetType, obj);
 		}
 
-		/// <summary>
-		/// Serializes an object to the specified binary writer.
-		/// </summary>
-		/// <param name="binaryWriter"> The binary writer to serialize. </param>
-		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
-		/// <param name="obj"> The object graph to serialize. </param>
-		public void SetObjectToWriter(BinaryWriter binaryWriter, Type targetType, object obj)
+		void IJsonSerializationStrategy.SetObjectToWriter<TObject>(JsonWriter jsonWriter, TObject obj)
 		{
-			throw new NotImplementedException(nameof(SetObjectToWriter));
 		}
 
 		#endregion

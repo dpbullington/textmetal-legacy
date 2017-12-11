@@ -6,8 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
+using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Primitives;
 using TextMetal.Middleware.Solder.Utilities;
 
@@ -25,6 +25,18 @@ namespace TextMetal.Middleware.Solder.Executive
 		#endregion
 
 		#region Methods/Operators
+
+		/// <summary>
+		/// The entry point method for this application.
+		/// </summary>
+		/// <param name="args"> The command line arguments passed from the executing environment. </param>
+		/// <returns> The resulting exit code. </returns>
+		public static int Run<TConsoleApp>(string[] args)
+			where TConsoleApp : ConsoleApplicationFascade
+		{
+			using (TConsoleApp program = (TConsoleApp)AssemblyDomain.Default.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
+				return program.EntryPoint(args);
+		}
 
 		protected sealed override void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages)
 		{
@@ -46,7 +58,7 @@ namespace TextMetal.Middleware.Solder.Executive
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Magenta;
 
-			var requiredArgumentTokens = argumentMap.Select(m => (!m.Value.Required ? "[" : string.Empty) + string.Format("-{0}:value{1}", m.Key, !m.Value.Bounded ? "(s)" : string.Empty) + (!m.Value.Required ? "]" : string.Empty));
+			IEnumerable<string> requiredArgumentTokens = argumentMap.Select(m => (!m.Value.Required ? "[" : string.Empty) + string.Format("-{0}:value{1}", m.Key, !m.Value.Bounded ? "(s)" : string.Empty) + (!m.Value.Required ? "]" : string.Empty));
 
 			if ((object)requiredArgumentTokens != null)
 			{

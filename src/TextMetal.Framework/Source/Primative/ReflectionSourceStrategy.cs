@@ -325,7 +325,7 @@ namespace TextMetal.Framework.Source.Primative
 			}
 		}
 
-		private static void ModelCustomAttributes(object customAttributeProvider, AssociativeXmlObject parent)
+		private static void ModelCustomAttributes(ICustomAttributeProvider customAttributeProvider, AssociativeXmlObject parent)
 		{
 			ArrayConstruct arrayConstruct00;
 			PropertyConstruct propertyConstruct00;

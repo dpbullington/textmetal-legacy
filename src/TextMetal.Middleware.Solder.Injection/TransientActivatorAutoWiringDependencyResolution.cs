@@ -88,7 +88,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			if ((object)selectorKey == null)
 				throw new ArgumentNullException(nameof(selectorKey));
 
-			var _activatorTypeInfo = activatorType.GetTypeInfo();
+			TypeInfo _activatorTypeInfo = activatorType.GetTypeInfo();
 
 			// get public, instance .ctors for activation type
 			constructorInfos = activatorType.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
@@ -135,9 +135,9 @@ namespace TextMetal.Middleware.Solder.Injection
 						lazyConstructorArgument = new Lazy<object>(() =>
 																	{
 																		// prevent modified closure bug
-																		var _dependencyManager = dependencyManager;
-																		var _resolutionType = parameterType;
-																		var _parameterDependencyInjectionAttribute = parameterDependencyInjectionAttribute;
+																		IDependencyManager _dependencyManager = dependencyManager;
+																		Type _resolutionType = parameterType;
+																		DependencyInjectionAttribute _parameterDependencyInjectionAttribute = parameterDependencyInjectionAttribute;
 																		return _dependencyManager.ResolveDependency(_resolutionType, _parameterDependencyInjectionAttribute.SelectorKey, true);
 																	});
 
@@ -147,8 +147,8 @@ namespace TextMetal.Middleware.Solder.Injection
 					lazyConstructorInvokation = new Lazy<TResolution>(() =>
 																	{
 																		// prevent modified closure bug
-																		var _activatorType = activatorType;
-																		var _lazyConstructorArguments = lazyConstructorArguments;
+																		Type _activatorType = activatorType;
+																		Lazy<object>[] _lazyConstructorArguments = lazyConstructorArguments;
 																		return (TResolution)Activator.CreateInstance(_activatorType, _lazyConstructorArguments.Select(l => l.Value).ToArray());
 																	});
 				}

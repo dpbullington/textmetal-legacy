@@ -21,7 +21,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <typeparam name="TAttribute"> The target object (Assembly, Type, MemberInfo, etc.) </typeparam>
 		/// <param name="target"> The target object. </param>
 		/// <returns> The custom attributes array or null. </returns>
-		TAttribute[] GetAllAttributes<TAttribute>(object target)
+		TAttribute[] GetAllAttributes<TAttribute>(ICustomAttributeProvider target)
 			where TAttribute : Attribute;
 
 		/// <summary>
@@ -64,7 +64,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <typeparam name="TAttribute"> The custom attribute type. </typeparam>
 		/// <param name="target"> The target object (Assembly, Type, MemberInfo, etc.) </param>
 		/// <returns> The single custom attribute or null if none are defined. </returns>
-		TAttribute GetOneAttribute<TAttribute>(object target)
+		TAttribute GetOneAttribute<TAttribute>(ICustomAttributeProvider target)
 			where TAttribute : Attribute;
 
 		/// <summary>
@@ -72,7 +72,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// </summary>
 		/// <typeparam name="TAttribute"> The custom attribute type. </typeparam>
 		/// <param name="target"> The target object (Assembly, Type, MemberInfo, etc.) </param>
-		void GetZeroAttributes<TAttribute>(object target)
+		void GetZeroAttributes<TAttribute>(ICustomAttributeProvider target)
 			where TAttribute : Attribute;
 
 		/// <summary>

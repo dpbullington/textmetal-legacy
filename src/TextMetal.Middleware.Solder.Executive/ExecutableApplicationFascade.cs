@@ -49,9 +49,9 @@ namespace TextMetal.Middleware.Solder.Executive
 		private const string SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT = "SOLDER_LAUNCH_DEBUGGER_ON_ENTRY_POINT";
 
 		private readonly IAppConfigFascade appConfigFascade;
+		private readonly IAssemblyInformationFascade assemblyInformationFascade;
 		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly IReflectionFascade reflectionFascade;
-		private readonly IAssemblyInformationFascade assemblyInformationFascade;
 		private bool disposed;
 
 		#endregion
@@ -169,6 +169,17 @@ namespace TextMetal.Middleware.Solder.Executive
 
 		#region Methods/Operators
 
+		public virtual void Close()
+		{
+			if (this.Disposed)
+				return;
+
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+
+			this.Disposed = true;
+		}
+
 		protected abstract void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages);
 
 		protected abstract void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap);
@@ -183,8 +194,7 @@ namespace TextMetal.Middleware.Solder.Executive
 
 		public void Dispose()
 		{
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
+			this.Close();
 		}
 
 		protected virtual void Dispose(bool disposing)

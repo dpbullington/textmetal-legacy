@@ -64,9 +64,9 @@ namespace TextMetal.Middleware.Solder.Injection
 			{
 				AssemblyDomain instance = AssemblyDomainLazySingleton.instance;
 
-				// the only way this is null is if this property is invoked AGAIN while the lay singleton is being contructed
+				// the only way this is null is if this property is invoked AGAIN while the lazy singleton is being contructed
 				if ((object)instance == null)
-					Environment.FailFast(string.Format("Not re-entrant: '{0}.{1}'", nameof(AssemblyDomain), nameof(Default)));
+					Environment.FailFast(string.Format("Not re-entrant; property is invoked AGAIN while the lazy singleton is being contructed: '{0}.{1}'", nameof(AssemblyDomain), nameof(Default)));
 
 				return instance;
 			}
@@ -184,25 +184,9 @@ namespace TextMetal.Middleware.Solder.Injection
 			return configurationRoot;
 		}
 
-		private void AppDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs e)
+		private void ___Dispose()
 		{
-			if ((object)sender == null)
-				throw new ArgumentNullException(nameof(sender));
-
-			if ((object)e == null)
-				throw new ArgumentNullException(nameof(e));
-
-			this.OnAssemblyLoaded(e.LoadedAssembly);
-		}
-
-		private void AppDomain_ProcessExit(object sender, EventArgs e)
-		{
-			this.OnProcessExit();
-		}
-
-		public void Dispose()
-		{
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::{1} --> {2}", nameof(AssemblyDomain), nameof(this.Dispose), Environment.CurrentManagedThreadId));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::{1} --> {2}", nameof(AssemblyDomain), nameof(this.Dispose), Environment.CurrentManagedThreadId));
 
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
@@ -232,14 +216,57 @@ namespace TextMetal.Middleware.Solder.Injection
 				}
 				finally
 				{
+					// special case here since this class wil execute under multi-threaded scenarios
+					GC.SuppressFinalize(this);
 					this.Disposed = true;
+
 					this.ReaderWriterLock.ExitWriteLock();
 				}
 			}
 			finally
 			{
 				this.ReaderWriterLock.ExitUpgradeableReadLock();
-				GC.SuppressFinalize(this);
+			}
+		}
+
+		private void AppDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs e)
+		{
+			if ((object)sender == null)
+				throw new ArgumentNullException(nameof(sender));
+
+			if ((object)e == null)
+				throw new ArgumentNullException(nameof(e));
+
+			this.OnAssemblyLoaded(e.LoadedAssembly);
+		}
+
+		private void AppDomain_ProcessExit(object sender, EventArgs e)
+		{
+			this.OnProcessExit();
+		}
+
+		public /*virtual*/ void Close()
+		{
+			if (this.Disposed)
+				return;
+
+			this.Dispose(true);
+			// special case, see comments in call chain...
+			//GC.SuppressFinalize(this);
+
+			//this.Disposed = true;
+		}
+
+		public void Dispose()
+		{
+			this.Close();
+		}
+
+		protected /*virtual*/ void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				this.___Dispose();
 			}
 		}
 
@@ -288,7 +315,7 @@ namespace TextMetal.Middleware.Solder.Injection
 						continue;
 
 					// notify
-					OnlyWhen._PROFILE_ThenPrint(string.Format("{1}::{0}", methodInfo.Name, methodInfo.DeclaringType.FullName));
+					OnlyWhen._DEBUG_ThenPrint(string.Format("{1}::{0}", methodInfo.Name, methodInfo.DeclaringType.FullName));
 
 					// execute (assuming under existing SRWL)
 					dependencyMagicMethod(this.DependencyManager);
@@ -319,7 +346,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 				try
 				{
-					OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::{1} --> {2}", nameof(AssemblyDomain), nameof(this.Initialize), Environment.CurrentManagedThreadId));
+					OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::{1} --> {2}", nameof(AssemblyDomain), nameof(this.Initialize), Environment.CurrentManagedThreadId));
 
 					// add trusted dependencies
 					AddTrustedDependencies(this.DependencyManager);
@@ -430,7 +457,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			if (this.KnownAssemblies.ContainsKey(assemblyName))
 				return;
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}.", assembly.FullName));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}.", assembly.FullName));
 
 			// track which ones we have seen - not sure if AN is fully ==...
 			this.KnownAssemblies.Add(assemblyName, assembly);
@@ -461,8 +488,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		/// <summary>
 		/// From: Microsoft.VisualStudio.Composition
-		///  https://github.com/Microsoft/vs-mef/tree/master/src/Microsoft.VisualStudio.Composition
-		/// 
+		/// https://github.com/Microsoft/vs-mef/tree/master/src/Microsoft.VisualStudio.Composition
 		/// Copyright (c) Microsoft Corporation, All rights reserved.
 		/// License: MIT License
 		/// Commit: 44cf565e2f9799bcf7f33f8af76115134c074324

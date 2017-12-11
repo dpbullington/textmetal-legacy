@@ -50,7 +50,7 @@ namespace NUnit.Framework.Internal.Commands
         /// well as returning it. If the test has an expected result, it
         /// is asserts on that value. Since failed tests and errors throw
         /// an exception, this command must be wrapped in an outer command,
-        /// will handle that exception and records the failure. This role
+        /// will handle that exception and rows the failure. This role
         /// is usually played by the SetUpTearDown command.
         /// </summary>
         /// <param name="context">The execution context</param>
