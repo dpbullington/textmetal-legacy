@@ -14,7 +14,7 @@ using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Solder.Executive
 {
-	public abstract class ExecutableApplicationFascade : IExecutableApplicationFascade
+	public abstract class ExecutableApplicationFascade : Lifecycle, IExecutableApplicationFascade
 	{
 		#region Constructors/Destructors
 
@@ -52,7 +52,6 @@ namespace TextMetal.Middleware.Solder.Executive
 		private readonly IAssemblyInformationFascade assemblyInformationFascade;
 		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly IReflectionFascade reflectionFascade;
-		private bool disposed;
 
 		#endregion
 
@@ -104,7 +103,7 @@ namespace TextMetal.Middleware.Solder.Executive
 			}
 		}
 
-		private bool HookUnhandledExceptions
+		protected bool HookUnhandledExceptions
 		{
 			get
 			{
@@ -123,7 +122,7 @@ namespace TextMetal.Middleware.Solder.Executive
 			}
 		}
 
-		private bool LaunchDebuggerOnEntryPoint
+		protected bool LaunchDebuggerOnEntryPoint
 		{
 			get
 			{
@@ -150,83 +149,129 @@ namespace TextMetal.Middleware.Solder.Executive
 			}
 		}
 
-		/// <summary>
-		/// Gets a value indicating whether the current instance has been disposed.
-		/// </summary>
-		public bool Disposed
-		{
-			get
-			{
-				return this.disposed;
-			}
-			private set
-			{
-				this.disposed = value;
-			}
-		}
-
 		#endregion
 
 		#region Methods/Operators
 
-		public virtual void Close()
-		{
-			if (this.Disposed)
-				return;
-
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
-
-			this.Disposed = true;
-		}
-
-		protected abstract void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages);
-
-		protected abstract void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap);
-
-		protected abstract void DisplayBannerMessage();
-
-		protected abstract void DisplayFailureMessage(Exception exception);
-
-		protected abstract void DisplayRawArgumentsMessage(string[] args, IEnumerable<string> arguments);
-
-		protected abstract void DisplaySuccessMessage(TimeSpan duration);
-
-		public void Dispose()
-		{
-			this.Close();
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (this.Disposed)
-				return;
-
-			if (disposing)
-			{
-				// do nothing
-			}
-		}
-
 		/// <summary>
-		/// The indirect entry point method for this application. Code is wrapped in this method to leverage the 'TryStartup'/'Startup' pattern. This method, if used, wraps the Startup() method in an exception handler. The handler will catch all exceptions and report a full detailed stack trace to the Console.Error stream; -1 is then returned as the exit code. Otherwise, if no exception is thrown, the exit code returned is that which is returned by Startup().
+		/// The event handler for this event is executed on a thread pool thread.
 		/// </summary>
-		/// <param name="args"> The command line arguments passed from the executing environment. </param>
-		/// <returns> The resulting exit code. </returns>
-		public int EntryPoint(string[] args)
+		/// <param name="sender"> </param>
+		/// <param name="args"> </param>
+		private void ConsoleOnCancelKeyPress(object sender, ConsoleCancelEventArgs args)
 		{
-			if (this.LaunchDebuggerOnEntryPoint)
-				Debugger.Launch();
+			//if ((object)sender == null)
+			//throw new ArgumentNullException(nameof(sender));
 
-			if (this.HookUnhandledExceptions)
-				return this.TryStartup(args);
-			else
-				return this.Startup(args);
+			if ((object)args == null)
+				throw new ArgumentNullException(nameof(args));
+
+			args.Cancel = this.OnCancelKeySignal(args.SpecialKey);
+		}
+
+		protected override void Create(bool creating)
+		{
+			Console.CancelKeyPress += this.ConsoleOnCancelKeyPress;
+		}
+
+		protected virtual void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages)
+		{
+			ConsoleColor oldConsoleColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Red;
+
+			if ((object)argumentMessages != null)
+			{
+				Console.WriteLine();
+				foreach (Message argumentMessage in argumentMessages)
+					Console.WriteLine(argumentMessage.Description);
+			}
+
+			Console.ForegroundColor = oldConsoleColor;
+		}
+
+		protected virtual void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap)
+		{
+			ConsoleColor oldConsoleColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Magenta;
+
+			IEnumerable<string> requiredArgumentTokens = argumentMap.Select(m => (!m.Value.Required ? "[" : string.Empty) + string.Format("-{0}:value{1}", m.Key, !m.Value.Bounded ? "(s)" : string.Empty) + (!m.Value.Required ? "]" : string.Empty));
+
+			if ((object)requiredArgumentTokens != null)
+			{
+				Console.WriteLine();
+				// HACK
+				Console.WriteLine(string.Format("USAGE: {0} ", this.AssemblyInformationFascade.ModuleName) + string.Join((string)" ", (IEnumerable<string>)requiredArgumentTokens));
+			}
+
+			Console.ForegroundColor = oldConsoleColor;
+		}
+
+		protected virtual void DisplayBannerMessage()
+		{
+			Console.WriteLine(string.Format("{0} v{1} ({2}; {3})", this.AssemblyInformationFascade.ModuleName,
+				this.AssemblyInformationFascade.NativeFileVersion, this.AssemblyInformationFascade.AssemblyVersion, this.AssemblyInformationFascade.InformationalVersion));
+		}
+
+		protected virtual void DisplayFailureMessage(Exception exception)
+		{
+			ConsoleColor oldConsoleColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine();
+			Console.WriteLine((object)exception != null ? this.ReflectionFascade.GetErrors(exception, 0) : "<unknown>");
+			Console.ForegroundColor = oldConsoleColor;
+
+			Console.WriteLine();
+			Console.WriteLine("The operation failed to complete.");
+		}
+
+		protected virtual void DisplayRawArgumentsMessage(string[] args, IEnumerable<string> arguments)
+		{
+			ConsoleColor oldConsoleColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Blue;
+
+			if ((object)arguments != null)
+			{
+				Console.WriteLine();
+				Console.WriteLine("RAW CMDLN: {0}", string.Join(" ", args));
+				Console.WriteLine();
+				Console.WriteLine("RAW ARGS:");
+
+				int index = 0;
+				foreach (string argument in arguments)
+					Console.WriteLine("[{0}] => {1}", index++, argument);
+			}
+
+			Console.ForegroundColor = oldConsoleColor;
+		}
+
+		protected virtual void DisplaySuccessMessage(TimeSpan duration)
+		{
+			Console.WriteLine();
+			Console.WriteLine("Operation completed successfully; duration: '{0}'.", duration);
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			//Console.CancelKeyPress -= this.ConsoleOnCancelKeyPress;
 		}
 
 		protected abstract IDictionary<string, ArgumentSpec> GetArgumentMap();
 
-		protected abstract int OnStartup(string[] args, IDictionary<string, IList<object>> arguments);
+		protected void MaybeLaunchDebugger()
+		{
+			if (this.LaunchDebuggerOnEntryPoint)
+				Debugger.Launch();
+		}
+
+		/// <summary>
+		/// The event handler for this event is executed on a thread pool thread.
+		/// </summary>
+		/// <param name="consoleSpecialKey"> </param>
+		/// <returns> </returns>
+		protected virtual bool OnCancelKeySignal(ConsoleSpecialKey consoleSpecialKey)
+		{
+			return false;
+		}
 
 		/// <summary>
 		/// Given a string array of command line arguments, this method will parse the arguments using a well know pattern match to obtain a loosely typed dictionary of key/multi-value pairs for use by applications.
@@ -293,99 +338,6 @@ namespace TextMetal.Middleware.Solder.Executive
 			return -1;
 		}
 
-		private int Startup(string[] args)
-		{
-			int returnCode;
-			DateTime start, end;
-			TimeSpan duration;
-			IDictionary<string, ArgumentSpec> argumentMap;
-			IList<Message> argumentValidationMessages;
-
-			IList<string> argumentValues;
-			IDictionary<string, IList<string>> arguments;
-
-			IDictionary<string, IList<object>> finalArguments;
-			IList<object> finalArgumentValues;
-			object finalArgumentValue;
-
-			this.DisplayBannerMessage();
-			start = DateTime.UtcNow;
-
-			arguments = this.ParseCommandLineArguments(args);
-			argumentMap = this.GetArgumentMap();
-
-			finalArguments = new Dictionary<string, IList<object>>();
-			argumentValidationMessages = new List<Message>();
-
-			if ((object)argumentMap != null)
-			{
-				foreach (string argumentToken in argumentMap.Keys)
-				{
-					bool argumentExists;
-					int argumentValueCount = 0;
-					ArgumentSpec argumentSpec;
-
-					if (argumentExists = arguments.TryGetValue(argumentToken, out argumentValues))
-						argumentValueCount = argumentValues.Count;
-
-					if (!argumentMap.TryGetValue(argumentToken, out argumentSpec))
-						continue;
-
-					if (argumentSpec.Required && !argumentExists)
-					{
-						argumentValidationMessages.Add(new Message(string.Empty, string.Format("A required argument was not specified: '{0}'.", argumentToken), Severity.Error));
-						continue;
-					}
-
-					if (argumentSpec.Bounded && argumentValueCount > 1)
-					{
-						argumentValidationMessages.Add(new Message(string.Empty, string.Format("A bounded argument was specified more than once: '{0}'.", argumentToken), Severity.Error));
-						continue;
-					}
-
-					if ((object)argumentValues != null)
-					{
-						finalArgumentValues = new List<object>();
-
-						if ((object)argumentSpec.Type != null)
-						{
-							foreach (string argumentValue in argumentValues)
-							{
-								if (!this.DataTypeFascade.TryParse(argumentSpec.Type, argumentValue, out finalArgumentValue))
-									argumentValidationMessages.Add(new Message(string.Empty, string.Format("An argument '{0}' value '{1}' was specified that failed to parse to the target type '{2}'.", argumentToken, argumentValue, argumentSpec.Type.FullName), Severity.Error));
-								else
-									finalArgumentValues.Add(finalArgumentValue);
-							}
-						}
-						else
-						{
-							foreach (string argumentValue in argumentValues)
-								finalArgumentValues.Add(argumentValue);
-						}
-
-						finalArguments.Add(argumentToken, finalArgumentValues);
-					}
-				}
-			}
-
-			if (argumentValidationMessages.Any())
-			{
-				this.DisplayArgumentErrorMessage(argumentValidationMessages);
-				this.DisplayArgumentMapMessage(argumentMap);
-				//this.DisplayRawArgumentsMessage(args);
-				returnCode = -1;
-			}
-			else
-				returnCode = this.OnStartup(args, finalArguments);
-
-			end = DateTime.UtcNow;
-			duration = end - start;
-
-			this.DisplaySuccessMessage(duration);
-
-			return returnCode;
-		}
-
 		/// <summary>
 		/// Given a string property, this method will parse the property using a well know pattern match to obtain an output key/value pair for use by applications.
 		/// </summary>
@@ -429,84 +381,6 @@ namespace TextMetal.Middleware.Solder.Executive
 			key = k;
 			value = v;
 			return true;
-		}
-
-		private int TryStartup(string[] args)
-		{
-			try
-			{
-				return this.Startup(args);
-			}
-			catch (Exception ex)
-			{
-				return this.ShowNestedExceptionsAndThrowBrickAtProcess(new Exception("Main", ex));
-			}
-		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		protected class ArgumentSpec
-		{
-			#region Constructors/Destructors
-
-			public ArgumentSpec(Type type, bool required, bool bounded)
-			{
-				this.type = type ?? typeof(Object);
-				this.required = required;
-				this.bounded = bounded;
-			}
-
-			#endregion
-
-			#region Fields/Constants
-
-			private readonly bool bounded;
-			private readonly bool required;
-			private readonly Type type;
-
-			#endregion
-
-			#region Properties/Indexers/Events
-
-			public bool Bounded
-			{
-				get
-				{
-					return this.bounded;
-				}
-			}
-
-			public bool Required
-			{
-				get
-				{
-					return this.required;
-				}
-			}
-
-			public Type Type
-			{
-				get
-				{
-					return this.type;
-				}
-			}
-
-			#endregion
-		}
-
-		protected class ArgumentSpec<T> : ArgumentSpec
-		{
-			#region Constructors/Destructors
-
-			public ArgumentSpec(bool required, bool bounded)
-				: base(typeof(T), required, bounded)
-			{
-			}
-
-			#endregion
 		}
 
 		#endregion
