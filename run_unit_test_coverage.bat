@@ -12,5 +12,5 @@ SET DOTNET_CLI_CAPTURE_TIMING=0
 
 CALL set-ps-env.bat
 
-"%POWERSHELL_CORE_EXE_PATH%\powershell.exe" -command .\run_unit_test_coverage
+"%POWERSHELL_EXE_PATH%" -command .\run_unit_test_coverage
 pause > nul

@@ -7,4 +7,4 @@ REM
 
 CALL set-ps-env.bat
 
-"%POWERSHELL_CORE_EXE_PATH%\powershell.exe" -command .\clean_source_tree > "%temp%\clean_source_tree.log"
+"%POWERSHELL_EXE_PATH%" -command .\clean_source_tree > "%temp%\clean_source_tree.log"

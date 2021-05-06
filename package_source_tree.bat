@@ -7,4 +7,4 @@ REM
 
 CALL set-ps-env.bat
 
-"%POWERSHELL_CORE_EXE_PATH%\powershell.exe" -command .\package_source_tree
+"%POWERSHELL_EXE_PATH%" -command .\package_source_tree
