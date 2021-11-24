@@ -274,7 +274,7 @@ namespace Castle.DynamicProxy.Generators.Emitters
 		public Type GetGenericArgument(String genericArgumentName)
 		{
 			if (name2GenericType.ContainsKey(genericArgumentName))
-				return name2GenericType[genericArgumentName].AsType();
+				return name2GenericType[genericArgumentName];//.AsType();
 
 			return null;
 		}
@@ -287,7 +287,7 @@ namespace Castle.DynamicProxy.Generators.Emitters
 			{
 				if (genType.GetTypeInfo().IsGenericParameter)
 				{
-					types.Add(name2GenericType[genType.Name].AsType());
+					types.Add(name2GenericType[genType.Name]/*.AsType()*/);
 				}
 				else
 				{
@@ -303,7 +303,7 @@ namespace Castle.DynamicProxy.Generators.Emitters
 			var types = new List<Type>();
 			foreach (var genType in genericMethod.GetGenericArguments())
 			{
-				types.Add(name2GenericType[genType.Name].AsType());
+				types.Add(name2GenericType[genType.Name]/*.AsType()*/);
 			}
 
 			return types.ToArray();

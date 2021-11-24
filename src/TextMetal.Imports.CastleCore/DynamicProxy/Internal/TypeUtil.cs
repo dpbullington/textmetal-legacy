@@ -147,7 +147,7 @@ namespace Castle.DynamicProxy.Internal
 			Type[] types = new Type[typeInfos.Length];
 			for (int i = 0; i < types.Length; i++)
 			{
-				types[i] = typeInfos[i].AsType();
+				types[i] = typeInfos[i];//.AsType();
 			}
 			return types;
 		}

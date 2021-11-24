@@ -16,7 +16,7 @@ namespace TextMetal.Framework.Hosting.Tool
 	/// <summary>
 	/// Entry point class for the application.
 	/// </summary>
-	public class TextMetalConsoleApplication : ConsoleApplicationFascade
+	public class TextMetalConsoleApplication : SyncExecutableApplicationFascade
 	{
 		#region Constructors/Destructors
 
@@ -44,7 +44,7 @@ namespace TextMetal.Framework.Hosting.Tool
 
 		public static int Run(string[] args)
 		{
-			using (ConsoleApplicationFascade program = AssemblyDomain.Default.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
+			using (SyncExecutableApplicationFascade program = AssemblyDomain.Default.DependencyManager.ResolveDependency<SyncExecutableApplicationFascade>(string.Empty, true))
 				return program.EntryPoint(args);
 		}
 
@@ -54,7 +54,7 @@ namespace TextMetal.Framework.Hosting.Tool
 			if ((object)dependencyManager == null)
 				throw new ArgumentNullException(nameof(dependencyManager));
 
-			dependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(TransientActivatorAutoWiringDependencyResolution<TextMetalConsoleApplication>.From(dependencyManager)));
+			dependencyManager.AddResolution<SyncExecutableApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<SyncExecutableApplicationFascade>(TransientActivatorAutoWiringDependencyResolution<TextMetalConsoleApplication>.From(dependencyManager)));
 			dependencyManager.AddResolution<ITextMetalToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<ITextMetalToolHost>(TransientActivatorAutoWiringDependencyResolution<TextMetalToolHost>.From(dependencyManager)));
 			dependencyManager.AddResolution<IAdoNetBufferingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetBufferingFascade>(TransientActivatorAutoWiringDependencyResolution<AdoNetBufferingFascade>.From(dependencyManager)));
 		}

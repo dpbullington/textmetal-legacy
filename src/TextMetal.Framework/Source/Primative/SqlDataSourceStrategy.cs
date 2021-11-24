@@ -211,7 +211,7 @@ namespace TextMetal.Framework.Source.Primative
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 
-			sqlQuery = XmlSerializationStrategy.Instance.GetObjectFromFile<SqlQuery>(sourceFilePath);
+			sqlQuery = new XmlSerializationStrategy().GetObjectFromFile<SqlQuery>(sourceFilePath);
 
 			objectConstruct00 = new ObjectConstruct();
 

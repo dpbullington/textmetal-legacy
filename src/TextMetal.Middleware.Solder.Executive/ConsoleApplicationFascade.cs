@@ -115,5 +115,7 @@ namespace TextMetal.Middleware.Solder.Executive
 		}
 
 		#endregion
+
+		public abstract int EntryPoint(string[] args);
 	}
 }

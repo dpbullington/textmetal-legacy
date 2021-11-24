@@ -42,7 +42,7 @@ namespace TextMetal.Framework.Source.Primative
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 
-			retval = JsonSerializationStrategy.Instance.GetObjectFromFile<object>(sourceFilePath);
+			retval = new JsonSerializationStrategy().GetObjectFromFile<object>(sourceFilePath);
 
 			return retval;
 		}
