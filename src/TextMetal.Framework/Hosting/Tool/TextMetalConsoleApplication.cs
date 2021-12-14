@@ -129,7 +129,7 @@ namespace TextMetal.Framework.Hosting.Tool
 					{
 						string key, value;
 
-						if (!this.TryParseCommandLineArgumentProperty(argumentValue, out key, out value))
+						if (!TryParseCommandLineArgumentProperty(argumentValue, out key, out value))
 							continue;
 
 						if (!properties.ContainsKey(key))

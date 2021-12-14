@@ -142,6 +142,12 @@ namespace TextMetal.Framework.Source.Primative
 					propertyConstruct00.Name = "FileName";
 					propertyConstruct00.RawValue = fileInfo.Name;
 					objectConstruct00.Items.Add(propertyConstruct00);
+					
+					// DPB 2021-11-24
+					propertyConstruct00 = new PropertyConstruct();
+					propertyConstruct00.Name = "FileNameWoExt";
+					propertyConstruct00.RawValue = Path.GetFileNameWithoutExtension(fileInfo.Name);
+					objectConstruct00.Items.Add(propertyConstruct00);
 				}
 			}
 
@@ -210,6 +216,12 @@ namespace TextMetal.Framework.Source.Primative
 					propertyConstruct01.Name = "DirectoryName";
 					propertyConstruct01.RawValue = directoryInfo.Name;
 					objectConstruct01.Items.Add(propertyConstruct01);
+					
+					// DPB 2021-11-24
+					propertyConstruct00 = new PropertyConstruct();
+					propertyConstruct00.Name = "DirectoryNameWoExt";
+					propertyConstruct00.RawValue = Path.GetFileNameWithoutExtension(directoryInfo.Name);
+					objectConstruct01.Items.Add(propertyConstruct00);
 
 					if (recursive)
 						EnumerateFileSystem(directory, recursive, wildcard, objectConstruct01, sourcePath);

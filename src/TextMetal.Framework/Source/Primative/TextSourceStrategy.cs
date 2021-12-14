@@ -193,6 +193,8 @@ namespace TextMetal.Framework.Source.Primative
 					{
 						int j = 0;
 
+						if(fields.Length != 10)
+							Console.WriteLine(fields.Length.ToString("0000"));
 						foreach (string field in fields)
 						{
 							propertyConstruct01 = new PropertyConstruct();
@@ -201,6 +203,8 @@ namespace TextMetal.Framework.Source.Primative
 								propertyConstruct01.Name = string.Format("{0}", headers[j++]);
 							else
 								propertyConstruct01.Name = string.Format("Field{0}", (j++) + 1);
+							
+							//Console.WriteLine("{0} := {1}", propertyConstruct01.Name, field);
 
 							propertyConstruct01.RawValue = field;
 							objectConstruct01.Items.Add(propertyConstruct01);
@@ -211,7 +215,8 @@ namespace TextMetal.Framework.Source.Primative
 				}
 			}
 
-			return objectConstruct00;
+			return arrayConstruct00; // dpb 2021-11-25
+			//return objectConstruct00;
 		}
 
 		#endregion

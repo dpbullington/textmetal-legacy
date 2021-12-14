@@ -76,7 +76,7 @@ namespace TextMetal.Middleware.Solder.Executive
 			this.DisplayBannerMessage();
 			start = DateTime.UtcNow;
 
-			arguments = this.ParseCommandLineArguments(args);
+			arguments = ParseCommandLineArguments(args);
 			argumentMap = this.GetArgumentMap();
 
 			finalArguments = new Dictionary<string, IList<object>>();

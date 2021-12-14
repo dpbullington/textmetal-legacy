@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 using TextMetal.Framework.Core;
@@ -11,6 +12,7 @@ using TextMetal.Framework.Expression;
 using TextMetal.Framework.Source;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
+using TextMetal.Middleware.Solder.Executive;
 using TextMetal.Middleware.Solder.Extensions;
 
 namespace TextMetal.Framework.Template
@@ -33,6 +35,7 @@ namespace TextMetal.Framework.Template
 
 		private string assemblyQualifiedTypeName;
 		private string sourceFilePath;
+		private string args;
 		private bool useAlloc;
 		private string var;
 
@@ -53,6 +56,22 @@ namespace TextMetal.Framework.Template
 			}
 		}
 
+		/// <summary>
+		/// NEW dpb 2021-11-25
+		/// </summary>
+		[XmlAttributeMapping(LocalName = "args", NamespaceUri = "")]
+		public string Args
+		{
+			get
+			{
+				return this.args;
+			}
+			set
+			{
+				this.args = value;
+			}
+		}
+		
 		[XmlAttributeMapping(LocalName = "src", NamespaceUri = "")]
 		public string SourceFilePath
 		{
@@ -102,7 +121,7 @@ namespace TextMetal.Framework.Template
 			DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy;
 			ISourceStrategy sourceStrategy;
 			Type sourceStrategyType;
-			string sourceFilePath, var;
+			string sourceFilePath, _args, var;
 			object source;
 
 			if ((object)templatingContext == null)
@@ -113,7 +132,8 @@ namespace TextMetal.Framework.Template
 			aqtn = templatingContext.Tokenizer.ExpandTokens(this.AssemblyQualifiedTypeName, dynamicWildcardTokenReplacementStrategy);
 			sourceFilePath = templatingContext.Tokenizer.ExpandTokens(this.SourceFilePath, dynamicWildcardTokenReplacementStrategy);
 			var = templatingContext.Tokenizer.ExpandTokens(this.Var, dynamicWildcardTokenReplacementStrategy);
-
+			_args = templatingContext.Tokenizer.ExpandTokens(this.Args, dynamicWildcardTokenReplacementStrategy);
+			
 			sourceStrategyType = Type.GetType(aqtn, false);
 
 			if ((object)sourceStrategyType == null)
@@ -123,8 +143,45 @@ namespace TextMetal.Framework.Template
 				throw new InvalidOperationException(string.Format("The source strategy type is not assignable to type '{0}'.", typeof(ISourceStrategy).FullName));
 
 			sourceStrategy = (ISourceStrategy)Activator.CreateInstance(sourceStrategyType);
+			
+			const string CMDLN_TOKEN_PROPERTY = "property";
+			IDictionary<string, IList<string>> properties;
+			IList<string> propertyValues;
+			
+			properties = new Dictionary<string, IList<string>>();
+			
+			var __args = (_args ?? "").Split("|");
+			
+			var arguments = ExecutableApplicationFascade.ParseCommandLineArguments(__args);
+			
+			bool hasProperties = arguments.TryGetValue(CMDLN_TOKEN_PROPERTY, out var argumentValues);
+			
+			if (hasProperties)
+			{
+				if ((object)argumentValues != null)
+				{
+					foreach (string argumentValue in argumentValues)
+					{
+						string key, value;
 
-			source = sourceStrategy.GetSourceObject(/*templatingContext, */sourceFilePath, templatingContext.Properties);
+						if (!ExecutableApplicationFascade.TryParseCommandLineArgumentProperty(argumentValue, out key, out value))
+							continue;
+
+						if (!properties.ContainsKey(key))
+							properties.Add(key, propertyValues = new List<string>());
+						else
+							propertyValues = properties[key];
+
+						// duplicate values are ignored
+						if (propertyValues.Contains(value))
+							continue;
+
+						propertyValues.Add(value);
+					}
+				}
+			}
+
+			source = sourceStrategy.GetSourceObject(/*templatingContext, */sourceFilePath, properties/*templatingContext.Properties*/);
 
 			if (!this.UseAlloc)
 			{
@@ -164,6 +221,13 @@ namespace TextMetal.Framework.Template
 						Token = var,
 						Expression = expressionContainerConstruct
 					}.ExpandTemplate(templatingContext);
+					
+					// dpb 2021-11-25
+					if ((object)this.Items != null)
+					{
+						foreach (ITemplateMechanism templateMechanism in this.Items)
+							templateMechanism.ExpandTemplate(templatingContext);
+					}
 				}
 			}
 		}

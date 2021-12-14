@@ -213,7 +213,12 @@ namespace TextMetal.Framework.Core
 		{
 			bool result;
 
-			result = System.Diagnostics.Debugger.Launch() && System.Diagnostics.Debugger.IsAttached;
+			// dpb 2021-11-29
+			result = System.Diagnostics.Debugger.IsAttached ? true : System.Diagnostics.Debugger.Launch();
+			
+			if(!result)
+				System.Diagnostics.Debugger.Break();
+			
 			this.Output.LogTextWriter.WriteLine("Debugger launch result: '{0}'", result);
 			return result;
 		}

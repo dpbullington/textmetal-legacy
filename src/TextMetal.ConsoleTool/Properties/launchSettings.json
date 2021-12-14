@@ -4,6 +4,15 @@
 		"default":
 		{
 			"commandName": "Project",
+			"commandLineArgs": "-sourcefile:\"D:\\development\\Arch_WIP\\PW-AEDM\\model_v2.37\" -templatefile:\"D:\\development\\Arch_WIP\\PW-AEDM\\master_template.xml\" -basedir:\"D:\\development\\Arch_WIP\\PW-AEDM\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.FileSystemSourceStrategy, TextMetal.Framework\" -strict:true -debug:false -property:Recursive=false -property:Wildcard=*.txt",
+			"environmentVariables":
+			{
+				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
+			}
+		},
+		"default2":
+		{
+			"commandName": "Project",
 			"environmentVariables":
 			{
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"

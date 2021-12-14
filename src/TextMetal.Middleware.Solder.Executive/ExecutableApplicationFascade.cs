@@ -274,11 +274,12 @@ namespace TextMetal.Middleware.Solder.Executive
 		}
 
 		/// <summary>
+		/// DPB 2021-11-25
 		/// Given a string array of command line arguments, this method will parse the arguments using a well know pattern match to obtain a loosely typed dictionary of key/multi-value pairs for use by applications.
 		/// </summary>
 		/// <param name="args"> The command line argument array to parse. </param>
 		/// <returns> A loosely typed dictionary of key/multi-value pairs. </returns>
-		public IDictionary<string, IList<string>> ParseCommandLineArguments(string[] args)
+		public static IDictionary<string, IList<string>> ParseCommandLineArguments(string[] args)
 		{
 			IDictionary<string, IList<string>> arguments;
 			Match match;
@@ -307,11 +308,11 @@ namespace TextMetal.Middleware.Solder.Executive
 				value = match.Groups[2].Value;
 
 				// key is required
-				if (this.DataTypeFascade.IsNullOrWhiteSpace(key))
+				if (string.IsNullOrWhiteSpace(key))
 					continue;
 
 				// val is required
-				if (this.DataTypeFascade.IsNullOrWhiteSpace(value))
+				if (string.IsNullOrWhiteSpace(value))
 					continue;
 
 				if (!arguments.ContainsKey(key))
@@ -339,13 +340,14 @@ namespace TextMetal.Middleware.Solder.Executive
 		}
 
 		/// <summary>
+		/// DPB 2021-11-25
 		/// Given a string property, this method will parse the property using a well know pattern match to obtain an output key/value pair for use by applications.
 		/// </summary>
 		/// <param name="arg"> The property to parse. </param>
 		/// <param name="key"> The output property key. </param>
 		/// <param name="value"> The output property value. </param>
 		/// <returns> A value indicating if the parse was successful or not. </returns>
-		public bool TryParseCommandLineArgumentProperty(string arg, out string key, out string value)
+		public static bool TryParseCommandLineArgumentProperty(string arg, out string key, out string value)
 		{
 			Match match;
 			string k, v;
@@ -371,11 +373,11 @@ namespace TextMetal.Middleware.Solder.Executive
 			v = match.Groups[2].Value;
 
 			// key is required
-			if (this.DataTypeFascade.IsNullOrWhiteSpace(k))
+			if (string.IsNullOrWhiteSpace(k))
 				return false;
 
 			// val is required
-			if (this.DataTypeFascade.IsNullOrWhiteSpace(v))
+			if (string.IsNullOrWhiteSpace(v))
 				return false;
 
 			key = k;
